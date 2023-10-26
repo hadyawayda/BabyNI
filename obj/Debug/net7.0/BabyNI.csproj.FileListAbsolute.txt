@@ -1,0 +1,14 @@
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\BabyNI.exe
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\BabyNI.deps.json
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\BabyNI.runtimeconfig.json
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\BabyNI.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\BabyNI.pdb
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.AssemblyInfoInputs.cache
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.AssemblyInfo.cs
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\refint\BabyNI.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.pdb
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.genruntimeconfig.cache
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\ref\BabyNI.dll

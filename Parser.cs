@@ -11,50 +11,46 @@ namespace BabyNI
 {
     internal class Parser
     {
-        readonly static string  parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
-                                radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
-                                RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
-        static Queue<string> queue = new Queue<string>();
-        static bool isProcessing;
+        readonly private static string  parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
+                                        radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
+                                        RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
+        private static Queue<string>    queue = new Queue<string>();
+        private FileSystemWatcher       watcher;
+        private static bool             isProcessing;
 
-        static void Main()
-        {
-            startWatcher();
-
-            processQueue();
-
-            Console.ReadKey();
-        }
-
-        private static void startWatcher()
+        public Parser()
         {
             // Watch for new incoming files
-            FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher = new FileSystemWatcher();
+            
+            startWatcher(parserDirectory);
 
+            processQueue();
+        }
+
+        private void startWatcher(string directory)
+        {
             // Set directory to be watched
-            watcher.Path = parserDirectory;
-
-            // Execute a function when a new file is added using the added file name
-            watcher.Created += (sender, e) =>
-            {
-                if (e.Name != null) addToQueue(e.Name);
-                Console.WriteLine("***New***");
-                Console.WriteLine($"{e.Name} has been queued and ready to be parsed.");
-            };
+            watcher.Path = directory;
 
             // Enable the watcher
             watcher.EnableRaisingEvents = true;
 
+            // Execute a function when a new file is added using the added file name
+            watcher.Created += (sender, e) => addToQueue(directory, e.Name!);
+
+            Console.WriteLine("Parser is up and running! :)\n");
         }
-        private static void addToQueue(string fileName)
+
+        private void addToQueue(string directory, string fileName)
         {
             bool isReady = false;
 
             // Wait for it to download
-            isReady = isFileReady(Path.Combine(parserDirectory, fileName));
+            isReady = isFileReady(Path.Combine(directory, fileName));
 
             // check if the queue contains the item, if item is not present add it to the queue
-            if (!queue.Contains(fileName))
+            if (!queue.Contains(fileName) && isReady)
             {
                 queue.Enqueue(fileName);
             }
@@ -64,23 +60,28 @@ namespace BabyNI
                 processQueue();
             }
         }
-        private static void processQueue()
+
+        private void processQueue()
         {
             while (queue.Count != 0)
             {
                 processItems();
+
+                queue.Dequeue();
+                
+                //Console.WriteLine($"{queue.Count} items left in queue.\n");
             }
         }
 
-        private static void processItems()
+        private void processItems()
         {
             // Start the parsing process
             isProcessing = true;
-            parse(queue.Dequeue());
+            parse(queue.Peek());
             isProcessing = false;
         }
 
-        private static bool isFileReady(string fileName)
+        private bool isFileReady(string fileName)
         {
             try
             {
@@ -102,9 +103,17 @@ namespace BabyNI
             }
         }
 
-        private static void parse(string fileName)
+        private void parse(string fileName)
         {
+            if (Regex.IsMatch(fileName, radioLinkPowerPattern))
+            {
+                RadioLinkParser parser1 = new RadioLinkParser(fileName);
+            }
 
+            else if (Regex.IsMatch(fileName, RFInputPowerPattern))
+            {
+                RFInputParser parser2 = new RFInputParser(fileName);
+            }
         }
     }
 }

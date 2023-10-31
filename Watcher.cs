@@ -2,63 +2,59 @@
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
-using BabyNI;
 
-namespace Watcher
+namespace BabyNI
 {
-    class Program
+    class Watcher
     {
-        readonly static string rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
-                backupDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Archive",
-                radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
-                RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
-        static HashSet<string> RadioLinkPowerList = new HashSet<string>();
-        static HashSet<string> RFInputPowerList = new HashSet<string>();
-        static Queue<string> queue = new Queue<string>();
-        static bool isProcessing;
+        private HashSet<string>     RadioLinkPowerList = new HashSet<string>();
+        private HashSet<string>     RFInputPowerList = new HashSet<string>();
+        private Queue<string>       queue = new Queue<string>();
+        readonly private string     rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                    parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
+                                    backupDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Archive",
+                                    radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
+                                    RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
+        private FileSystemWatcher   watcher;
+        private bool                isProcessing;
 
-        static void Main()
-        {
-            BaseWatcher watcher = new BaseWatcher(parserDirectory);
-
-            processQueue();
-
-            Console.ReadKey();
-        }
-
-        private static void startWatcher()
+        public Watcher ()
         {
             // Watch for new incoming files
-            FileSystemWatcher watcher = new FileSystemWatcher();
+            watcher = new FileSystemWatcher();
 
+            startWatcher(rootDirectory);
+
+            processQueue();
+        }
+
+        private void startWatcher(string directory)
+        {
             // Set directory to be watched
-            watcher.Path = rootDirectory;
-
-            // Execute a function when a new file is added using the added file name
-            watcher.Created += (sender, e) =>
-            {
-                if (e.Name != null) addToQueue(e.Name);
-            };
+            watcher.Path = directory;
 
             // Enable the watcher
             watcher.EnableRaisingEvents = true;
 
+            // Execute a function when a new file is added using the added file name
+            watcher.Created += (sender, e) => addToQueue(directory, e.Name!);
+
+            Console.WriteLine("Watcher is up and running! :)");
         }
 
-        private static void addToQueue(string fileName)
+        private void addToQueue(string directory, string fileName)
         {
             bool isProcessable = false;
             bool isReady = false;
 
             // Wait for it to download
-            isReady = isFileReady(Path.Combine(rootDirectory, fileName));
+            isReady = isFileReady(Path.Combine(directory, fileName));
 
             // Authenticate txt file names, fetch their names and check if they're in the list of processed files.
             // If already present in the list of files, skip them, otherwise allow them to be processed.
             isProcessable = isFileProcessable(fileName, isReady);
 
-            // check if the queue contains the item, if item is not present add it to the queue
+            // Check if the queue contains the item, if item is not present add it to the queue
             if (!queue.Contains(fileName) && isProcessable)
             {
                 queue.Enqueue(fileName);
@@ -70,23 +66,25 @@ namespace Watcher
             }
         }
 
-        private static void processQueue()
+        private void processQueue()
         {
             while (queue.Count != 0)
             {
                 processItems();
+                queue.Dequeue();
+                //Console.WriteLine($"{queue.Count} items left in queue.");
             }
         }
 
-        private static void processItems()
+        private void processItems()
         {
             // Start the parsing process
             isProcessing = true;
-            moveFiles(queue.Dequeue());
+            moveFiles(queue.Peek());
             isProcessing = false;
         }
 
-        private static bool isFileReady(string fileName)
+        private bool isFileReady(string fileName)
         {
             try
             {
@@ -107,21 +105,19 @@ namespace Watcher
             }
         }
 
-        private static bool isFileProcessable(string fileName, bool ready)
+        private bool isFileProcessable(string fileName, bool ready)
         {
             if (Regex.IsMatch(fileName, radioLinkPowerPattern) && ready)
             {   
                 if (!RadioLinkPowerList.Contains(fileName))
                 {
                     RadioLinkPowerList.Add(fileName);
-                    foreach (string item in RadioLinkPowerList) {
-                        Console.WriteLine($"New file logged: {item}");
-                    };
+                    //Console.WriteLine($"New file logged: {item}");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine($"Sorry, '{fileName}' has been processed already, skipping...");
+                    Console.WriteLine($"Sorry, file {fileName} has been processed already, skipping...");
                     File.Delete(Path.Combine(rootDirectory, fileName));
                     return false;
                 }
@@ -131,15 +127,12 @@ namespace Watcher
                 if (!RFInputPowerList.Contains(fileName))
                 {
                     RFInputPowerList.Add(fileName);
-                    foreach (string item in RFInputPowerList)
-                    {
-                        Console.WriteLine($"New file logged: {item}");
-                    };
+                      //Console.WriteLine($"New file logged: {item}");
                     return true;
                 }
                 else
                 {
-                    Console.WriteLine($"Sorry, '{fileName}' has been processed already, skipping...");
+                    Console.WriteLine($"Sorry, file {fileName} has been processed already, skipping...");
                     File.Delete(Path.Combine(rootDirectory, fileName));
                     return false;
                 }
@@ -150,24 +143,26 @@ namespace Watcher
             }
         }
 
-        private static void moveFiles(string fileName)
+        private void moveFiles(string fileName)
         {
             // This method could make use of a queue system as well, but it's not that important right now.
             string path = Path.Combine(rootDirectory, fileName);
             string backup = Path.Combine(backupDirectory, fileName);
             string parsed = Path.Combine(parserDirectory, fileName);
 
-            //  use this for a dynamic file name
+            //  Use this for a dynamic file name
             //  string title = Regex.IsMatch(fileName, radioLinkPowerPattern) ? "RadioLink.txt" : Regex.IsMatch(fileName, RFInputPowerPattern) ? "RFInput.txt" : "";
             //  string parsed = Path.Combine(parserDirectory, title);
 
             if (File.Exists(backup) || File.Exists(parsed))
             {
                 File.Delete(backup);
+
                 File.Delete(parsed);
             }
 
             File.Copy(path, parsed);
+
             File.Move(path, backup);
         }
     }
@@ -181,6 +176,7 @@ namespace Watcher
 //                              4. keep track of what has been pushed and what wasn't (done, no need to track what wasn't done), avoid duplicates! Unless entry failed, or file was corrupted!  Done
 //                              5. What if the file size is big and needs time to download?     Done
 // ***Parser functionality***:  6. Implement a queue to store and wait for new files to be processed by the parser.     Done
+//                              7. Add file size checker, if file is empty, drop the file, and if it is extremely big, drop it as well
 
 // To be implemented:
 //          1. File Logging (to the console, or maybe to an external file, or god forbid, to the UI)

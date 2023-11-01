@@ -66,9 +66,6 @@ namespace BabyNI
             while (queue.Count != 0)
             {
                 processItems();
-
-                queue.Dequeue();
-                
                 //Console.WriteLine($"{queue.Count} items left in queue.\n");
             }
         }
@@ -114,6 +111,8 @@ namespace BabyNI
             {
                 RFInputParser parser2 = new RFInputParser(fileName);
             }
+
+            queue.Dequeue();
         }
     }
 }

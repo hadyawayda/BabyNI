@@ -14,20 +14,21 @@ namespace BabyNI
                                         parserDirectory = Path.Combine(rootDirectory, "Parser"),
                                         parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
                                         loaderDirectory = Path.Combine(rootDirectory, "Loader");
-        private HashSet<int>        disabledColumns = new HashSet<int> { 1, 9, 17 }, 
-                                    staticColumns = new HashSet<int> { 2, 4, 5, 6, 7, 8, 10, 11, 12, 13, 14, 15, 16 }; // 13; // 3
-        private string[]            output = new string[22], fetchedLine = new string[18];
+        private HashSet<int>        disabledColumns = new HashSet<int> { 3, 11, 19 }, 
+                                    staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13; // 3
+        private List<string>        output = new List<string>(22), fetchedLine = new List<string>(18);
         private static string?      fileName, filePath, backupFilePath, parsedFile;
         private StreamWriter        writer;
         private StreamReader        reader;
         private int                 counter = 0;
+        private bool                toBeSkipped =  false;
 
         public RadioLinkParser(string file)
         {
             fileName = file;
             filePath = Path.Combine(parserDirectory, fileName);
             backupFilePath = Path.Combine(parserBackupDirectory, fileName);  // parser/processed/radioLinkPower.txt
-            parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(fileName) + ".csv");        // loader/radioLinkPower.txt
+            parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(fileName) + "1.csv");        // loader/radioLinkPower.txt
             
             reader = new StreamReader(filePath!);
 
@@ -40,20 +41,17 @@ namespace BabyNI
         {
             string line;
 
-            while ((line = reader.ReadLine()!) != null)
+            while ( (line = reader.ReadLine()!) != null )
             {
-                fetchedLine = line.Split(",")!;
-
                 if (counter == 0)
                 {
-                    output = fetchedLine;
-
-                    processOutput();
-
-                    //Console.WriteLine("Header is being pushed to output CSV file...\n");
+                    processHeader(line);
 
                     continue;
                 }
+
+                // Fix this shit
+                fetchedLine = line.Split(",").ToList();
 
                 processLine(fetchedLine);
             }
@@ -61,60 +59,90 @@ namespace BabyNI
             this.closeFile(fileName!);
         }
 
-        private void processLine(string[] header)
+        private void processHeader(string line)
+        {
+            line = "NETWORK_SID,DATETIME_KEY," + line + ",LINK,TID,FARENDTID,SLOT,PORT";
+
+            Console.WriteLine($"Header is: {line}\n");
+
+            fetchedLine = line.Split(",").ToList();
+
+            int c = 0;
+
+            for (int i = 0; i < fetchedLine.Count; i++)
+            {
+                if ( !disabledColumns.Contains(i + 1) )
+                {
+                    output.Add(fetchedLine[i]);
+
+                    c++;
+                }
+            }
+
+            Console.WriteLine($"Total columns count for this file is: {output.Count}\n");
+
+            processOutput(true);
+        }
+
+        private void processLine(List<string> data)
         {
             //Console.WriteLine($"Line '{counter}' is being processed\n");
 
             generateFirstSetOfColumns();
 
-            processMiddleColumns(header);
+            processMiddleColumns(data);
 
             generateSecondSetOfColumns();
 
             //Console.WriteLine("Line is being pushed to output CSV file...\n");
 
-            processOutput();
+            processOutput(false);
         }
 
-        private void processOutput()
+        private void processOutput(bool isHeader)
         {
             // Push to a csv fileName and add line break
-            writer.WriteLine(string.Join(",", output));
+            if ( !toBeSkipped )
+            {
+                writer.WriteLine(string.Join(",", output));
+            }
 
-            //Console.WriteLine("Line has been processed, moving on to next line.\n");
+            //Console.WriteLine($"{(isHeader ? "Header" : "Line")} has been processed, moving on to next line.\n");
 
             // Then empty array and update line counter
-            output = new string[22];
+            output = new List<string>(22);
+
+            toBeSkipped = false;
 
             counter++;
         }
 
-        private void processMiddleColumns(string[] header)
+        private void processMiddleColumns(List<string> data)
         {
             for (int i = 0; i < 18; i++)
             {
-                if (disabledColumns.Contains(i + 1))
+                if (disabledColumns.Contains(i + 3))
                 {
                     //Console.WriteLine($"Disabled Column {i + 1} was removed on Line {counter}\n");
                     continue;
                 }
 
-                if (staticColumns.Contains(i + 1))
+                if (staticColumns.Contains(i + 3))
                 {
-                    output[i + 2] = header[i];
+                    output.Add(data[i]);
                     //Console.WriteLine($"Column {i + 1} on Line {counter} has been processed\n");
                     continue;
                 }
 
-                if ( i  == 2 )
+                if ( i == 2 )
                 {
-                    processUnreachableBulkFC(header[i]);
+                    processObject(data[i]);
                     continue;
                 }
 
                 if ( i == 17 )
                 {
-                    processFailureDescription(header[i]);
+                    processFailureDescription(data[i]);
                     continue;
                 }
             }
@@ -128,27 +156,76 @@ namespace BabyNI
 
         private void generateSecondSetOfColumns()
         {
-
+            generateLINK();
+            generateTID();
+            generateFARENDTID();
+            generateSLOT();
+            generatePORT();
         }
 
         private void generateNetworkSID()
         {
-
+            output.Add((fetchedLine[7] + fetchedLine[8]).GetHashCode().ToString());
         }
 
         private void generateDateTimeKey()
         {
+            output.Add("DATETIME_KEY");
 
         }
 
-        private void processUnreachableBulkFC(string data)
+        private void processObject(string data)
         {
+            if ( data == "Unreachable Bulk FC" )
+            {
+                toBeSkipped = true;
+            }
 
+            if ( data.Contains("+") )
+            {
+                generateNewRow();
+            }
+
+            output.Add(data);
+        }
+
+        int d = 0;
+
+        public void generateNewRow()
+        {
+            d++;
+
+            Console.WriteLine($"{d} extra rows generated so far!");
         }
 
         private void processFailureDescription(string data)
         {
+            output.Add("ToBeProcessed");
+        }
 
+        private void generateLINK()
+        {
+            output.Add("Link to be generated.");
+        }
+
+        private void generateTID()
+        {
+            output.Add("TID to be generated.");
+        }
+
+        private void generateFARENDTID()
+        {
+            output.Add("FARENDTID to be generated.");
+        }
+
+        private void generateSLOT()
+        {
+            output.Add("SLOT to be generated.");
+        }
+
+        private void generatePORT()
+        {
+            output.Add("PORT to be generated.");
         }
 
         private void closeFile(string fileName)
@@ -159,7 +236,7 @@ namespace BabyNI
             // Close csv reader
             reader.Close();
 
-            Console.WriteLine($"Parser: Parsing done on file: {fileName}\nParser: Initiating file move.\n");
+            Console.WriteLine($"Parser: Parsing done on file: {fileName}\n\nParser: Initiating file move.\n");
 
             // Move and delete fileName
             movefiles(fileName);

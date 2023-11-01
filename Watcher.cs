@@ -71,7 +71,6 @@ namespace BabyNI
             while (queue.Count != 0)
             {
                 processItems();
-                queue.Dequeue();
                 //Console.WriteLine($"{queue.Count} items left in queue.");
             }
         }
@@ -164,6 +163,8 @@ namespace BabyNI
             File.Copy(path, parsed);
 
             File.Move(path, backup);
+
+            queue.Dequeue();
         }
     }
 }

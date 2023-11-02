@@ -83,12 +83,12 @@ namespace BabyNI
             isProcessing = false;
         }
 
-        private bool isFileReady(string fileName)
+        private bool isFileReady(string filePath)
         {
             try
             {
-                if (File.Exists(fileName)) { 
-                    using (File.OpenRead(fileName))
+                if (File.Exists(filePath)) { 
+                    using (File.OpenRead(filePath))
                     {
                         return true;
                     }
@@ -100,7 +100,7 @@ namespace BabyNI
             {
                 Thread.Sleep(100);
                 //Console.WriteLine("How much longer do I have to wait???");
-                return isFileReady(fileName);
+                return isFileReady(filePath);
             }
         }
 

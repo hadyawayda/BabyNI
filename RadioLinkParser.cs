@@ -14,22 +14,26 @@ namespace BabyNI
                                         parserDirectory = Path.Combine(rootDirectory, "Parser"),
                                         parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
                                         loaderDirectory = Path.Combine(rootDirectory, "Loader");
-        private HashSet<int>        disabledColumns = new HashSet<int> { 3, 11, 19 }, 
-                                    staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13; // 3
-        private List<string>        output = new List<string>(22), fetchedLine = new List<string>(18);
-        private static string?      fileName, filePath, backupFilePath, parsedFile;
+        readonly private HashSet<int>   disabledColumns = new HashSet<int> { 3, 11, 19 }, // 3 total disabled columns
+                                        staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13 total static columns
+        private List<string>        output, fetchedLine;
+        private static string?      filePath, backupFilePath, parsedFile;
         private StreamWriter        writer;
         private StreamReader        reader;
-        private int                 counter = 0;
-        private bool                toBeSkipped =  false;
+        private int                 totalColumns, corruptRows, rows, lines, d, e, f, g, emptyCells;
+        private bool                toBeSkipped, newRow;
+        private string?             LINK, TID, FARENDTID, SLOT, PORT;
 
         public RadioLinkParser(string file)
         {
-            fileName = file;
-            filePath = Path.Combine(parserDirectory, fileName);
-            backupFilePath = Path.Combine(parserBackupDirectory, fileName);  // parser/processed/radioLinkPower.txt
-            parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(fileName) + "1.csv");        // loader/radioLinkPower.txt
-            
+            filePath = Path.Combine(parserDirectory, file);
+            backupFilePath = Path.Combine(parserBackupDirectory, file);  // parser/processed/radioLinkPower.txt
+            parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(file) + ".csv");        // loader/radioLinkPower.txt
+            totalColumns = corruptRows = rows = lines = emptyCells = d = e = f = g = 0;
+            toBeSkipped = newRow = false;
+            output = new List<string>(22);
+            fetchedLine = new List<string>(18);
+
             reader = new StreamReader(filePath!);
 
             writer = new StreamWriter(parsedFile!);
@@ -43,20 +47,31 @@ namespace BabyNI
 
             while ( (line = reader.ReadLine()!) != null )
             {
-                if (counter == 0)
+                try
                 {
-                    processHeader(line);
+                    if (lines == 0)
+                    {
+                        processHeader(line);
 
-                    continue;
+                        continue;
+                    }
+
+                    // Fix this shit
+                    fetchedLine = line.Split(",").ToList();
+
+                    processLine(fetchedLine);
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Corrupt record detected. Line {lines} will be skipped.");
 
-                // Fix this shit
-                fetchedLine = line.Split(",").ToList();
+                    corruptRows++;
 
-                processLine(fetchedLine);
+                    Console.WriteLine(e.Message);
+                }
             }
 
-            this.closeFile(fileName!);
+            closeFile();
         }
 
         private void processHeader(string line)
@@ -78,6 +93,8 @@ namespace BabyNI
                     c++;
                 }
             }
+            
+            totalColumns = output.Count;
 
             Console.WriteLine($"Total columns count for this file is: {output.Count}\n");
 
@@ -101,10 +118,33 @@ namespace BabyNI
 
         private void processOutput(bool isHeader)
         {
-            // Push to a csv fileName and add line break
-            if ( !toBeSkipped )
+            // Push to a csv file and add line break
+            if ( !toBeSkipped)
             {
-                writer.WriteLine(string.Join(",", output));
+                if ( !isHeader && output.Count == totalColumns )
+                {
+                    writer.WriteLine(string.Join(",", output));
+
+                    rows++;
+                }
+
+                if ( isHeader )
+                {
+                    writer.WriteLine(string.Join(",", output));
+                }
+            }
+
+            if ( newRow )
+            {
+                if (!isHeader && output.Count == totalColumns)
+                {
+                    // Insert data manipulation logic for PORT column
+                    output[21] += 1;
+
+                    writer.WriteLine(string.Join(",", output));
+
+                    rows++;
+                }
             }
 
             //Console.WriteLine($"{(isHeader ? "Header" : "Line")} has been processed, moving on to next line.\n");
@@ -112,15 +152,22 @@ namespace BabyNI
             // Then empty array and update line counter
             output = new List<string>(22);
 
-            toBeSkipped = false;
+            toBeSkipped = newRow = false;
 
-            counter++;
+            lines++;
         }
 
         private void processMiddleColumns(List<string> data)
         {
             for (int i = 0; i < 18; i++)
             {
+                if (data[i] == "")
+                {
+                    emptyCells++;
+                    processOutput(false);
+                    break;
+                }
+
                 if (disabledColumns.Contains(i + 3))
                 {
                     //Console.WriteLine($"Disabled Column {i + 1} was removed on Line {counter}\n");
@@ -156,6 +203,7 @@ namespace BabyNI
 
         private void generateSecondSetOfColumns()
         {
+            splitObject(fetchedLine[2]);
             generateLINK();
             generateTID();
             generateFARENDTID();
@@ -165,70 +213,141 @@ namespace BabyNI
 
         private void generateNetworkSID()
         {
-            output.Add((fetchedLine[7] + fetchedLine[8]).GetHashCode().ToString());
+            // Create an optional hashing function that takes the order into consideration i.e. KMP
+            output.Add(Math.Abs((fetchedLine[7] + fetchedLine[8]).GetHashCode()).ToString());
         }
 
         private void generateDateTimeKey()
         {
-            output.Add("DATETIME_KEY");
+            //output.Add("DATETIME_KEY");
 
+            // Create an optional hashing function that takes the order into consideration i.e. KMP
+            output.Add(Math.Abs((fetchedLine[3]).GetHashCode()).ToString());
+
+        }
+
+        private void processFailureDescription(string data)
+        {
+            output.Add(data);
+            
+            if (data != "-") { 
+                toBeSkipped = true;
+
+                e++;
+            }
+            
+            //output.Add("ToBeProcessed");
         }
 
         private void processObject(string data)
         {
-            if ( data == "Unreachable Bulk FC" )
+            if (data == "Unreachable Bulk FC")
             {
+                d++;
+                
                 toBeSkipped = true;
             }
 
-            if ( data.Contains("+") )
+            if (data.Contains("."))
             {
-                generateNewRow();
+                int slashIndex1 = -1, dotIndex = -1, slashIndex2 = -1;
+
+                for ( int i = 0; i < data.Length; i++ )
+                {
+                    if ( data[i] == '/' && slashIndex1 == -1 )
+                    {
+                        slashIndex1 = i;
+                    }
+                    
+                    if ( data[i] == '.' )
+                    {
+                        dotIndex = i;
+                    }
+
+                    if (data[i] == '/' && slashIndex1 != -1)
+                    {
+                        slashIndex2 = i;
+                    }
+                }
+
+                SLOT = data.Substring(slashIndex1 + 1, dotIndex - (slashIndex1 + 1));
+
+                PORT = data.Substring(dotIndex + 1, slashIndex2 - (dotIndex + 1));
+
+                Console.WriteLine($"Line {lines} includes a '.' value\n");
+                
+                g++;
+            }
+
+            if (data.Contains("+"))
+            {
+                //Console.WriteLine(data);
+
+                
+                newRow = true;
+                
+                f++;
+            }
+
+            if (data.Contains("+") && data.Contains("."))
+            {
+                Console.WriteLine("***WARNING***\n\nWe have an exception! Extreme case detected.\nObject column contains both a '+'& '.'\nPlease handle accordingly!");
             }
 
             output.Add(data);
         }
 
-        int d = 0;
-
-        public void generateNewRow()
+        private void splitObject(string input)
         {
-            d++;
+            int pointer = 0;
 
-            Console.WriteLine($"{d} extra rows generated so far!");
+            LINK = TID = FARENDTID = null;
+
+            for ( int i = 0; i < input.Length - 1; i++ )
+            {
+                if (input[i] == '_' && input[i + 1] == '_' )
+                {
+                    if ( LINK == null )
+                    {
+                        LINK = input.Substring(0, i);
+                        pointer = i;
+                    }
+
+                    else if ( TID == null )
+                    {
+                        TID = input.Substring(pointer + 2, i - pointer - 2);
+                        pointer = i;
+                    }
+                }
+            }
+
+            FARENDTID = input.Substring(pointer + 2);
         }
-
-        private void processFailureDescription(string data)
-        {
-            output.Add("ToBeProcessed");
-        }
-
         private void generateLINK()
         {
-            output.Add("Link to be generated.");
+            output.Add(LINK!);
         }
-
         private void generateTID()
         {
-            output.Add("TID to be generated.");
+            output.Add(TID!);
         }
 
         private void generateFARENDTID()
         {
-            output.Add("FARENDTID to be generated.");
+            output.Add(FARENDTID!);
         }
 
         private void generateSLOT()
         {
-            output.Add("SLOT to be generated.");
+            output.Add(SLOT!);
         }
 
         private void generatePORT()
         {
-            output.Add("PORT to be generated.");
+            output.Add(PORT!);
         }
 
-        private void closeFile(string fileName)
+        private void closeFile()
         {
             // Close csv writer
             writer.Close();
@@ -236,13 +355,23 @@ namespace BabyNI
             // Close csv reader
             reader.Close();
 
-            Console.WriteLine($"Parser: Parsing done on file: {fileName}\n\nParser: Initiating file move.\n");
+            Console.WriteLine($"Parser: Parsing done on file.\n\nParser: Initiating file move.\n");
+            Console.WriteLine($"{d} 'Unreachable bulk FC' records so far!");
+            Console.WriteLine($"{e} 'Failure Description' records so far!");
+            Console.WriteLine($"{f} 'Object contains a + sign' rows generated so far!");
+            Console.WriteLine($"{g} 'Object contains a . sign' rows found so far!");
+            Console.WriteLine($"{lines - 1} records in total have been fetched");
+            Console.WriteLine($"{rows} lines in total have been parsed");
+            Console.WriteLine($"{f + rows} expected total rows in output file");
+            Console.WriteLine($"{corruptRows} is total detected corrupt rows (empty records or missing cells)");
+            Console.WriteLine($"{emptyCells} total empty cells in entire file");
+
 
             // Move and delete fileName
-            movefiles(fileName);
+            movefiles();
         }
 
-        private void movefiles(string fileName)
+        private void movefiles()
         {
             // This method could make use of a queue system as well, but it's not that important right now.
             if (File.Exists(backupFilePath))

@@ -1,40 +1,32 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Collections;
 
 namespace BabyNI
 {
-    internal class Parser
+    internal class Loader
     {
-        readonly private static string  parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
+        readonly private static string parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
                                         radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
                                         RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
-        private static Queue<string>    queue = new Queue<string>();
-        private FileSystemWatcher       watcher;
-        private static bool             isProcessing;
+        private static Queue<string> queue = new Queue<string>();
+        private FileSystemWatcher watcher;
+        private static bool isProcessing;
 
-        public Parser()
+        public Loader()
         {
-            // Watch for new incoming files
-            watcher = new FileSystemWatcher(parserDirectory);
+            watcher = new FileSystemWatcher();
+
+            watcher.EnableRaisingEvents = true;
             
-            startWatcher();
+            Console.WriteLine("Parser is up and running! :)\n");
+
+            watcher.Created += (sender, e) => addToQueue(e.Name!);
 
             processQueue();
-        }
-
-        private void startWatcher( )
-        {
-            // Enable the watcher
-            watcher.EnableRaisingEvents = true;
-
-            // Execute a function when a new file is added using the added file name
-            watcher.Created += (sender, e) => addToQueue(e.Name!);
         }
 
         private void addToQueue(string fileName)

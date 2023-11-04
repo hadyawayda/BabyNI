@@ -21,16 +21,16 @@ namespace BabyNI
         private static string?          filePath, backupFilePath, parsedFile;
         private StreamWriter            writer;
         private StreamReader            reader;
-        private int                     totalColumns, rows, lines, d, e, f, g, corruptRows, emptyCells;
+        private int                     totalColumns, rows, lines, d, e, corruptRows, emptyCells;
         private bool                    toBeSkipped;
-        private string?                 LINK, SLOT, PORT;
+        private string?                 SLOT, PORT;
 
 
         public RFInputParser(string file) {
             filePath = Path.Combine(parserDirectory, file);
             backupFilePath = Path.Combine(parserBackupDirectory, file);  // parser/processed/radioLinkPower.txt
             parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(file) + ".csv");        // loader/radioLinkPower.txt
-            totalColumns = corruptRows = rows = lines = emptyCells = d = e = f = g = 0;
+            totalColumns = corruptRows = rows = lines = emptyCells = d = e = 0;
             toBeSkipped = false;
             output = new List<string>(22);
             fetchedLine = new List<string>(18);

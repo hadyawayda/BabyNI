@@ -45,6 +45,7 @@ namespace BabyNI
         private void addToQueue(string directory, string fileName)
         {
             bool isProcessable = false;
+
             bool isReady = false;
 
             // Wait for it to download
@@ -70,17 +71,11 @@ namespace BabyNI
         {
             while (queue.Count != 0)
             {
-                processItems();
+                isProcessing = true;
+                process(queue.Peek());
+                isProcessing = false;
                 //Console.WriteLine($"{queue.Count} items left in queue.");
             }
-        }
-
-        private void processItems()
-        {
-            // Start the parsing process
-            isProcessing = true;
-            moveFiles(queue.Peek());
-            isProcessing = false;
         }
 
         private bool isFileReady(string filePath)
@@ -142,7 +137,7 @@ namespace BabyNI
             }
         }
 
-        private void moveFiles(string fileName)
+        private void process(string fileName)
         {
             // This method could make use of a queue system as well, but it's not that important right now.
             string path = Path.Combine(rootDirectory, fileName);

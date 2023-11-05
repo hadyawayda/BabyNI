@@ -9,75 +9,30 @@ namespace BabyNI
 {
     internal class Loader
     {
-        readonly private static string parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
+        readonly private static string  loaderDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Loader",
+                                        createTablesScript = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Loader\Query Scripts\Create Tables.sql",
                                         radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
                                         RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
-        private static Queue<string> queue = new Queue<string>();
-        private FileSystemWatcher watcher;
-        private static bool isProcessing;
+        private BaseWatcher <Loader>    watcher;
+        private StreamReader reader;
+        private string?                 line;
 
         public Loader()
         {
-            watcher = new FileSystemWatcher();
+            Console.WriteLine("Loader is up and running! :)\n");
 
-            watcher.EnableRaisingEvents = true;
-            
-            Console.WriteLine("Parser is up and running! :)\n");
+            reader = new StreamReader(createTablesScript);
 
-            watcher.Created += (sender, e) => addToQueue(e.Name!);
+            createTables();
 
-            processQueue();
+            watcher = new BaseWatcher <Loader> (loaderDirectory, process);
         }
 
-        private void addToQueue(string fileName)
+        private void createTables()
         {
-            bool isReady = false;
-
-            // Wait for it to download
-            isReady = isFileReady(Path.Combine(parserDirectory, fileName));
-
-            // check if the queue contains the item, if item is not present add it to the queue
-            if (!queue.Contains(fileName) && isReady)
+            while ( (line =  reader.ReadLine()) != null)
             {
-                queue.Enqueue(fileName);
-            }
 
-            if (!isProcessing)
-            {
-                processQueue();
-            }
-        }
-
-        private void processQueue()
-        {
-            while (queue.Count != 0)
-            {
-                isProcessing = true;
-                process(queue.Peek());
-                isProcessing = false;
-                //Console.WriteLine($"{queue.Count} items left in queue.\n");
-            }
-        }
-
-        private bool isFileReady(string fileName)
-        {
-            try
-            {
-                if (File.Exists(fileName))
-                {
-                    using (File.OpenRead(fileName))
-                    {
-                        return true;
-                    }
-                }
-                else
-                    return false;
-            }
-            catch (Exception)
-            {
-                Thread.Sleep(100);
-                //Console.WriteLine("How much longer do I have to wait???");
-                return isFileReady(fileName);
             }
         }
 
@@ -85,15 +40,13 @@ namespace BabyNI
         {
             if (Regex.IsMatch(fileName, radioLinkPowerPattern))
             {
-                RadioLinkParser parser1 = new RadioLinkParser(fileName);
+                RadioLinkLoader loader1 = new RadioLinkLoader(fileName);
             }
 
             else if (Regex.IsMatch(fileName, RFInputPowerPattern))
             {
-                RFInputParser parser2 = new RFInputParser(fileName);
+                RFInputLoader loader2 = new RFInputLoader(fileName);
             }
-
-            queue.Dequeue();
         }
     }
 }

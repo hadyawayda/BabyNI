@@ -7,38 +7,42 @@ using System.Threading.Tasks;
 
 namespace BabyNI
 {
-    internal class BaseWatcher<T>
+    public class BaseWatcher <T>
     {
-        private readonly T I;
-        private static bool isProcessing;
-        private readonly string directory;
-        private FileSystemWatcher watcher;
-        private static Queue<string> queue = new Queue<string>();
+        private static Queue<string>?   queue;
+        private FileSystemWatcher       watcher;
+        private Action<string>          process;
+        private string                  directory;
+        private bool                    isProcessing, isReady;
 
-        public BaseWatcher(T classInstance, string directory)
-        { 
-            I = classInstance;
+        public BaseWatcher(string folder, Action<string> processAction)
+        {
+            isProcessing = isReady = false;
 
-            this.directory = directory;
+            directory = folder;
+
+            process = processAction;
+
+            queue = new Queue<string>();
 
             watcher = new FileSystemWatcher(directory);
 
             watcher.EnableRaisingEvents = true;
 
-            watcher.Created += (sender, e) => addToQueue(directory, e.Name!);
+            watcher.Created += (sender, e) => addToQueue(e.Name!);
 
             processQueue();
         }
 
-        private void addToQueue(string directory, string fileName)
+        private void addToQueue(string fileName)
         {
-            bool isReady = false;
+            isReady = false;
 
             // Wait for it to download
             isReady = isFileReady(Path.Combine(directory, fileName));
 
             // check if the queue contains the item, if item is not present add it to the queue
-            if (!queue.Contains(fileName) && isReady)
+            if (!queue!.Contains(fileName) && isReady)
             {
                 queue.Enqueue(fileName);
             }
@@ -51,22 +55,23 @@ namespace BabyNI
 
         private void processQueue()
         {
-            while (queue.Count != 0)
+            while (queue!.Count != 0)
             {
                 isProcessing = true;
-                I!.process(queue.Peek());
+                process(queue.Peek());
+                queue.Dequeue();
                 isProcessing = false;
                 //Console.WriteLine($"{queue.Count} items left in queue.\n");
             }
         }
 
-        private bool isFileReady(string fileName)
+        private bool isFileReady(string filePath)
         {
             try
             {
-                if (File.Exists(fileName))
+                if (File.Exists(filePath))
                 {
-                    using (File.OpenRead(fileName))
+                    using (File.OpenRead(filePath))
                     {
                         return true;
                     }
@@ -78,10 +83,8 @@ namespace BabyNI
             {
                 Thread.Sleep(100);
                 //Console.WriteLine("How much longer do I have to wait???");
-                return isFileReady(fileName);
+                return isFileReady(filePath);
             }
         }
-
-
     }
 }

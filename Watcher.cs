@@ -5,123 +5,44 @@ using System.Collections.Generic;
 
 namespace BabyNI
 {
-    class Watcher
+    public class Watcher
     {
-        private HashSet<string>     RadioLinkPowerList = new HashSet<string>();
-        private HashSet<string>     RFInputPowerList = new HashSet<string>();
-        private Queue<string>       queue = new Queue<string>();
-        readonly private string     rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                    parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
-                                    backupDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Archive",
-                                    radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
-                                    RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
-        private FileSystemWatcher   watcher;
-        private bool                isProcessing;
+        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                        radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
+                                        RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
+        private BaseWatcher <Watcher>   watcher;
+        private HashSet<string>         FileList = new HashSet<string>();
+        bool                            isProcessable;
 
         public Watcher ()
         {
-            // Watch for new incoming files
-            watcher = new FileSystemWatcher();
+            Console.WriteLine("Wacther is up and running!");
 
-            startWatcher(rootDirectory);
+            watcher = new BaseWatcher <Watcher> (rootDirectory, process);
 
-            processQueue();
+            isProcessable = false;
         }
 
-        private void startWatcher(string directory)
+        private void process(string fileName)
         {
-            // Set directory to be watched
-            watcher.Path = directory;
-
-            // Enable the watcher
-            watcher.EnableRaisingEvents = true;
-
-            // Execute a function when a new file is added using the added file name
-            watcher.Created += (sender, e) => addToQueue(directory, e.Name!);
-
-            Console.WriteLine("Watcher is up and running! :)");
-        }
-
-        private void addToQueue(string directory, string fileName)
-        {
-            bool isProcessable = false;
-
-            bool isReady = false;
-
-            // Wait for it to download
-            isReady = isFileReady(Path.Combine(directory, fileName));
+            isProcessable = false;
 
             // Authenticate txt file names, fetch their names and check if they're in the list of processed files.
             // If already present in the list of files, skip them, otherwise allow them to be processed.
-            isProcessable = isFileProcessable(fileName, isReady);
+            isProcessable = isFileProcessable(fileName);
 
-            // Check if the queue contains the item, if item is not present add it to the queue
-            if (!queue.Contains(fileName) && isProcessable)
-            {
-                queue.Enqueue(fileName);
-            }
-            
-            if (!isProcessing)
-            {
-                processQueue();
-            }
+            // Move files if they are processable
+            moveFiles(fileName, isProcessable);
         }
 
-        private void processQueue()
+        private bool isFileProcessable(string fileName)
         {
-            while (queue.Count != 0)
+            if ( Regex.IsMatch(fileName, radioLinkPowerPattern) || Regex.IsMatch(fileName, RFInputPowerPattern) )
             {
-                isProcessing = true;
-                process(queue.Peek());
-                isProcessing = false;
-                //Console.WriteLine($"{queue.Count} items left in queue.");
-            }
-        }
-
-        private bool isFileReady(string filePath)
-        {
-            try
-            {
-                if (File.Exists(filePath)) { 
-                    using (File.OpenRead(filePath))
-                    {
-                        return true;
-                    }
-                }
-                else
-                    return false;
-            }
-            catch (Exception)
-            {
-                Thread.Sleep(100);
-                //Console.WriteLine("How much longer do I have to wait???");
-                return isFileReady(filePath);
-            }
-        }
-
-        private bool isFileProcessable(string fileName, bool ready)
-        {
-            if (Regex.IsMatch(fileName, radioLinkPowerPattern) && ready)
-            {   
-                if (!RadioLinkPowerList.Contains(fileName))
+                if (!FileList.Contains(fileName))
                 {
-                    RadioLinkPowerList.Add(fileName);
+                    FileList.Add(fileName);
                     //Console.WriteLine($"New file logged: {item}");
-                    return true;
-                }
-                else
-                {
-                    Console.WriteLine($"Sorry, file {fileName} has been processed already, skipping...");
-                    File.Delete(Path.Combine(rootDirectory, fileName));
-                    return false;
-                }
-            }
-            else if (Regex.IsMatch(fileName, RFInputPowerPattern) && ready)
-            {
-                if (!RFInputPowerList.Contains(fileName))
-                {
-                    RFInputPowerList.Add(fileName);
-                      //Console.WriteLine($"New file logged: {item}");
                     return true;
                 }
                 else
@@ -137,29 +58,31 @@ namespace BabyNI
             }
         }
 
-        private void process(string fileName)
+        // Maybe reference this method in a helper class and use method overloading to make it move files depending on parameters
+        private void moveFiles(string fileName, bool isProcessable)
         {
-            // This method could make use of a queue system as well, but it's not that important right now.
-            string path = Path.Combine(rootDirectory, fileName);
-            string backup = Path.Combine(backupDirectory, fileName);
-            string parsed = Path.Combine(parserDirectory, fileName);
-
-            //  Use this for a dynamic file name
-            //  string title = Regex.IsMatch(fileName, radioLinkPowerPattern) ? "RadioLink.txt" : Regex.IsMatch(fileName, RFInputPowerPattern) ? "RFInput.txt" : "";
-            //  string parsed = Path.Combine(parserDirectory, title);
-
-            if (File.Exists(backup) || File.Exists(parsed))
+            if (isProcessable)
             {
-                File.Delete(backup);
+                // This method could make use of a queue system as well, but it's not that important right now.
+                string path = Path.Combine(rootDirectory, fileName);
+                string parsed = Path.Combine(rootDirectory, "Parser", fileName);
+                string backup = Path.Combine(rootDirectory, "Archive", fileName);
 
-                File.Delete(parsed);
+                //  Use this for a dynamic file name
+                //  string title = Regex.IsMatch(fileName, radioLinkPowerPattern) ? "RadioLink.txt" : Regex.IsMatch(fileName, RFInputPowerPattern) ? "RFInput.txt" : "";
+                //  string parsed = Path.Combine(parserDirectory, title);
+
+                if (File.Exists(backup) || File.Exists(parsed))
+                {
+                    File.Delete(backup);
+
+                    File.Delete(parsed);
+                }
+
+                File.Copy(path, parsed);
+
+                File.Move(path, backup);
             }
-
-            File.Copy(path, parsed);
-
-            File.Move(path, backup);
-
-            queue.Dequeue();
         }
     }
 }

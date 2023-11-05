@@ -22,7 +22,7 @@ namespace BabyNI
         private static string?          filePath, backupFilePath, parsedFile;
         private StreamWriter            writer;
         private StreamReader            reader;
-        private int                     totalColumns, corruptRows, rows, lines, d, e, f, g, emptyCells;
+        private int                     totalColumns, corruptRows, rows, lines, e, f, emptyCells;
         private bool                    toBeSkipped, newRow;
         private string?                 LINK, TID, FARENDTID, SLOT, SLOT2, PORT;
 
@@ -31,7 +31,7 @@ namespace BabyNI
             filePath = Path.Combine(parserDirectory, file);
             backupFilePath = Path.Combine(parserBackupDirectory, file);  // parser/processed/radioLinkPower.txt
             parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(file) + ".csv");        // loader/radioLinkPower.txt
-            totalColumns = corruptRows = rows = lines = emptyCells = d = e = f = g = 0;
+            totalColumns = corruptRows = rows = lines = emptyCells = e = f = 0;
             toBeSkipped = newRow = false;
             output = new List<string>(22);
             fetchedLine = new List<string>(18);
@@ -253,8 +253,6 @@ namespace BabyNI
             SLOT = data.Substring(0, dotIndex);
 
             PORT = data.Substring(dotIndex + 1, slashIndex - (dotIndex + 1));
-
-            g++;
         }
 
         private void splitByPlus(string data)
@@ -296,8 +294,6 @@ namespace BabyNI
         {
             if (data == "Unreachable Bulk FC")
             {
-                d++;
-
                 toBeSkipped = true;
             }
 
@@ -366,12 +362,10 @@ namespace BabyNI
             reader.Close();
 
             Console.WriteLine($"Parser: Parsing done on file.\n\nParser: Initiating file move.\n");
-            Console.WriteLine($"{d} 'Unreachable bulk FC' records so far!");
-            Console.WriteLine($"{e} 'Failure Description' records so far!");
-            Console.WriteLine($"{f} 'Object contains a + sign' rows generated so far!");
-            Console.WriteLine($"{g} 'Object contains a . sign' rows found so far!");
             Console.WriteLine($"{lines - 1} records in total have been fetched");
             Console.WriteLine($"{rows} lines in total have been parsed");
+            Console.WriteLine($"{e} 'Failure Description' records so far!");
+            Console.WriteLine($"{f} 'Object contains a + sign' rows generated so far!");
             Console.WriteLine($"{corruptRows} is total detected corrupt rows (empty records or missing cells)");
             Console.WriteLine($"{emptyCells} total empty cells in entire file");
 

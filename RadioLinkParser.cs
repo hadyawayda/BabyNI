@@ -1,25 +1,16 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Collections;
-using System.Reflection.PortableExecutable;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace BabyNI
+﻿namespace BabyNI
 {
     internal class RadioLinkParser
     {
         readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
                                         parserDirectory = Path.Combine(rootDirectory, "Parser"),
                                         parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                        loaderDirectory = Path.Combine(rootDirectory, "Loader"),
                                         headerPrefix = "NETWORK_SID,DATETIME_KEY",
                                         headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
         readonly private HashSet<int>   disabledColumns = new HashSet<int> { 3, 11, 19 }, // 3 total disabled columns
                                         staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13 total static columns
         private List<string>            output, fetchedLine;
-        private static string?          filePath, backupFilePath, parsedFile;
+        private static string?          filePath, parsedFile;
         private StreamWriter            writer;
         private StreamReader            reader;
         private int                     totalColumns, corruptRows, rows, lines, e, f, emptyCells;
@@ -29,8 +20,7 @@ namespace BabyNI
         public RadioLinkParser(string file)
         {
             filePath = Path.Combine(parserDirectory, file);
-            backupFilePath = Path.Combine(parserBackupDirectory, file);  // parser/processed/radioLinkPower.txt
-            parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(file) + ".csv");        // loader/radioLinkPower.txt
+            parsedFile = Path.Combine(rootDirectory, "Loader", Path.GetFileNameWithoutExtension(file) + ".csv");
             totalColumns = corruptRows = rows = lines = emptyCells = e = f = 0;
             toBeSkipped = newRow = false;
             output = new List<string>(22);
@@ -369,26 +359,8 @@ namespace BabyNI
             Console.WriteLine($"{corruptRows} is total detected corrupt rows (empty records or missing cells)");
             Console.WriteLine($"{emptyCells} total empty cells in entire file");
 
-
             // Move and delete fileName
-            movefiles();
-        }
-
-        private void movefiles()
-        {
-            // This method could make use of a queue system as well, but it's not that important right now.
-            if (File.Exists(backupFilePath))
-            {
-                File.Delete(backupFilePath);
-            }
-
-            // Move txt to archive directory
-            File.Move(filePath!, backupFilePath!);
-
-            //Console.WriteLine($"{fileName} has been moved and archived successfully.\n");
-            //Console.WriteLine("Thank you for using our service :)\n");
-
-            Thread.Sleep(1000);
+            BaseWatcher.moveFiles(Path.GetFileName(filePath)!, parserDirectory, parserBackupDirectory);
         }
     }
 }

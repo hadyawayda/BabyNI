@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using Vertica.Data.Internal.DotNetDSI;
-using Vertica.Data.VerticaClient;
+﻿using Vertica.Data.VerticaClient;
 
 namespace BabyNI
 {
-    internal class Connection
+    internal class DBConnection
     {
         private VerticaConnectionStringBuilder  builder;
         private string                          connectionString;
         private VerticaConnection               connection;
         internal static VerticaCommand?         command;
 
-
-        public Connection() 
+        public DBConnection() 
         {
             Console.WriteLine("Database Connection Established!\n");
 

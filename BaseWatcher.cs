@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace BabyNI
 {
-    public class BaseWatcher <T>
+    public class BaseWatcher
     {
         private static Queue<string>?   queue;
         private FileSystemWatcher       watcher;
@@ -29,34 +24,17 @@ namespace BabyNI
 
             watcher.EnableRaisingEvents = true;
 
-            Console.WriteLine($"Milestone 1 Reached!, {directory}");
-
-            watcher.Created += (sender, e) => 
-            {
-
-                try
-                {
-                    Console.WriteLine($"Milestone 2 Reached!, new file detected: {e.Name}");
-
-                    addToQueue(e.Name!);
-                }
-                catch (Exception f) 
-                {
-                    Console.WriteLine(f.Message);
-                }
-            };
+            watcher.Created += (sender, e) => addToQueue(e.Name!);
 
             processQueue();
         }
 
         private void addToQueue(string fileName)
         {
-
             isReady = false;
 
             // Wait for it to download
             isReady = isFileReady(Path.Combine(directory, fileName));
-            Console.WriteLine($"Milestone 3 Reached!, new file detected: {fileName}\n");
 
             // check if the queue contains the item, if item is not present add it to the queue
             if (!queue!.Contains(fileName) && isReady)
@@ -102,6 +80,39 @@ namespace BabyNI
                 //Console.WriteLine("How much longer do I have to wait???");
                 return isFileReady(filePath);
             }
+        }
+
+        internal static void moveFiles(string fileName, string initialDirectory, string backupDirectory)
+        {
+            // This method could make use of a queue system as well, but it's not that important right now.
+            string filePath = Path.Combine(initialDirectory, fileName);
+            string fileBackupPath = Path.Combine(backupDirectory, fileName);
+
+            if (File.Exists(fileBackupPath))
+            {
+                File.Delete(fileBackupPath);
+            }
+
+            // Move file to archive directory
+            File.Move(filePath, fileBackupPath);
+        }
+
+        internal static void moveFiles(string fileName, string initialDirectory, string backupDirectory, string targetDirectory)
+        {
+            string filePath = Path.Combine(initialDirectory, fileName);
+            string fileOutput = Path.Combine(targetDirectory, fileName);
+            string fileBackupPath = Path.Combine(backupDirectory, fileName);
+
+            if (File.Exists(fileBackupPath) || File.Exists(fileOutput))
+            {
+                File.Delete(fileBackupPath);
+
+                File.Delete(fileOutput);
+            }
+
+            File.Copy(filePath, fileOutput);
+
+            File.Move(filePath, fileBackupPath);
         }
     }
 }

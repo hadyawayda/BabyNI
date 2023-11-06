@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BabyNI
+﻿namespace BabyNI
 {
     internal class RFInputParser
     {
@@ -234,24 +227,8 @@ namespace BabyNI
             Console.WriteLine($"{corruptRows} is total detected corrupt rows (empty records or missing cells)");
             Console.WriteLine($"{emptyCells} total empty cells in entire file\n");
 
-
             // Move and delete fileName
-            movefiles();
-        }
-
-        private void movefiles()
-        {
-            // This method could make use of a queue system as well, but it's not that important right now.
-            if (File.Exists(backupFilePath))
-            {
-                File.Delete(backupFilePath);
-            }
-
-            // Move txt to archive directory
-            File.Move(filePath!, backupFilePath!);
-
-            //Console.WriteLine($"{fileName} has been moved and archived successfully.\n");
-            //Console.WriteLine("Thank you for using our service :)\n");
+            BaseWatcher.moveFiles(Path.GetFileName(filePath)!, parserDirectory, parserBackupDirectory);
         }
     }
 }

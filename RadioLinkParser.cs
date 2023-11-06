@@ -81,7 +81,7 @@ namespace BabyNI
         {
             line = prefix + "," + line + "," + suffix;
 
-            fetchedLine = line.Split(",").ToList();
+            fetchedLine = line.ToUpper().Split(",").ToList();
 
             for (int i = 0; i < fetchedLine.Count; i++)
             {

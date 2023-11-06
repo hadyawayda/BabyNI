@@ -47,6 +47,12 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
+          "dependencies": {
+            "Vertica.Data": {
+              "target": "Package",
+              "version": "[23.4.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

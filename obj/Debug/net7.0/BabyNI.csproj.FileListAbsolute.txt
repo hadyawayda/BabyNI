@@ -12,3 +12,17 @@ C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\refint\BabyNI.d
 C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.pdb
 C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.genruntimeconfig.cache
 C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\ref\BabyNI.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\System.Drawing.Common.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\System.Security.Permissions.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\System.Windows.Extensions.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\Vertica.Data.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\bin\Debug\net7.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.csproj.AssemblyReference.cache
+C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\obj\Debug\net7.0\BabyNI.csproj.CopyComplete

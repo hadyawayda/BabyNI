@@ -29,17 +29,34 @@ namespace BabyNI
 
             watcher.EnableRaisingEvents = true;
 
-            watcher.Created += (sender, e) => addToQueue(e.Name!);
+            Console.WriteLine($"Milestone 1 Reached!, {directory}");
+
+            watcher.Created += (sender, e) => 
+            {
+
+                try
+                {
+                    Console.WriteLine($"Milestone 2 Reached!, new file detected: {e.Name}");
+
+                    addToQueue(e.Name!);
+                }
+                catch (Exception f) 
+                {
+                    Console.WriteLine(f.Message);
+                }
+            };
 
             processQueue();
         }
 
         private void addToQueue(string fileName)
         {
+
             isReady = false;
 
             // Wait for it to download
             isReady = isFileReady(Path.Combine(directory, fileName));
+            Console.WriteLine($"Milestone 3 Reached!, new file detected: {fileName}\n");
 
             // check if the queue contains the item, if item is not present add it to the queue
             if (!queue!.Contains(fileName) && isReady)

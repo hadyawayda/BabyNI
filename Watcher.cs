@@ -16,7 +16,7 @@ namespace BabyNI
 
         public Watcher ()
         {
-            Console.WriteLine("Wacther is up and running!");
+            //Console.WriteLine("Watcher is up and running!\n");
 
             watcher = new BaseWatcher <Watcher> (rootDirectory, process);
 

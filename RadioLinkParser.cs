@@ -387,6 +387,8 @@ namespace BabyNI
 
             //Console.WriteLine($"{fileName} has been moved and archived successfully.\n");
             //Console.WriteLine("Thank you for using our service :)\n");
+
+            Thread.Sleep(1000);
         }
     }
 }

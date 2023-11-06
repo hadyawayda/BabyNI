@@ -18,7 +18,7 @@ namespace BabyNI
 
         public Parser()
         {
-            Console.WriteLine("Parser is up and running! :)\n");
+            //Console.WriteLine("Parser is up and running! :)\n");
 
             watcher = new BaseWatcher <Parser> (parserDirectory, process);
         }

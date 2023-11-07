@@ -35,7 +35,7 @@ namespace BabyNI
         {
             for ( int i = 0; i < queries!.Count - 1; i++ )
             {
-                Console.WriteLine($"\nCurrently executing the following query:\n{queries[i] + ';'}\n");
+                //Console.WriteLine($"\nCurrently executing the following query:\n{queries[i] + ';'}\n");
 
                 try
                 {

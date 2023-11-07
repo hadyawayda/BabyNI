@@ -26,6 +26,8 @@ namespace BabyNI
 
             watcher.Created += (sender, e) => addToQueue(e.Name!);
 
+            //watcher.Changed += (sender, e) => addToQueue(e.Name!);
+
             processQueue();
         }
 
@@ -94,7 +96,10 @@ namespace BabyNI
             }
 
             // Move file to archive directory
-            File.Move(filePath, fileBackupPath);
+            File.Copy(filePath, fileBackupPath);
+
+            File.Delete(filePath);
+
         }
 
         internal static void moveFiles(string fileName, string initialDirectory, string backupDirectory, string targetDirectory)

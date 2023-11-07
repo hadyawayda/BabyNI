@@ -5,13 +5,12 @@
         readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
                                         parserDirectory = Path.Combine(rootDirectory, "Parser"),
                                         parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                        loaderDirectory = Path.Combine(rootDirectory, "Loader"),
                                         headerPrefix = "NETWORK_SID,DATETIME_KEY",
                                         headerSuffix = "SLOT,PORT";
         readonly private HashSet<int>   disabledColumns = new HashSet<int> { 11, 13, 14, 17 }, // 3 total disabled columns
                                         staticColumns = new HashSet<int> { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 }; // 13 total static columns
         private List<string>            output, fetchedLine;
-        private static string?          filePath, backupFilePath, parsedFile;
+        private static string?          filePath, parsedFile;
         private StreamWriter            writer;
         private StreamReader            reader;
         private int                     totalColumns, rows, lines, d, e, corruptRows, emptyCells;
@@ -19,10 +18,10 @@
         private string?                 SLOT, PORT;
 
 
-        public RFInputParser(string file) {
+        public RFInputParser(string file) 
+        {
             filePath = Path.Combine(parserDirectory, file);
-            backupFilePath = Path.Combine(parserBackupDirectory, file);  // parser/processed/radioLinkPower.txt
-            parsedFile = Path.Combine(loaderDirectory, Path.GetFileNameWithoutExtension(file) + ".csv");        // loader/radioLinkPower.txt
+            parsedFile = Path.Combine(rootDirectory, "Loader", Path.GetFileNameWithoutExtension(file) + ".csv");
             totalColumns = corruptRows = rows = lines = emptyCells = d = e = 0;
             toBeSkipped = false;
             output = new List<string>(22);
@@ -226,7 +225,7 @@
             Console.WriteLine($"{e} 'Failure Description' records so far!");
             Console.WriteLine($"{corruptRows} is total detected corrupt rows (empty records or missing cells)");
             Console.WriteLine($"{emptyCells} total empty cells in entire file\n");
-
+            
             // Move and delete fileName
             BaseWatcher.moveFiles(Path.GetFileName(filePath)!, parserDirectory, parserBackupDirectory);
         }

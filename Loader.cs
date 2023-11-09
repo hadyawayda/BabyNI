@@ -15,15 +15,12 @@ namespace BabyNI
                                                 RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.csv";
         private BaseWatcher                     watcher;
         private QueryFetcher                    queryFetcher;
-        //private Aggregator aggregator;
 
         public Loader()
         {
             queryFetcher = new QueryFetcher(createTablesScript);
 
             watcher = new BaseWatcher(loaderDirectory, process);
-
-            //aggregator = new Aggregator();
         }
 
         private void process(string fileName)

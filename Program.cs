@@ -16,7 +16,7 @@
             parser = new Parser();
             loader = new Loader();
 
-            Console.WriteLine("Everything ready!");
+            Console.WriteLine("Everything ready!\n");
         }
 
         static void Main()

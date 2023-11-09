@@ -5,6 +5,7 @@ namespace BabyNI
     internal class RFInputLoader
     {
         private VerticaCommand query;
+        private Aggregator aggregator;
 
         public RFInputLoader(string fileName) 
         {
@@ -15,6 +16,8 @@ namespace BabyNI
             Int32 rowsAdded = query.ExecuteNonQuery();
 
             Console.WriteLine($"Table 2 Created Successfully with {rowsAdded} rows.\n");
+
+            aggregator = new Aggregator();
         }
     }
 }

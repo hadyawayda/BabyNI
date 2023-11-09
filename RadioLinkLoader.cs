@@ -14,7 +14,7 @@ namespace BabyNI
 
             Int32 rowsAdded = query.ExecuteNonQuery();
 
-            Console.WriteLine($"Table 1 Created Successfully with {rowsAdded} rows.\n");
+            Console.WriteLine($"\nTable 1 Created Successfully with {rowsAdded} rows.\n");
         }
     }
 }

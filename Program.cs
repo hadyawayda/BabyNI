@@ -11,9 +11,13 @@
 
         public Program()
         {
+            // Modify this to read from a .env file or global variables file instead of hardcoding this into C#
             connection = new DBConnection();
+
             watcher = new Watcher();
+            
             parser = new Parser();
+            
             loader = new Loader();
 
             Console.WriteLine("Everything ready!\n");
@@ -25,6 +29,5 @@
 
             Console.ReadKey();
         }
-
     }
 }

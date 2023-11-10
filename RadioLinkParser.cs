@@ -2,37 +2,39 @@
 {
     internal class RadioLinkParser
     {
-        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                        parserDirectory = Path.Combine(rootDirectory, "Parser"),
-                                        parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                        headerPrefix = "NETWORK_SID,DATETIME_KEY",
-                                        headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
-        readonly private HashSet<int>   disabledColumns = new HashSet<int> { 3, 11, 19 }, // 3 total disabled columns
-                                        staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13 total static columns
-        private List<string>            output, fetchedLine;
-        private string?                 filePath, parsedFile;
-        private StreamWriter            writer;
-        private StreamReader            reader;
-        private int                     totalColumns, corruptRows, rows, lines, e, f, emptyCells;
-        private bool                    toBeSkipped, newRow;
-        private string                  DATETIME_KEY, LINK, TID, FARENDTID, SLOT, SLOT2, PORT;
+        readonly private static string       rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                            parserDirectory = Path.Combine(rootDirectory, "Parser"),
+                                            parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
+                                            headerPrefix = "NETWORK_SID,DATETIME_KEY",
+                                            headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
+        readonly private HashSet<int>       disabledColumns = new HashSet<int> { 3, 11, 19 }, // 3 total disabled columns
+                                            staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13 total static columns
+        private List<string>                 output, fetchedLine;
+        private string?                      filePath, parsedFile;
+        private StreamWriter                 writer;
+        private StreamReader                 reader;
+        private int                          corruptRows, rows, lines, e, emptyCells, totalColumns;
+        private bool                         toBeSkipped;
+        private string                       DATETIME_KEY;
+        private BaseParser                   parser;
 
         #region Parser Entry Point
 
-        public RadioLinkParser(string file)
+        internal RadioLinkParser(string file)
         {
             filePath = Path.Combine(parserDirectory, file);
             parsedFile = Path.Combine(rootDirectory, "Loader", Path.GetFileNameWithoutExtension(file) + ".csv");
-            totalColumns = corruptRows = rows = lines = emptyCells = e = f = 0;
-            toBeSkipped = newRow = false;
+            totalColumns = corruptRows = rows = lines = emptyCells = e = 0;
+            toBeSkipped = false;
             output = new List<string>(22);
             fetchedLine = new List<string>(18);
-            LINK = TID = FARENDTID = SLOT = SLOT2 = PORT = "";
             DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(26);
 
             reader = new StreamReader(filePath!);
 
             writer = new StreamWriter(parsedFile!);
+
+            parser = new BaseParser();
 
             fetchLine();
         }
@@ -82,7 +84,6 @@
             Console.WriteLine($"{lines - 1} records in total have been fetched");
             Console.WriteLine($"{rows} lines in total have been parsed");
             Console.WriteLine($"{e} 'Failure Description' records so far!");
-            Console.WriteLine($"{f} 'Object contains a + sign' rows generated so far!");
             Console.WriteLine($"{corruptRows} is total detected corrupt rows (empty records or missing cells)");
             Console.WriteLine($"{emptyCells} total empty cells in entire file");
 
@@ -104,11 +105,11 @@
             {
                 if (!disabledColumns.Contains(i + 1))
                 {
-                    output.Add(fetchedLine[i]);
+                    output!.Add(fetchedLine[i]);
                 }
             }
 
-            totalColumns = output.Count;
+            totalColumns = output!.Count;
 
             Console.WriteLine($"Header is: {string.Join(", ", output)}\n");
 
@@ -119,11 +120,9 @@
 
         private void processLine(List<string> data)
         {
-            //Console.WriteLine($"Line '{counter}' is being processed\n");
             generateFirstSetOfColumns();
             processMiddleColumns(data);
             generateSecondSetOfColumns();
-            //Console.WriteLine("Line is being pushed to output CSV file...\n");
             processOutput(false);
         }
 
@@ -146,7 +145,7 @@
 
                 if (staticColumns.Contains(i + 3))
                 {
-                    output.Add(data[i]);
+                    output!.Add(data[i]);
                     //Console.WriteLine($"Column {i + 1} on Line {counter} has been processed\n");
                     continue;
                 }
@@ -172,7 +171,7 @@
                 toBeSkipped = true;
             }
 
-            output.Add(data);
+            output!.Add(data);
         }
 
         private void processFailureDescription(string data)
@@ -184,12 +183,11 @@
                 e++;
             }
 
-            output.Add(data);
+            output!.Add(data);
         }
 
         private void processOutput(bool isHeader)
         {
-            // Push to a csv file and add line break
             if (!toBeSkipped)
             {
                 if (!isHeader && output.Count == totalColumns)
@@ -201,16 +199,16 @@
 
                 if (isHeader)
                 {
-                    writer.WriteLine(string.Join(",", output));
+                    writer.WriteLine(string.Join(",", output!));
                 }
             }
 
-            if (newRow)
+            if (parser.newRow)
             {
-                if (!isHeader && output.Count == totalColumns)
+                if (!isHeader && output!.Count == totalColumns)
                 {
                     // Insert data manipulation logic for PORT column
-                    output[20] = SLOT2!;
+                    output[20] = parser.SLOT2!;
 
                     writer.WriteLine(string.Join(",", output));
 
@@ -223,7 +221,7 @@
             // Then empty array and update line counter
             output = new List<string>(22);
 
-            toBeSkipped = newRow = false;
+            toBeSkipped = parser.newRow = false;
 
             lines++;
         }
@@ -235,148 +233,23 @@
         private void generateFirstSetOfColumns()
         {
             // Create an optional hashing function that takes the order into consideration i.e. KMP
-            output.Add(Math.Abs((fetchedLine[6] + fetchedLine[7]).GetHashCode()).ToString());
+            output!.Add(Math.Abs((fetchedLine![6] + fetchedLine[7]).GetHashCode()).ToString());
 
             output.Add(Math.Abs(DATETIME_KEY.GetHashCode()).ToString());
         }
 
         private void generateSecondSetOfColumns()
         {
-            splitObject();
-            output.Add(LINK!);
-            output.Add(TID!);
-            output.Add(FARENDTID!);
-            output.Add(SLOT!);
-            output.Add(PORT!);
-
-        }
-
-        private void generateFields_1_2_3()
-        {
-            int pointer = 0;
-
-            string input = fetchedLine[2];
-
-            LINK = TID = FARENDTID = "";
-
-            for (int i = 0; i < input.Length - 1; i++)
-            {
-                if (input[i] == '_' && input[i + 1] == '_')
-                {
-                    if (LINK == "")
-                    {
-                        LINK = input.Substring(0, i);
-
-                        pointer = i;
-                    }
-
-                    else if (TID == "")
-                    {
-                        TID = input.Substring(pointer + 2, i - pointer - 2);
-
-                        pointer = i;
-                    }
-                }
-            }
-
-            LINK = LINK!.Substring(LINK!.IndexOf('/') + 1);
-
-            FARENDTID = input.Substring(pointer + 2);
-        }
-
-        private void generateFields_4_5()
-        {
-            SLOT = PORT = "";
-
-            if (LINK!.Contains("."))
-            {
-                splitByDot(LINK!);
-            }
-
-            else if (LINK!.Contains("+"))
-            {
-                splitByPlus(LINK!);
-            }
-
-            else
-            {
-                splitBySlash(LINK!);
-            }
-
-            if (LINK!.Contains("+") && LINK!.Contains("."))
-            {
-                Console.WriteLine("***WARNING***\n\nWe have an exception! Extreme case detected.\nObject column contains both a '+'& '.'\nPlease handle accordingly!");
-            }
-        }
-
-        #endregion
-
-        #region Data Splitters
-
-        private void splitObject()
-        {
             if (!toBeSkipped)
             {
-                generateFields_1_2_3();
-                generateFields_4_5();
-            }
-        }
-
-        private void splitByDot(string data)
-        {
-            int dotIndex = -1, slashIndex = -1;
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (data[i] == '.')
-                {
-                    dotIndex = i;
-                }
-
-                if (data[i] == '/' && slashIndex == -1)
-                {
-                    slashIndex = i;
-                }
+                parser.generateFields(fetchedLine[2]);
             }
 
-            SLOT = data.Substring(0, dotIndex);
-
-            PORT = data.Substring(dotIndex + 1, slashIndex - (dotIndex + 1));
-        }
-
-        private void splitByPlus(string data)
-        {
-            newRow = true;
-
-            int plusIndex = -1, slashIndex = -1;
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                if (data[i] == '+')
-                {
-                    plusIndex = i;
-                }
-
-                if (data[i] == '/')
-                {
-                    slashIndex = i;
-                }
-            }
-
-            SLOT = data.Substring(0, plusIndex);
-
-            SLOT2 = data.Substring(plusIndex + 1, slashIndex - (plusIndex + 1));
-
-            PORT = data.Substring(slashIndex + 1);
-
-            f++;
-        }
-
-        private void splitBySlash(string data)
-        {
-            SLOT = data.Substring(0, data.IndexOf('/'));
-
-            PORT = data.Substring(data.IndexOf('/') + 1);
+            output.Add(parser.LINK);
+            output.Add(parser.TID);
+            output.Add(parser.FARENDTID);
+            output.Add(parser.SLOT);
+            output.Add(parser.PORT);
         }
 
         #endregion

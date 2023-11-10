@@ -55,9 +55,13 @@ namespace BabyNI
             while (queue!.Count != 0)
             {
                 isProcessing = true;
+
                 process(queue.Peek());
+                
                 queue.Dequeue();
+                
                 isProcessing = false;
+                
                 //Console.WriteLine($"{queue.Count} items left in queue.\n");
             }
         }
@@ -74,12 +78,17 @@ namespace BabyNI
                     }
                 }
                 else
+                { 
                     return false;
+                }
             }
+
             catch (Exception)
             {
                 Thread.Sleep(100);
+
                 //Console.WriteLine("How much longer do I have to wait???");
+                
                 return isFileReady(filePath);
             }
         }
@@ -99,7 +108,6 @@ namespace BabyNI
             File.Copy(filePath, fileBackupPath);
 
             File.Delete(filePath);
-
         }
 
         internal static void moveFiles(string fileName, string initialDirectory, string backupDirectory, string targetDirectory)

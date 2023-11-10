@@ -2,20 +2,21 @@
 {
     internal class RFInputParser
     {
-        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                        parserDirectory = Path.Combine(rootDirectory, "Parser"),
-                                        parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                        headerPrefix = "NETWORK_SID,DATETIME_KEY",
-                                        headerSuffix = "SLOT,PORT";
-        readonly private HashSet<int>   disabledColumns = new HashSet<int> { 11, 13, 14, 17 }, // 3 total disabled columns
-                                        staticColumns = new HashSet<int> { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 }; // 13 total static columns
-        private List<string>            output, fetchedLine;
-        private string?                 filePath, parsedFile;
-        private StreamWriter            writer;
-        private StreamReader            reader;
-        private int                     totalColumns, rows, lines, d, e, corruptRows, emptyCells;
-        private bool                    toBeSkipped;
-        private string                  DATETIME_KEY, SLOT, PORT;
+        readonly private static string          rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                                parserDirectory = Path.Combine(rootDirectory, "Parser"),
+                                                parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
+                                                headerPrefix = "NETWORK_SID,DATETIME_KEY",
+                                                headerSuffix = "SLOT,PORT"; 
+        readonly public HashSet<int>            disabledColumns = new HashSet<int> { 11, 13, 14, 17 },
+                                                staticColumns = new HashSet<int> { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 };
+        private List<string>                    output, fetchedLine;
+        private string?                         filePath, parsedFile;
+        private StreamWriter                    writer;
+        private StreamReader                    reader;
+        private int                             totalColumns, rows, lines, e, corruptRows, emptyCells;
+        private bool                            toBeSkipped;
+        private string                          DATETIME_KEY, SLOT, PORT;
+        public BaseParser                       parser;
 
         #region Parser Entry Point
 
@@ -23,7 +24,7 @@
         {
             filePath = Path.Combine(parserDirectory, file);
             parsedFile = Path.Combine(rootDirectory, "Loader", Path.GetFileNameWithoutExtension(file) + ".csv");
-            totalColumns = corruptRows = rows = lines = emptyCells = d = e = 0;
+            totalColumns = corruptRows = rows = lines = emptyCells = e = 0;
             toBeSkipped = false;
             output = new List<string>(22);
             fetchedLine = new List<string>(18);
@@ -33,6 +34,8 @@
             reader = new StreamReader(filePath!);
 
             writer = new StreamWriter(parsedFile!);
+
+            parser = new BaseParser();
 
             fetchLine();
         }
@@ -103,11 +106,11 @@
             {
                 if (!disabledColumns.Contains(i + 1))
                 {
-                    output.Add(fetchedLine[i]);
+                    output!.Add(fetchedLine[i]);
                 }
             }
 
-            totalColumns = output.Count;
+            totalColumns = output!.Count;
 
             Console.WriteLine($"Header is: {string.Join(", ", output)}\n");
 

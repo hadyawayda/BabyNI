@@ -11,11 +11,11 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("BabyNI")]
+[assembly: System.Reflection.AssemblyCompanyAttribute("Yuvo")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
 [assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("BabyNI")]
+[assembly: System.Reflection.AssemblyProductAttribute("Network Insight - Enhanced")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BabyNI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 

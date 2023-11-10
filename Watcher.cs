@@ -4,7 +4,11 @@ namespace BabyNI
 {
     public class Watcher
     {
-        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone", radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$", RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
+        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                        radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
+                                        RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$",
+                                        parsed = Path.Combine(rootDirectory, "Parser"),
+                                        backup = Path.Combine(rootDirectory, "Archive");
         private BaseWatcher             watcher;
         private HashSet<string>         logs = new HashSet<string>();
         private bool                    isProcessable;
@@ -49,11 +53,7 @@ namespace BabyNI
         {
             if (isProcessable)
             {
-                string path = Path.Combine(rootDirectory);
-                string parsed = Path.Combine(rootDirectory, "Parser");
-                string backup = Path.Combine(rootDirectory, "Archive");
-
-                BaseWatcher.moveFiles(fileName, path, backup, parsed);
+                BaseWatcher.moveFiles(fileName, rootDirectory, backup, parsed);
             }
         }
     }

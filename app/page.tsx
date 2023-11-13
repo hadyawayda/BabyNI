@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Grid from "./_Components/Grid";
 import Chart from "./_Components/Chart";
 import Navbar from "./_Components/Navbar";

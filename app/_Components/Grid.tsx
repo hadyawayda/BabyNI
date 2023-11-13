@@ -14,20 +14,23 @@ interface GridProps {
 }
 
 const Grid = ({ props }: GridProps) => {
-  const {
-    DATETIME_KEY,
-    TIME,
-    NETWORK_SID,
-    NEALIAS,
-    NETYPE,
-    RSL_INPUT_POWER,
-    MAX_RX_LEVEL,
-    RSL_DEVIATION,
-  } = props as Data;
+  // const {
+  //   DATETIME_KEY,
+  //   TIME,
+  //   NETWORK_SID,
+  //   NEALIAS,
+  //   NETYPE,
+  //   RSL_INPUT_POWER,
+  //   MAX_RX_LEVEL,
+  //   RSL_DEVIATION,
+  // } = props ;
 
   return (
     <>
       <div>Grid.exe</div>
+      {props.map((i: Data) => {
+        return <p>{i.DATETIME_KEY}</p>;
+      })}
     </>
   );
 };

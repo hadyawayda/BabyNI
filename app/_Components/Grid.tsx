@@ -23,7 +23,7 @@ const Grid = ({ props }: GridProps) => {
   //   RSL_INPUT_POWER,
   //   MAX_RX_LEVEL,
   //   RSL_DEVIATION,
-  // } = props ;
+  // } = props ;2
 
   return (
     <>

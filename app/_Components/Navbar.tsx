@@ -1,5 +1,7 @@
 const Navbar = () => {
-  return <div className="mt-24 h-52">Navbar</div>;
-};
+   return (
+      <div className="nav w-full flex justify-center items-center">Navbar</div>
+   )
+}
 
-export default Navbar;
+export default Navbar

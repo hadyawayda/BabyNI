@@ -2,26 +2,46 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
-
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+   color: rgb(var(--foreground-rgb));
+   background-image: url('/background.svg');
+   background-size: cover;
+   color: white;
+   font-family: Roboto, sans-serif;
+}
+
+.nav,
+.side-top {
+   background-color: #0a243d;
+   height: 60px;
+}
+
+.side-top {
+   width: 250px;
+   box-shadow: 0px 10px 16px -4px rgba(0, 0, 0, 0.4);
+   z-index: 0;
+}
+
+.side-bottom {
+   width: 250px;
+   background-color: #12375c;
+}
+
+.search-box {
+   padding: 8px 15px;
+}
+
+.search-input {
+   background-color: #254769;
+   height: 36px;
+   width: 100%;
+   padding-left: 30px;
+}
+
+.search-logo::before {
+   content: '\e90c';
+   z-index: 2;
+   color: gray;
+   left: 26px;
+   position: absolute;
 }

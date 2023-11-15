@@ -38,10 +38,21 @@ body {
    padding-left: 30px;
 }
 
-.search-logo::before {
-   content: '\e90c';
-   z-index: 2;
-   color: gray;
-   left: 26px;
-   position: absolute;
+.search-input::placeholder {
+   color: #bbb;
+}
+
+.search-logo {
+   top: -25px;
+   left: 8px;
+   position: relative;
+}
+
+.right-border {
+   border-right: 2px solid #477c96;
+   padding: 4px 8px 2px 8px;
+}
+
+.NI-logo {
+   padding: 4px 8px 2px 8px;
 }

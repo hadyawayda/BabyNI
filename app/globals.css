@@ -5,6 +5,7 @@
 body {
    color: rgb(var(--foreground-rgb));
    background-image: url('/background.svg');
+   background-color: lightgray;
    background-size: cover;
    color: white;
    font-family: Roboto, sans-serif;

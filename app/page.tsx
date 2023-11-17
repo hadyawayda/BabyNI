@@ -1,13 +1,16 @@
-import Grid from './_Components/Grid'
+// 'use client'
+import GridComponent from './_Components/Grid'
 import Chart from './_Components/Chart'
-import Navbar from './_Components/Navbar'
-import Data from './_Components/api'
-import Sidebar from './_Components/Sidebar'
+import getDailyData, { getHourlyData } from './_Components/API'
 
 export default async function App() {
-   // const data = await Data()
+   const dailyData = await getDailyData()
+   const hourlyData = await getHourlyData()
 
-   // console.log(data.data)
-
-   return <div></div>
+   return (
+      <div className="bg-white w-full h-full m-4 rounded-md">
+         {/* <Chart props={data} /> */}
+         <GridComponent props={dailyData} />
+      </div>
+   )
 }

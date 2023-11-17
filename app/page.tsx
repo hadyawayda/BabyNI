@@ -8,7 +8,7 @@ export default async function App() {
    const hourlyData = await getHourlyData()
 
    return (
-      <div className="bg-white w-full h-full m-4 rounded-md">
+      <div className="bg-white h-full rounded-l-md my-4 ml-4 py-4 pl-5 pr-px">
          {/* <Chart props={data} /> */}
          <GridComponent props={dailyData} />
       </div>

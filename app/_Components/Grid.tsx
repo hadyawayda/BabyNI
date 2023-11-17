@@ -20,12 +20,12 @@ const GridComponent = ({ props }: GridProps) => {
    //  console.log(props)
 
    return (
-      <div className="w-96 ml-12 text-black">
-         <div className="mb-8">Performance Grid</div>
+      <div className="w-10/12 text-black">
+         <div className="">Performance Grid</div>
          <div>
             <Grid
                style={{
-                  width: '600px',
+                  width: '100%',
                   border: '1px solid #000',
                   backgroundColor: 'darkgray',
                   overflow: 'scroll',
@@ -50,7 +50,7 @@ const GridComponent = ({ props }: GridProps) => {
                <Column
                   field="time"
                   title="TIME"
-                  width="250px"
+                  width="200px"
                />
                <Column
                   field="datetimE_KEY"

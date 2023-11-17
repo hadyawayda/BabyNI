@@ -1,4 +1,5 @@
 'use client'
+
 import { Grid, GridColumn as Column } from '@progress/kendo-react-grid'
 
 interface Data {

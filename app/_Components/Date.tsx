@@ -3,22 +3,29 @@ import { Fragment, useState } from 'react'
 import { DateRangePicker } from '@progress/kendo-react-dateinputs'
 import '@progress/kendo-theme-default/dist/all.css'
 import { DateProps } from '../Interfaces/Interfaces'
+import useCurrentDate from './useCurrentDate'
 
-const Date = ({ onDateChange }: DateProps) => {
-   const [date, setDate] = useState('')
+const DateComponent = ({ onDateChange }: DateProps) => {
+   const [startDate, setStartDate] = useState(useCurrentDate()[0])
+   const [endDate, setEndDate] = useState(useCurrentDate()[1])
    const [isOpen, setIsOpen] = useState(false)
+   const defaultValue = { start: null, end: new Date() }
 
-   onDateChange(date)
+   onDateChange(startDate)
 
    function handleClose() {
       setIsOpen(false)
+   }
+
+   function handleOpen() {
+      setIsOpen(true)
    }
 
    return (
       <div>
          <button
             type="button"
-            onClick={() => setIsOpen(true)}
+            onClick={handleOpen}
             className="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition-colors duration-200"
          >
             Set Date Range
@@ -64,10 +71,11 @@ const Date = ({ onDateChange }: DateProps) => {
                            <DateRangePicker
                               defaultShow={true}
                               className="k-form"
+                              defaultValue={defaultValue}
                            />
                         </div>
                         <button
-                           onClick={() => setIsOpen(false)}
+                           onClick={handleClose}
                            className="flex w-1/2 items-center h-12 justify-center rounded-3xl text-sm tracking-widest border bg-orange-600 hover:bg-white hover:text-orange-600 hover:border-orange-600 transition-colors duration-500"
                         >
                            SUBMIT
@@ -81,4 +89,4 @@ const Date = ({ onDateChange }: DateProps) => {
    )
 }
 
-export default Date
+export default DateComponent

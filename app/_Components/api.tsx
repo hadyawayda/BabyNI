@@ -1,12 +1,11 @@
 import axios from 'axios'
 import https from 'https'
 import useCurrentDate from './useCurrentDate'
+import { DateProp } from '../Interfaces/Interfaces'
 
-const getData = async (
-   dateRange: string,
-   startDate?: string,
-   endDate?: string
-) => {
+const getData = async (props: DateProp) => {
+   const { dateRange, startDate, endDate } = props
+
    let [start, end] = useCurrentDate()
 
    const startParam = `?startDate=${startDate ?? start}`

@@ -20,7 +20,7 @@ const Grid = ({ props }: GridProps) => {
                   buttonCount: 10,
                   previousNext: true,
                }}
-               pageSize={24}
+               pageSize={10}
                reorderable={true}
                resizable={true}
                sortable={true}

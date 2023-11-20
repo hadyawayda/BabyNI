@@ -6,7 +6,7 @@ import Filters from './_Components/Filters'
 import { Suspense } from 'react'
 
 export default async function App() {
-   const dailyData = await getData('hourly')
+   const dailyData = await getData({ dateRange: 'hourly' })
 
    return (
       <div className="bg-white text-black h-full w-full rounded-l-md my-4 ml-4 pt-6 ">

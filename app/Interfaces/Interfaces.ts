@@ -16,3 +16,9 @@ export interface GridProps {
 export type DateProps = {
    onDateChange: (date: string | null) => void
 }
+
+export interface DateProp {
+   dateRange: string,
+   startDate?: string,
+   endDate?: string
+}

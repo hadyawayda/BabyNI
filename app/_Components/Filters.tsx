@@ -1,61 +1,53 @@
 'use client'
-
-import { createContext } from 'react'
-
-export const SharedContext = createContext({
-   Grouping: 'OFF',
-})
+import Date from './Date'
+import { useEffect, useState } from 'react'
 
 const Filters = () => {
-   let filter = ''
+   const [selectedDate, setSelectedDate] = useState()
+   const [date, setDate] = useState()
 
-   const handleRadioChange = (event: string) => {
-      filter = event
-   }
+   useEffect(() => {
+      // setDate()
+   })
 
-   const grouping = {
-      Grouping: 'OFF',
+   function handleDateChange() {
+      console.log('HI')
    }
 
    return (
-      <div className="flex gap-12">
-         <div>Date Filter</div>
+      <div className="flex gap-12 justify-center items-center">
+         <Date onDateChange={() => handleDateChange} />
          <div>KPIs Filter</div>
-         <SharedContext.Provider value={grouping}>
-            <div className="flex w-96 gap-4">
-               Grouping:
-               <label>
-                  <input
-                     type="radio"
-                     name="filter"
-                     value="NETYPE"
-                     checked={filter === 'NETYPE'}
-                     className="mr-1"
-                  />
-                  OFF
-               </label>
-               <label>
-                  <input
-                     type="radio"
-                     name="filter"
-                     value="NETYPE"
-                     checked={filter === 'NETYPE'}
-                     className="mr-1"
-                  />
-                  NETYPE
-               </label>
-               <label>
-                  <input
-                     type="radio"
-                     name="filter"
-                     value="NEALIAS"
-                     checked={filter === 'NEALIAS'}
-                     className="mr-1"
-                  />
-                  NEALIAS
-               </label>
-            </div>
-         </SharedContext.Provider>
+         <div className="flex w-96 gap-4">
+            Grouping:
+            <label>
+               <input
+                  type="radio"
+                  name="filter"
+                  value="NETYPE"
+                  className="mr-1 align-middle"
+               />
+               OFF
+            </label>
+            <label>
+               <input
+                  type="radio"
+                  name="filter"
+                  value="NETYPE"
+                  className="mr-1 align-middle"
+               />
+               NETYPE
+            </label>
+            <label>
+               <input
+                  type="radio"
+                  name="filter"
+                  value="NEALIAS"
+                  className="mr-1 align-middle"
+               />
+               NEALIAS
+            </label>
+         </div>
       </div>
    )
 }

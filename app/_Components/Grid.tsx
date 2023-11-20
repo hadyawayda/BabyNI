@@ -18,18 +18,15 @@ interface GridProps {
 }
 
 const GridComponent = ({ props }: GridProps) => {
-   //  console.log(props)
-
    return (
       <div className="w-10/12 text-black">
-         <div className="">Performance Grid</div>
+         <div className="my-6">Performance Grid</div>
          <div>
             <Grid
                style={{
                   width: '100%',
-                  border: '1px solid #000',
-                  backgroundColor: 'darkgray',
-                  overflow: 'scroll',
+                  height: '500px',
+                  border: '1px solid #999',
                }}
                data={props}
                // filterable={true}
@@ -43,43 +40,43 @@ const GridComponent = ({ props }: GridProps) => {
                sortable={true}
             >
                <Column
-                  field="networK_SID"
-                  title="NETWORK_SID"
-                  width="140px"
+                  field="DATETIME_KEY"
+                  title="DATETIME_KEY"
+                  width="130px"
+               />
+               <Column
+                  field="TIME"
+                  title="TIME"
+                  width="170px"
                   locked={true}
                />
                <Column
-                  field="time"
-                  title="TIME"
-                  width="200px"
-               />
-               <Column
-                  field="datetimE_KEY"
-                  title="DATETIME_KEY"
+                  field="NETWORK_SID"
+                  title="NETWORK_SID"
                   width="140px"
                />
                <Column
-                  field="nealias"
+                  field="NEALIAS"
                   title="NEALIAS"
                   width="140px"
                />
                <Column
-                  field="netype"
+                  field="NETYPE"
                   title="NETYPE"
                   width="140px"
                />
                <Column
-                  field="rsL_INPUT_POWER"
+                  field="RSL_INPUT_POWER"
                   title="RSL_INPUT_POWER"
-                  width="140px"
+                  width="170px"
                />
                <Column
-                  field="maX_RX_LEVEL"
+                  field="MAX_RX_LEVEL"
                   title="MAX_RX_LEVEL"
                   width="140px"
                />
                <Column
-                  field="rsL_DEVIATION"
+                  field="RSL_DEVIATION"
                   title="RSL_DEVIATION"
                   width="140px"
                />

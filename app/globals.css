@@ -63,3 +63,36 @@ body {
 .NI-logo {
    padding: 4px 8px 2px 8px;
 }
+
+.k-label {
+   width: 100%;
+   text-align: center;
+}
+
+.k-dateinput {
+   width: 120px !important;
+   margin-top: 10px !important;
+   margin-bottom: 4px !important;
+   transform: translateX(-7px);
+}
+
+.k-floating-label-container {
+   justify-content: center !important;
+   width: 100% !important;
+   align-items: center !important;
+   left: 10px;
+}
+
+.k-daterangepicker {
+   width: 470px !important;
+}
+
+.k-input-inner {
+   text-align: center;
+}
+
+.dialog-panel {
+   min-width: 540px;
+   width: 40%;
+   height: 75%;
+}

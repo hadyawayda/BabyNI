@@ -19,7 +19,7 @@ export default function RootLayout({
       <html lang="en">
          <body className="absolute w-full min-h-screen flex justify-between">
             <Sidebar />
-            <main className="flex flex-col justify-between min-h-screen w-full items-start">
+            <main className="flex flex-col justify-between min-h-screen w-full items-start overflow-x-hidden">
                <Navbar />
                {children}
             </main>

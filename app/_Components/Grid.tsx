@@ -1,28 +1,14 @@
 'use client'
 
-import { Grid, GridColumn as Column } from '@progress/kendo-react-grid'
+import { GridProps } from '../Interfaces/Interfaces'
+import { Grid as G, GridColumn as Column } from '@progress/kendo-react-grid'
 
-interface Data {
-   datetimE_KEY: number
-   time: Date
-   networK_SID: number
-   nealias: string
-   netype: string
-   rsL_INPUT_POWER: number
-   maX_RX_LEVEL: number
-   rsL_DEVIATION: number
-}
-
-interface GridProps {
-   props: Data[]
-}
-
-const GridComponent = ({ props }: GridProps) => {
+const Grid = ({ props }: GridProps) => {
    return (
       <div className="w-10/12 text-black">
          <div className="my-6">Performance Grid</div>
          <div>
-            <Grid
+            <G
                style={{
                   width: '100%',
                   height: '500px',
@@ -80,10 +66,10 @@ const GridComponent = ({ props }: GridProps) => {
                   title="RSL_DEVIATION"
                   width="140px"
                />
-            </Grid>
+            </G>
          </div>
       </div>
    )
 }
 
-export default GridComponent
+export default Grid

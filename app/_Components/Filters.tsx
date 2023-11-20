@@ -15,7 +15,7 @@ const Filters = () => {
    }
 
    return (
-      <div className="flex gap-12 justify-center items-center">
+      <div className="flex gap-12 justify-around items-center px-28">
          <Date onDateChange={() => handleDateChange} />
          <div>KPIs Filter</div>
          <div className="flex w-96 gap-4">

@@ -1,15 +1,6 @@
-interface Data {
-   datetimE_KEY: number
-   time: Date
-   networK_SID: number
-   nealias: string
-   netype: string
-   rsL_INPUT_POWER: number
-   maX_RX_LEVEL: number
-   rsL_DEVIATION: number
-}
+import { GridProps } from '../Interfaces/Interfaces'
 
-const ChartComponent = ({ props }: { props: Data[] }) => {
+const Chart = ({ props }: GridProps) => {
    return (
       <>
          <div className="grid grid-cols-4 gap-8"></div>
@@ -17,4 +8,4 @@ const ChartComponent = ({ props }: { props: Data[] }) => {
    )
 }
 
-export default ChartComponent
+export default Chart

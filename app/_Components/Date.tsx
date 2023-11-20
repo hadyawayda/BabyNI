@@ -2,10 +2,7 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { DateRangePicker } from '@progress/kendo-react-dateinputs'
 import '@progress/kendo-theme-default/dist/all.css'
-
-type DateProps = {
-   onDateChange: (date: string | null) => void
-}
+import { DateProps } from '../Interfaces/Interfaces'
 
 const Date = ({ onDateChange }: DateProps) => {
    const [date, setDate] = useState('')
@@ -22,7 +19,7 @@ const Date = ({ onDateChange }: DateProps) => {
          <button
             type="button"
             onClick={() => setIsOpen(true)}
-            className="rounded-md bg-black/20 px-4 py-2 text-sm font-medium text-white hover:bg-black/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+            className="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition-colors duration-200"
          >
             Set Date Range
          </button>
@@ -64,7 +61,10 @@ const Date = ({ onDateChange }: DateProps) => {
                            <Dialog.Title className="text-black mb-6">
                               Select Date Range
                            </Dialog.Title>
-                           <DateRangePicker className="k-form" />
+                           <DateRangePicker
+                              defaultShow={true}
+                              className="k-form"
+                           />
                         </div>
                         <button
                            onClick={() => setIsOpen(false)}

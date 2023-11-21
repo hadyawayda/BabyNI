@@ -1,6 +1,6 @@
 import axios from 'axios'
 import https from 'https'
-import useCurrentDate from './useCurrentDate'
+import useCurrentDate from '../Hooks/useCurrentDate'
 import { DateProp } from '../Interfaces/Interfaces'
 
 const getData = async (props: DateProp) => {

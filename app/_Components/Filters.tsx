@@ -17,7 +17,31 @@ const Filters = () => {
    return (
       <div className="flex gap-12 justify-around items-center px-28">
          <Date onDateChange={() => handleDateChange} />
-         <div>KPIs Filter</div>
+         <div className="flex w-96 gap-4">
+            Interval Aggregation:
+            <label>
+               <input
+                  type="radio"
+                  name="filter"
+                  value="NETYPE"
+                  className="mr-1 align-middle"
+               />
+               Hourly
+            </label>
+            <label>
+               <input
+                  type="radio"
+                  name="filter"
+                  value="NETYPE"
+                  className="mr-1 align-middle"
+               />
+               Daily
+            </label>
+         </div>
+         <div className="flex">
+            <p className="whitespace-nowrap mr-2">KPIs:</p>
+            <p className="whitespace-nowrap underline">3 items selected</p>
+         </div>
          <div className="flex w-96 gap-4">
             Grouping:
             <label>

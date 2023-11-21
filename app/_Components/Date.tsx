@@ -3,7 +3,7 @@ import { Fragment, useState } from 'react'
 import { DateRangePicker } from '@progress/kendo-react-dateinputs'
 import '@progress/kendo-theme-default/dist/all.css'
 import { DateProps } from '../Interfaces/Interfaces'
-import useCurrentDate from './useCurrentDate'
+import useCurrentDate from '../Hooks/useCurrentDate'
 
 const DateComponent = ({ onDateChange }: DateProps) => {
    const [startDate, setStartDate] = useState(useCurrentDate()[0])
@@ -26,7 +26,7 @@ const DateComponent = ({ onDateChange }: DateProps) => {
          <button
             type="button"
             onClick={handleOpen}
-            className="rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition-colors duration-200"
+            className="whitespace-nowrap rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition-colors duration-200"
          >
             Set Date Range
          </button>

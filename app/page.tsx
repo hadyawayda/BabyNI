@@ -15,10 +15,10 @@ export default async function App() {
          </Suspense>
          <div className="flex flex-col items-center justify-center overflow-y-scroll">
             <Suspense>
-               <Chart props={dailyData} />
+               <Grid props={dailyData} />
             </Suspense>
             <Suspense>
-               <Grid props={dailyData} />
+               <Chart props={dailyData} />
             </Suspense>
          </div>
       </div>

@@ -1,4 +1,6 @@
-﻿namespace BabyNI
+﻿using BabyNI.Helpers;
+
+namespace BabyNI.Aggregation
 {
     internal class Aggregator
     {
@@ -7,7 +9,7 @@
 
         public Aggregator()
         {
-            fetcher = new QueryFetcher(aggregatorScript);
+            fetcher = new QueryFetcher(aggregatorScript, true);
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System.IO;
 
-namespace BabyNI
+namespace BabyNI.Helpers
 {
     public class BaseWatcher
     {
-        private static Queue<string>?   queue;
-        private FileSystemWatcher       watcher;
-        private Action<string>          process;
-        private string                  directory;
-        private bool                    isProcessing, isReady;
+        private static Queue<string>? queue;
+        private FileSystemWatcher watcher;
+        private Action<string> process;
+        private string directory;
+        private bool isProcessing, isReady;
 
         public BaseWatcher(string folder, Action<string> processAction)
         {
@@ -57,15 +57,16 @@ namespace BabyNI
                 isProcessing = true;
 
                 process(queue.Peek());
-                
+
                 queue.Dequeue();
-                
+
                 isProcessing = false;
-                
+
                 //Console.WriteLine($"{queue.Count} items left in queue.\n");
             }
         }
 
+        // switch to while loop
         private bool isFileReady(string filePath)
         {
             try
@@ -78,7 +79,7 @@ namespace BabyNI
                     }
                 }
                 else
-                { 
+                {
                     return false;
                 }
             }
@@ -88,7 +89,7 @@ namespace BabyNI
                 Thread.Sleep(100);
 
                 //Console.WriteLine("How much longer do I have to wait???");
-                
+
                 return isFileReady(filePath);
             }
         }
@@ -126,6 +127,23 @@ namespace BabyNI
             File.Copy(filePath, fileOutput);
 
             File.Move(filePath, fileBackupPath);
+        }
+
+        internal static void moveFiles2(string fileName, string initialDirectory, string backupDirectory)
+        {
+            // This method could make use of a queue system as well, but it's not that important right now.
+            string filePath = Path.Combine(initialDirectory, fileName);
+            string fileBackupPath = Path.Combine(backupDirectory, fileName);
+
+            if (File.Exists(fileBackupPath))
+            {
+                File.Delete(fileBackupPath);
+            }
+
+            // Move file to archive directory
+            File.Copy(filePath, fileBackupPath);
+
+            File.Delete(filePath);
         }
     }
 }

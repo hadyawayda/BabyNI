@@ -1,14 +1,14 @@
 ﻿using System.Security.Cryptography;
 
-namespace BabyNI
+namespace BabyNI.Helpers
 {
     internal class BaseParser
     {
-        internal string     LINK, TID, FARENDTID, SLOT, SLOT2, PORT;
-        internal bool       newRow;
+        internal string LINK, TID, FARENDTID, SLOT, SLOT2, PORT;
+        internal bool newRow;
 
-        internal BaseParser() 
-        { 
+        internal BaseParser()
+        {
             newRow = false;
 
             LINK = TID = FARENDTID = SLOT = SLOT2 = PORT = "";

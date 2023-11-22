@@ -1,18 +1,16 @@
 ﻿using Vertica.Data.VerticaClient;
 
-namespace BabyNI
+namespace BabyNI.Helpers
 {
     internal class DBConnection
     {
         private VerticaConnectionStringBuilder  builder;
         private string                          connectionString;
         private VerticaConnection               connection;
-        internal static VerticaCommand?         command;
+        internal VerticaCommand                 command;
 
-        public DBConnection() 
+        public DBConnection()
         {
-            Console.WriteLine("Database Connection Established!\n");
-
             // Modify this to read from a .env file or global variables file instead of hardcoding this into C#
             builder = new VerticaConnectionStringBuilder
             {
@@ -28,7 +26,16 @@ namespace BabyNI
 
             connection.Open();
 
+            Console.WriteLine("Database Connection Established!\n");
+
             command = connection.CreateCommand();
+        }
+
+        internal void CloseConnection()
+        {
+            connection.Close();
+
+            Console.WriteLine("Database Connection Terminated!\n");
         }
     }
 }

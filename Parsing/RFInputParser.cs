@@ -1,26 +1,28 @@
-﻿namespace BabyNI
+﻿using BabyNI.Helpers;
+
+namespace BabyNI.Parsing
 {
-    internal class RadioLinkParser
+    internal class RFInputParser
     {
-        readonly private static string       rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                            parserDirectory = Path.Combine(rootDirectory, "Parser"),
-                                            parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                            headerPrefix = "NETWORK_SID,DATETIME_KEY",
-                                            headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
-        readonly private HashSet<int>       disabledColumns = new HashSet<int> { 3, 11, 19 }, // 3 total disabled columns
-                                            staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13 total static columns
-        private List<string>                 output, fetchedLine;
-        private string?                      filePath, parsedFile;
-        private StreamWriter                 writer;
-        private StreamReader                 reader;
-        private int                          corruptRows, rows, lines, e, emptyCells, totalColumns;
-        private bool                         toBeSkipped;
-        private string                       DATETIME_KEY;
-        private BaseParser                   parser;
+        readonly private static string rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                                parserDirectory = Path.Combine(rootDirectory, "Parser"),
+                                                parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
+                                                headerPrefix = "NETWORK_SID,DATETIME_KEY",
+                                                headerSuffix = "SLOT,PORT";
+        readonly public HashSet<int> disabledColumns = new HashSet<int> { 11, 13, 14, 17 },
+                                                staticColumns = new HashSet<int> { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 };
+        private List<string> output, fetchedLine;
+        private string? filePath, parsedFile;
+        private StreamWriter writer;
+        private StreamReader reader;
+        private int totalColumns, rows, lines, e, corruptRows, emptyCells;
+        private bool toBeSkipped;
+        private string DATETIME_KEY, SLOT, PORT;
+        public BaseParser parser;
 
         #region Parser Entry Point
 
-        internal RadioLinkParser(string file)
+        public RFInputParser(string file)
         {
             filePath = Path.Combine(parserDirectory, file);
             parsedFile = Path.Combine(rootDirectory, "Loader", Path.GetFileNameWithoutExtension(file) + ".csv");
@@ -28,7 +30,8 @@
             toBeSkipped = false;
             output = new List<string>(22);
             fetchedLine = new List<string>(18);
-            DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(26);
+            SLOT = PORT = "";
+            DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(22);
 
             reader = new StreamReader(filePath!);
 
@@ -54,11 +57,11 @@
                         continue;
                     }
 
-                    // Fix this shit
                     fetchedLine = line.Split(",").ToList();
 
                     processLine(fetchedLine);
                 }
+
                 catch (Exception e)
                 {
                     Console.WriteLine($"Corrupt record detected. Line {lines} will be skipped.");
@@ -85,10 +88,10 @@
             Console.WriteLine($"{rows} lines in total have been parsed");
             Console.WriteLine($"{e} 'Failure Description' records so far!");
             Console.WriteLine($"{corruptRows} is total detected corrupt rows (empty records or missing cells)");
-            Console.WriteLine($"{emptyCells} total empty cells in entire file");
+            Console.WriteLine($"{emptyCells} total empty cells in entire file\n");
 
             // Move and delete fileName
-            BaseWatcher.moveFiles(Path.GetFileName(filePath)!, parserDirectory, parserBackupDirectory);
+            BaseWatcher.moveFiles2(Path.GetFileName(filePath)!, parserDirectory, parserBackupDirectory);
         }
 
         #endregion
@@ -120,9 +123,11 @@
 
         private void processLine(List<string> data)
         {
+            //Console.WriteLine($"Line '{counter}' is being processed\n");
             generateFirstSetOfColumns();
             processMiddleColumns(data);
             generateSecondSetOfColumns();
+            //Console.WriteLine("Line is being pushed to output CSV file...\n");
             processOutput(false);
         }
 
@@ -133,61 +138,52 @@
                 if (data[i] == "")
                 {
                     emptyCells++;
+
                     processOutput(false);
+
                     break;
                 }
 
                 if (disabledColumns.Contains(i + 3))
                 {
                     //Console.WriteLine($"Disabled Column {i + 1} was removed on Line {counter}\n");
+
                     continue;
                 }
 
                 if (staticColumns.Contains(i + 3))
                 {
-                    output!.Add(data[i]);
+                    output.Add(data[i]);
+
                     //Console.WriteLine($"Column {i + 1} on Line {counter} has been processed\n");
+
                     continue;
                 }
 
-                if (i == 2)
-                {
-                    processObject(data[i]);
-                    continue;
-                }
-
-                if (i == 17)
+                if (i == 13)
                 {
                     processFailureDescription(data[i]);
+
                     continue;
                 }
             }
-        }
-
-        private void processObject(string data)
-        {
-            if (data == "Unreachable Bulk FC")
-            {
-                toBeSkipped = true;
-            }
-
-            output!.Add(data);
         }
 
         private void processFailureDescription(string data)
         {
-            if (data != "-")
+            if (data == "----")
             {
                 toBeSkipped = true;
 
                 e++;
             }
 
-            output!.Add(data);
+            output.Add(data);
         }
 
         private void processOutput(bool isHeader)
         {
+            // Push to a csv file and add line break
             if (!toBeSkipped)
             {
                 if (!isHeader && output.Count == totalColumns)
@@ -199,20 +195,7 @@
 
                 if (isHeader)
                 {
-                    writer.WriteLine(string.Join(",", output!));
-                }
-            }
-
-            if (parser.newRow)
-            {
-                if (!isHeader && output!.Count == totalColumns)
-                {
-                    // Insert data manipulation logic for PORT column
-                    output[20] = parser.SLOT2!;
-
                     writer.WriteLine(string.Join(",", output));
-
-                    rows++;
                 }
             }
 
@@ -221,7 +204,7 @@
             // Then empty array and update line counter
             output = new List<string>(22);
 
-            toBeSkipped = parser.newRow = false;
+            toBeSkipped = false;
 
             lines++;
         }
@@ -233,7 +216,7 @@
         private void generateFirstSetOfColumns()
         {
             // Create an optional hashing function that takes the order into consideration i.e. KMP
-            output!.Add(Math.Abs((fetchedLine![6] + fetchedLine[7]).GetHashCode()).ToString());
+            output.Add(Math.Abs((fetchedLine[6] + fetchedLine[7]).GetHashCode()).ToString());
 
             output.Add(Math.Abs(DATETIME_KEY.GetHashCode()).ToString());
         }
@@ -242,14 +225,25 @@
         {
             if (!toBeSkipped)
             {
-                parser.generateFields(fetchedLine[2]);
+                generateFields_1_2();
             }
 
-            output.Add(parser.LINK);
-            output.Add(parser.TID);
-            output.Add(parser.FARENDTID);
-            output.Add(parser.SLOT);
-            output.Add(parser.PORT);
+            output.Add(SLOT!);
+
+            output.Add(PORT!);
+        }
+
+        private void generateFields_1_2()
+        {
+            string input = fetchedLine[2];
+
+            SLOT = PORT = "";
+
+            int dotIndex = input.IndexOf('.'), lastSlashIndex = input.LastIndexOf('/');
+
+            SLOT = input.Substring(0, dotIndex) + '+';
+
+            PORT = input.Substring(dotIndex + 1, lastSlashIndex - (dotIndex + 1));
         }
 
         #endregion

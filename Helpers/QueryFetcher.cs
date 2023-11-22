@@ -1,15 +1,18 @@
 ﻿using Vertica.Data.VerticaClient;
 
-namespace BabyNI
+namespace BabyNI.Helpers
 {
     internal class QueryFetcher
     {
-        private VerticaCommand query;
+        private VerticaCommand? query;
+        private DBConnection connection;
         private List<string>? queries;
 
-        public QueryFetcher(string filePath) 
+        public QueryFetcher(string filePath, bool toClose)
         {
-            query = DBConnection.command!;
+            connection = new DBConnection();
+
+            query = connection.command;
 
             try
             {
@@ -29,17 +32,22 @@ namespace BabyNI
             }
 
             processQueries();
+
+            if (toClose)
+            {
+                connection.CloseConnection();
+            }
         }
 
         public void processQueries()
         {
-            for ( int i = 0; i < queries!.Count - 1; i++ )
+            for (int i = 0; i < queries!.Count - 1; i++)
             {
                 //Console.WriteLine($"\nCurrently executing the following query:\n{queries[i] + ';'}\n");
 
                 try
                 {
-                    query.CommandText = queries[i] + ';';
+                    query!.CommandText = queries[i] + ';';
 
                     query.ExecuteNonQuery();
                 }

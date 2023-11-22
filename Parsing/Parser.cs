@@ -1,17 +1,18 @@
 ﻿using System.Text.RegularExpressions;
+using BabyNI.Helpers;
 
-namespace BabyNI
+namespace BabyNI.Parsing
 {
     internal class Parser
     {
-        readonly private static string  parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
+        readonly private static string parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
                                         radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
                                         RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
-        private BaseWatcher             watcher;
+        private BaseWatcher watcher;
 
         public Parser()
         {
-            watcher = new BaseWatcher (parserDirectory, process);
+            watcher = new BaseWatcher(parserDirectory, process);
         }
 
         private void process(string fileName)

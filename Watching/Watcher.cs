@@ -1,19 +1,20 @@
 ﻿using System.Text.RegularExpressions;
+using BabyNI.Helpers;
 
-namespace BabyNI
+namespace BabyNI.Watching
 {
     public class Watcher
     {
-        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+        readonly private static string rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
                                         radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
                                         RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$",
                                         parsed = Path.Combine(rootDirectory, "Parser"),
                                         backup = Path.Combine(rootDirectory, "Archive");
-        private BaseWatcher             watcher;
-        private HashSet<string>         logs = new HashSet<string>();
-        private bool                    isProcessable;
+        private BaseWatcher watcher;
+        private HashSet<string> logs = new HashSet<string>();
+        private bool isProcessable;
 
-        public Watcher ()
+        public Watcher()
         {
             watcher = new BaseWatcher(rootDirectory, process);
         }
@@ -29,7 +30,7 @@ namespace BabyNI
 
         private bool isFileProcessable(string fileName)
         {
-            if ( Regex.IsMatch(fileName, radioLinkPowerPattern) || Regex.IsMatch(fileName, RFInputPowerPattern) )
+            if (Regex.IsMatch(fileName, radioLinkPowerPattern) || Regex.IsMatch(fileName, RFInputPowerPattern))
             {
                 if (!logs.Contains(fileName))
                 {

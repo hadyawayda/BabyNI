@@ -5,15 +5,12 @@ import { Fragment, useEffect, useState } from 'react'
 
 const KPISelector = ({
    onKPISelect,
+   selectedKPIs,
 }: {
    onKPISelect: (KPIs: EventTarget & HTMLInputElement) => void
+   selectedKPIs: object
 }) => {
    let [isOpen, setIsOpen] = useState(false)
-   const [KPI, setKPI] = useState({
-      RSL_INPUT_POWER: true,
-      MAX_RX_LEVEL: true,
-      RSL_DEVIATION: true,
-   })
 
    function handleKPISelect(e: React.ChangeEvent<HTMLInputElement>) {
       onKPISelect(e.target)
@@ -69,19 +66,21 @@ const KPISelector = ({
                               </Dialog.Title>
                            </div>
                            <div className="flex flex-col justify-between items-start w-1/2 my-10">
-                              {Object.entries(KPI).map(([key, value]) => (
-                                 <div className="flex ml-4">
-                                    <input
-                                       type="checkbox"
-                                       name={key}
-                                       checked={value}
-                                       onChange={handleKPISelect}
-                                    />
-                                    <label className="flex ml-8 text-black m-4">
-                                       {key}
-                                    </label>
-                                 </div>
-                              ))}
+                              {Object.entries(selectedKPIs).map(
+                                 ([key, value]) => (
+                                    <div className="flex ml-4">
+                                       <input
+                                          type="checkbox"
+                                          name={key}
+                                          checked={value}
+                                          onChange={handleKPISelect}
+                                       />
+                                       <label className="flex ml-8 text-black m-4">
+                                          {key}
+                                       </label>
+                                    </div>
+                                 )
+                              )}
                            </div>
                            <button
                               onClick={() => setIsOpen(false)}

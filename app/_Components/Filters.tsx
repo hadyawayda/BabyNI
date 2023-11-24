@@ -7,10 +7,12 @@ const Filters = ({
    onDateChange,
    onIntervalChange,
    onKPIChange,
+   selectedKPIs,
 }: {
    onDateChange: () => void
    onIntervalChange: (interval: string) => void
    onKPIChange: (KPIs: EventTarget & HTMLInputElement) => void
+   selectedKPIs: object
 }) => {
    function handleDateChange() {
       onDateChange()
@@ -52,7 +54,10 @@ const Filters = ({
          </div>
          <div className="flex">
             <p className="whitespace-nowrap mr-2">KPIs:</p>
-            <KPISelector onKPISelect={handleKPIChange} />
+            <KPISelector
+               onKPISelect={handleKPIChange}
+               selectedKPIs={selectedKPIs}
+            />
          </div>
          <div className="flex justify-center w-96 gap-2 ml-4">
             Grouping:

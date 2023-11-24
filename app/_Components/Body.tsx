@@ -4,7 +4,7 @@ import https from 'https'
 import Grid from './Grid'
 import Chart from './Chart'
 import Filters from './Filters'
-import { Suspense, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { Data, GridProps } from '../Interfaces/Interfaces'
 import axios from 'axios'
 
@@ -42,8 +42,11 @@ const Body = ({ props }: GridProps) => {
          ...prev,
          [name]: checked,
       }))
-      console.log(KPI)
    }
+
+   useEffect(() => {
+      console.log(selectedKPIs)
+   }, [selectedKPIs])
 
    return (
       <>
@@ -53,6 +56,7 @@ const Body = ({ props }: GridProps) => {
                   onDateChange={handleDateChange}
                   onIntervalChange={callData}
                   onKPIChange={handleKPIChange}
+                  selectedKPIs={selectedKPIs}
                />
             </Suspense>
             <div className="flex flex-col items-center justify-center overflow-y-scroll">

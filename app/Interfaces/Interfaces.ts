@@ -22,3 +22,7 @@ export interface DateProp {
    startDate?: string
    endDate?: string
 }
+
+export type ReactEvent = EventTarget & HTMLInputElement
+
+export type ReactChange = React.ChangeEvent<HTMLInputElement>

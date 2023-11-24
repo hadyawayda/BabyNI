@@ -2,17 +2,18 @@
 
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useEffect, useState } from 'react'
+import { ReactChange, ReactEvent } from '../Interfaces/Interfaces'
 
 const KPISelector = ({
    onKPISelect,
    selectedKPIs,
 }: {
-   onKPISelect: (KPIs: EventTarget & HTMLInputElement) => void
+   onKPISelect: (KPIs: ReactEvent) => void
    selectedKPIs: object
 }) => {
    let [isOpen, setIsOpen] = useState(false)
 
-   function handleKPISelect(e: React.ChangeEvent<HTMLInputElement>) {
+   function handleKPISelect(e: ReactChange) {
       onKPISelect(e.target)
    }
 

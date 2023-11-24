@@ -2,28 +2,35 @@
 import Date from './Date'
 import { useEffect, useState } from 'react'
 import KPISelector from './KPISelector'
+import { ReactChange, ReactEvent } from '../Interfaces/Interfaces'
 
 const Filters = ({
    onDateChange,
    onIntervalChange,
    onKPIChange,
+   onGroupingChange,
    selectedKPIs,
 }: {
    onDateChange: () => void
    onIntervalChange: (interval: string) => void
-   onKPIChange: (KPIs: EventTarget & HTMLInputElement) => void
+   onKPIChange: (KPIs: ReactEvent) => void
+   onGroupingChange: (item: ReactEvent) => void
    selectedKPIs: object
 }) => {
    function handleDateChange() {
       onDateChange()
    }
 
-   function handleIntervalChange(e: React.ChangeEvent<HTMLInputElement>) {
+   function handleIntervalChange(e: ReactChange) {
       onIntervalChange(e.target.value)
    }
 
-   function handleKPIChange(KPI: EventTarget & HTMLInputElement) {
+   function handleKPIChange(KPI: ReactEvent) {
       onKPIChange(KPI)
+   }
+
+   function handleGroupingChange(e: ReactChange) {
+      onGroupingChange(e.target)
    }
 
    return (
@@ -65,10 +72,11 @@ const Filters = ({
                <input
                   type="radio"
                   name="filter"
-                  value="NETYPE"
+                  value="BOTH"
                   className="whitespace-nowrap mr-1 align-middle"
+                  onChange={handleGroupingChange}
                />
-               OFF
+               BOTH
             </label>
             <label>
                <input
@@ -76,6 +84,7 @@ const Filters = ({
                   name="filter"
                   value="NETYPE"
                   className="whitespace-nowrap mr-1 align-middle"
+                  onChange={handleGroupingChange}
                />
                NETYPE
             </label>
@@ -85,6 +94,7 @@ const Filters = ({
                   name="filter"
                   value="NEALIAS"
                   className="whitespace-nowrap mr-1 align-middle"
+                  onChange={handleGroupingChange}
                />
                NEALIAS
             </label>

@@ -5,7 +5,7 @@ import Grid from './Grid'
 import Chart from './Chart'
 import Filters from './Filters'
 import { Suspense, useEffect, useState } from 'react'
-import { Data, GridProps } from '../Interfaces/Interfaces'
+import { Data, GridProps, ReactEvent } from '../Interfaces/Interfaces'
 import axios from 'axios'
 
 const Body = ({ props }: GridProps) => {
@@ -36,12 +36,16 @@ const Body = ({ props }: GridProps) => {
 
    function handleDateChange() {}
 
-   function handleKPIChange(KPI: EventTarget & HTMLInputElement) {
+   function handleKPIChange(KPI: ReactEvent) {
       const { name, checked } = KPI
       setSelectedKPIs((prev) => ({
          ...prev,
          [name]: checked,
       }))
+   }
+
+   function handleGroupingChange(e: ReactEvent) {
+      console.log(e)
    }
 
    useEffect(() => {
@@ -56,6 +60,7 @@ const Body = ({ props }: GridProps) => {
                   onDateChange={handleDateChange}
                   onIntervalChange={callData}
                   onKPIChange={handleKPIChange}
+                  onGroupingChange={handleGroupingChange}
                   selectedKPIs={selectedKPIs}
                />
             </Suspense>

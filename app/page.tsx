@@ -1,26 +1,15 @@
-// 'use client'
-import Grid from './_Components/Grid'
-import Chart from './_Components/Chart'
+import { Data } from './Interfaces/Interfaces'
 import getData from './_Components/API'
-import Filters from './_Components/Filters'
-import { Suspense } from 'react'
+import Body from './_Components/Body'
 
-export default async function App() {
-   const dailyData = await getData({ dateRange: 'hourly' })
+const App = async () => {
+   const data = await getData({ dateRange: 'daily' })
 
    return (
-      <div className="bg-white text-black h-full w-full rounded-l-md my-4 ml-4 pt-6 ">
-         <Suspense>
-            <Filters />
-         </Suspense>
-         <div className="flex flex-col items-center justify-center overflow-y-scroll">
-            <Suspense>
-               <Grid props={dailyData} />
-            </Suspense>
-            <Suspense>
-               <Chart props={dailyData} />
-            </Suspense>
-         </div>
-      </div>
+      <>
+         <Body props={data} />
+      </>
    )
 }
+
+export default App

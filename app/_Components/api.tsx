@@ -21,9 +21,12 @@ const getData = async (props: DateProp) => {
       httpsAgent: agent,
    })
 
-   const response = await api.get(dateRange + startParam + endParam)
-
-   return response.data
+   try {
+      const response = await api.get(dateRange + startParam + endParam)
+      return response.data
+   } catch (error) {
+      console.error(error)
+   }
 }
 
 export default getData

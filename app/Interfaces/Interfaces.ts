@@ -1,12 +1,12 @@
 export interface Data {
-  datetimE_KEY: number
-  time: Date
-  networK_SID: number
-  nealias: string
-  netype: string
-  rsL_INPUT_POWER: number
-  maX_RX_LEVEL: number
-  rsL_DEVIATION: number
+   datetimE_KEY: number
+   time: Date
+   networK_SID: number
+   nealias: string
+   netype: string
+   rsL_INPUT_POWER: number
+   maX_RX_LEVEL: number
+   rsL_DEVIATION: number
 }
 
 export interface GridProps {
@@ -18,7 +18,7 @@ export type DateProps = {
 }
 
 export interface DateProp {
-   dateRange: string,
-   startDate?: string,
+   dateRange: string
+   startDate?: string
    endDate?: string
 }

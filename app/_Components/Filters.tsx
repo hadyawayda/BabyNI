@@ -1,30 +1,41 @@
 'use client'
 import Date from './Date'
 import { useEffect, useState } from 'react'
+import KPISelector from './KPISelector'
 
-const Filters = () => {
-   const [selectedDate, setSelectedDate] = useState()
-   const [date, setDate] = useState()
-
-   useEffect(() => {
-      // setDate()
-   })
-
+const Filters = ({
+   onDateChange,
+   onIntervalChange,
+   onKPIChange,
+}: {
+   onDateChange: () => void
+   onIntervalChange: (interval: string) => void
+   onKPIChange: (KPIs: EventTarget & HTMLInputElement) => void
+}) => {
    function handleDateChange() {
-      console.log('HI')
+      onDateChange()
+   }
+
+   function handleIntervalChange(e: React.ChangeEvent<HTMLInputElement>) {
+      onIntervalChange(e.target.value)
+   }
+
+   function handleKPIChange(KPI: EventTarget & HTMLInputElement) {
+      onKPIChange(KPI)
    }
 
    return (
-      <div className="flex gap-12 justify-around items-center px-28">
+      <div className="flex gap-4 justify-around items-center px-28">
          <Date onDateChange={() => handleDateChange} />
-         <div className="flex w-96 gap-4">
+         <div className="flex justify-center w-96 gap-2">
             Interval Aggregation:
             <label>
                <input
                   type="radio"
                   name="filter"
-                  value="NETYPE"
+                  value="hourly"
                   className="mr-1 align-middle"
+                  onChange={handleIntervalChange}
                />
                Hourly
             </label>
@@ -32,24 +43,25 @@ const Filters = () => {
                <input
                   type="radio"
                   name="filter"
-                  value="NETYPE"
+                  value="daily"
                   className="mr-1 align-middle"
+                  onChange={handleIntervalChange}
                />
                Daily
             </label>
          </div>
          <div className="flex">
             <p className="whitespace-nowrap mr-2">KPIs:</p>
-            <p className="whitespace-nowrap underline">3 items selected</p>
+            <KPISelector onKPISelect={handleKPIChange} />
          </div>
-         <div className="flex w-96 gap-4">
+         <div className="flex justify-center w-96 gap-2 ml-4">
             Grouping:
             <label>
                <input
                   type="radio"
                   name="filter"
                   value="NETYPE"
-                  className="mr-1 align-middle"
+                  className="whitespace-nowrap mr-1 align-middle"
                />
                OFF
             </label>
@@ -58,7 +70,7 @@ const Filters = () => {
                   type="radio"
                   name="filter"
                   value="NETYPE"
-                  className="mr-1 align-middle"
+                  className="whitespace-nowrap mr-1 align-middle"
                />
                NETYPE
             </label>
@@ -67,7 +79,7 @@ const Filters = () => {
                   type="radio"
                   name="filter"
                   value="NEALIAS"
-                  className="mr-1 align-middle"
+                  className="whitespace-nowrap mr-1 align-middle"
                />
                NEALIAS
             </label>

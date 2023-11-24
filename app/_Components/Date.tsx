@@ -4,14 +4,47 @@ import { DateRangePicker } from '@progress/kendo-react-dateinputs'
 import '@progress/kendo-theme-default/dist/all.css'
 import { DateProps } from '../Interfaces/Interfaces'
 import useCurrentDate from '../Hooks/useCurrentDate'
+import Submit from './Submit'
 
 const DateComponent = ({ onDateChange }: DateProps) => {
-   const [startDate, setStartDate] = useState(useCurrentDate()[0])
-   const [endDate, setEndDate] = useState(useCurrentDate()[1])
    const [isOpen, setIsOpen] = useState(false)
-   const defaultValue = { start: null, end: new Date() }
 
-   onDateChange(startDate)
+   const [date, setDate] = useState({
+      start: new Date(new Date().setDate(new Date().getDate() - 30)),
+      end: new Date(),
+   })
+
+   function handle30Days() {
+      setDate({
+         start: new Date(new Date().setDate(new Date().getDate() - 30)),
+         end: new Date(),
+      })
+   }
+
+   function handle15Days() {
+      setDate({
+         start: new Date(new Date().setDate(new Date().getDate() - 15)),
+         end: new Date(),
+      })
+   }
+
+   function handle7Days() {
+      setDate({
+         start: new Date(new Date().setDate(new Date().getDate() - 7)),
+         end: new Date(),
+      })
+   }
+
+   function handleYesterday() {
+      setDate({
+         start: new Date(new Date().setDate(new Date().getDate() - 1)),
+         end: new Date(),
+      })
+   }
+
+   function handleDateSubmit() {
+      console.log('helloooooooz')
+   }
 
    function handleClose() {
       setIsOpen(false)
@@ -36,6 +69,7 @@ const DateComponent = ({ onDateChange }: DateProps) => {
             as={Fragment}
          >
             <Dialog
+               as="div"
                onClose={handleClose}
                className="relative z-50"
             >
@@ -51,7 +85,7 @@ const DateComponent = ({ onDateChange }: DateProps) => {
                   <div
                      className="fixed inset-0 bg-slate-950/60"
                      aria-hidden="true"
-                  ></div>
+                  />
                </Transition.Child>
                <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
                   <Transition.Child
@@ -69,17 +103,12 @@ const DateComponent = ({ onDateChange }: DateProps) => {
                               Select Date Range
                            </Dialog.Title>
                            <DateRangePicker
-                              defaultShow={true}
+                              defaultShow={false}
                               className="k-form"
-                              defaultValue={defaultValue}
+                              defaultValue={date}
                            />
                         </div>
-                        <button
-                           onClick={handleClose}
-                           className="flex w-1/2 items-center h-12 justify-center rounded-3xl text-sm tracking-widest border bg-orange-600 hover:bg-white hover:text-orange-600 hover:border-orange-600 transition-colors duration-500"
-                        >
-                           SUBMIT
-                        </button>
+                        <Submit handleClose={handleDateSubmit} />
                      </Dialog.Panel>
                   </Transition.Child>
                </div>

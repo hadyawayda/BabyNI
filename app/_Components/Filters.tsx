@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 import Date from './Date'
 import { useEffect, useState } from 'react'
 import KPISelector from './KPISelector'
@@ -35,7 +35,7 @@ const Filters = ({
 
    return (
       <div className="flex gap-4 justify-around items-center px-28">
-         <Date onDateChange={() => handleDateChange} />
+         <Date onDateChange={handleDateChange} />
          <div className="flex justify-center w-96 gap-2">
             Interval Aggregation:
             <label>
@@ -72,7 +72,7 @@ const Filters = ({
                <input
                   type="radio"
                   name="filter"
-                  value="BOTH"
+                  value="Both"
                   className="whitespace-nowrap mr-1 align-middle"
                   onChange={handleGroupingChange}
                />

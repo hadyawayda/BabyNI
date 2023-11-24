@@ -8,9 +8,9 @@ import {
    ChartCategoryAxis,
    ChartCategoryAxisItem,
 } from '@progress/kendo-react-charts'
-import { GridProps } from '../Interfaces/Interfaces'
+import { ChartProps } from '../Interfaces/Interfaces'
 
-const ChartComponent = ({ props }: GridProps) => {
+const ChartComponent = ({ grouping, props, selectedKPIs }: ChartProps) => {
    const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
 
    return (

@@ -1,37 +1,24 @@
 'use client'
 
-import https from 'https'
 import Grid from './Grid'
 import Chart from './Chart'
 import Filters from './Filters'
 import { Suspense, useEffect, useState } from 'react'
-import { Data, GridProps, ReactEvent } from '../Interfaces/Interfaces'
-import axios from 'axios'
+import { GridProps, Props, ReactEvent } from '../Interfaces/Interfaces'
+import { callData } from './CallData'
 
 const Body = ({ props }: GridProps) => {
-   const [data, setData] = useState<Data[]>(props)
-   const [selectedKPIs, setSelectedKPIs] = useState({
+   const KPIs = {
       RSL_INPUT_POWER: true,
       MAX_RX_LEVEL: true,
       RSL_DEVIATION: true,
-   })
+   }
+   const [data, setData] = useState<Props>(props)
+   const [grouping, setGrouping] = useState<string>('Both')
+   const [selectedKPIs, setSelectedKPIs] = useState<object>(KPIs)
 
-   async function callData(interval: string) {
-      const agent = new https.Agent({
-         rejectUnauthorized: false,
-      })
-
-      const api = axios.create({
-         baseURL: 'https://localhost:7096/api/',
-         httpsAgent: agent,
-      })
-
-      try {
-         const response = await api.get(interval)
-         setData(response.data)
-      } catch (error) {
-         console.error(error)
-      }
+   async function handleDataFetch(interval: string) {
+      setData(await callData(interval))
    }
 
    function handleDateChange() {}
@@ -45,7 +32,7 @@ const Body = ({ props }: GridProps) => {
    }
 
    function handleGroupingChange(e: ReactEvent) {
-      console.log(e)
+      setGrouping(e.value)
    }
 
    useEffect(() => {
@@ -58,7 +45,7 @@ const Body = ({ props }: GridProps) => {
             <Suspense>
                <Filters
                   onDateChange={handleDateChange}
-                  onIntervalChange={callData}
+                  onIntervalChange={handleDataFetch}
                   onKPIChange={handleKPIChange}
                   onGroupingChange={handleGroupingChange}
                   selectedKPIs={selectedKPIs}
@@ -69,7 +56,11 @@ const Body = ({ props }: GridProps) => {
                   <Grid props={data} />
                </Suspense>
                <Suspense>
-                  <Chart props={data} />
+                  <Chart
+                     props={data}
+                     grouping={grouping}
+                     selectedKPIs={selectedKPIs}
+                  />
                </Suspense>
             </div>
          </div>

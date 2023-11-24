@@ -9,18 +9,22 @@ export interface Data {
    rsL_DEVIATION: number
 }
 
-export interface GridProps {
-   props: Data[]
-}
+export type Props = Data[]
 
-export type DateProps = {
-   onDateChange: (date: string | null) => void
+export interface GridProps {
+   props: Props
 }
 
 export interface DateProp {
    dateRange: string
    startDate?: string
    endDate?: string
+}
+
+export interface ChartProps {
+   grouping: string
+   props: Data[]
+   selectedKPIs: object
 }
 
 export type ReactEvent = EventTarget & HTMLInputElement

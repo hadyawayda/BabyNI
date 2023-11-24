@@ -1,4 +1,3 @@
-import { Data } from './Interfaces/Interfaces'
 import getData from './_Components/API'
 import Body from './_Components/Body'
 

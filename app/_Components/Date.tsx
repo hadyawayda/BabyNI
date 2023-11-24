@@ -2,11 +2,9 @@ import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
 import { DateRangePicker } from '@progress/kendo-react-dateinputs'
 import '@progress/kendo-theme-default/dist/all.css'
-import { DateProps } from '../Interfaces/Interfaces'
-import useCurrentDate from '../Hooks/useCurrentDate'
 import Submit from './Submit'
 
-const DateComponent = ({ onDateChange }: DateProps) => {
+const DateComponent = ({ onDateChange }: { onDateChange: () => void }) => {
    const [isOpen, setIsOpen] = useState(false)
 
    const [date, setDate] = useState({

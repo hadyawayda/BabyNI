@@ -1,16 +1,15 @@
 'use client'
 
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useState } from 'react'
 import { ReactChange, ReactEvent } from '../Interfaces/Interfaces'
 
-const KPISelector = ({
-   onKPISelect,
-   selectedKPIs,
-}: {
+type KPIprops = {
    onKPISelect: (KPIs: ReactEvent) => void
    selectedKPIs: object
-}) => {
+}
+
+const KPISelector = ({ onKPISelect, selectedKPIs }: KPIprops) => {
    let [isOpen, setIsOpen] = useState(false)
 
    function handleKPISelect(e: ReactChange) {

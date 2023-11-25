@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace BabyNI.Helpers
+﻿namespace BabyNI.Helpers
 {
     public class BaseWatcher
     {

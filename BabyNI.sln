@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BabyAPI", "..\BabyAPI\BabyA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aggregator", "..\Aggregator\Aggregator.csproj", "{213A83FE-5389-488B-B7AE-0B980A2ECA6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Watcher", "..\Watcher\Watcher.csproj", "{0CDDD9F5-C0E1-4217-AA0A-B417384BFA10}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser", "..\Parser\Parser.csproj", "{29580FF7-0A06-4B26-974A-1B07A4C5FF88}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Loader", "..\Loader\Loader.csproj", "{73094D98-B99E-423C-8FE4-01CB2274DBA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loader", "..\Loader\Loader.csproj", "{73094D98-B99E-423C-8FE4-01CB2274DBA8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{213A83FE-5389-488B-B7AE-0B980A2ECA6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{213A83FE-5389-488B-B7AE-0B980A2ECA6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{213A83FE-5389-488B-B7AE-0B980A2ECA6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0CDDD9F5-C0E1-4217-AA0A-B417384BFA10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0CDDD9F5-C0E1-4217-AA0A-B417384BFA10}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0CDDD9F5-C0E1-4217-AA0A-B417384BFA10}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0CDDD9F5-C0E1-4217-AA0A-B417384BFA10}.Release|Any CPU.Build.0 = Release|Any CPU
 		{29580FF7-0A06-4B26-974A-1B07A4C5FF88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{29580FF7-0A06-4B26-974A-1B07A4C5FF88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29580FF7-0A06-4B26-974A-1B07A4C5FF88}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -2,7 +2,7 @@
 
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { ReactChange, ReactEvent } from '../Interfaces/Interfaces'
+import { ReactChange, ReactEvent } from './Interfaces/Interfaces'
 
 type KPIprops = {
    onKPISelect: (KPIs: ReactEvent) => void

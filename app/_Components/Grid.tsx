@@ -1,17 +1,17 @@
 'use client'
 
-import { GridProps } from '../Interfaces/Interfaces'
+import { GridComponentProps as gridProps } from './Interfaces/Interfaces'
 import { Grid as G, GridColumn as Column } from '@progress/kendo-react-grid'
 
-const Grid = ({ props }: GridProps) => {
+const Grid = ({ props }: gridProps) => {
    return (
       <div className="w-10/12 text-black">
-         <div className="my-6">Performance Grid</div>
+         <div className="my-6 w-full flex justify-center">Performance Grid</div>
          <div>
             <G
                style={{
                   width: '100%',
-                  height: '500px',
+                  height: '300px',
                   border: '1px solid #999',
                }}
                data={props}

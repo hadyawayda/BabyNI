@@ -3,13 +3,9 @@ import https from 'https'
 import useCurrentDate from '../Hooks/useCurrentDate'
 import { DateProp } from '../Interfaces/Interfaces'
 
-const getData = async (props: DateProp) => {
-   const { dateRange, startDate, endDate } = props
-
-   let [start, end] = useCurrentDate()
-
+const getData = async ({ dateRange, startDate, endDate }: DateProp) => {
+   const [start, end] = useCurrentDate()
    const startParam = `?startDate=${startDate ?? start}`
-
    const endParam = `&endDate=${endDate ?? end}`
 
    const agent = new https.Agent({
@@ -17,7 +13,7 @@ const getData = async (props: DateProp) => {
    })
 
    const api = axios.create({
-      baseURL: process.env.BASE_URL,
+      baseURL: process.env.GRID_BASE_URL,
       httpsAgent: agent,
    })
 

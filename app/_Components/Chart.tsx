@@ -1,5 +1,3 @@
-'use client'
-
 import {
    Chart,
    ChartTitle,
@@ -8,34 +6,44 @@ import {
    ChartCategoryAxis,
    ChartCategoryAxisItem,
 } from '@progress/kendo-react-charts'
-import { ChartProps } from '../Interfaces/Interfaces'
+import { ChartComponentProps as Props } from './Interfaces/Interfaces'
+import { useEffect, useState } from 'react'
 
-const ChartComponent = ({ grouping, props, selectedKPIs }: ChartProps) => {
-   const categories = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul']
+const ChartComponent = ({ grouping, selectedKPIs, props }: Props) => {
+   // const [dateTimeKeys, setDateTimeKeys] = useState([])
+   const [categories, setCategories] = useState(Object.keys(selectedKPIs))
+
+   // useEffect(() => {
+   //    const enabledCategories = Object.entries(selectedKPIs)
+   //       .filter(([key, value]) => value) // Keep only entries where the value is true
+   //       .map(([key]) => key) // Extract the keys
+
+   //    setCategories(enabledCategories)
+   // }, [selectedKPIs])
+
+   // useEffect(() => console.log(categories), [selectedKPIs])
 
    return (
       <>
          <Chart className="w-11/12">
-            <ChartTitle text="Units sold" />
+            <ChartTitle text="Performance Chart" />
             <ChartCategoryAxis>
                <ChartCategoryAxisItem
-                  title={{ text: 'Months' }}
+                  title={{ text: 'KPIs' }}
                   categories={categories}
                />
             </ChartCategoryAxis>
             <ChartSeries>
-               <ChartSeriesItem
-                  type="line"
-                  data={[123, 276, 310, 212, 240, 156, 98]}
-               />
-               <ChartSeriesItem
-                  type="line"
-                  data={[165, 210, 287, 144, 190, 167, 212]}
-               />
-               <ChartSeriesItem
-                  type="line"
-                  data={[56, 140, 195, 46, 123, 78, 95]}
-               />
+               {props.map((item, idx) => (
+                  <ChartSeriesItem
+                     key={idx}
+                     type="column"
+                     data={[1, 2, 3]}
+                     name={`${item.DATETIME_KEY}  ${
+                        grouping === 'NETYPE' ? item.NETYPE : item.NEALIAS
+                     }`}
+                  />
+               ))}
             </ChartSeries>
          </Chart>
       </>
@@ -43,3 +51,14 @@ const ChartComponent = ({ grouping, props, selectedKPIs }: ChartProps) => {
 }
 
 export default ChartComponent
+
+{
+   /* <ul>
+         {Object.entries(selectedKPIs).map(([key, value], i) => (
+            <li key={i}>{value ? key : null}</li>
+         ))}
+      </ul> */
+}
+// useEffect(() => {
+//    console.log(selectedKPIs)
+// }, [selectedKPIs])

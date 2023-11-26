@@ -3,17 +3,17 @@
 import Grid from './Grid'
 import Chart from './Chart'
 import Filters from './Filters'
-import { Suspense, useEffect, useState } from 'react'
-import { GridProps, Props, ReactEvent } from '../Interfaces/Interfaces'
-import { callData } from './CallData'
+import { Suspense, useState } from 'react'
+import { DataProps, gridProps, ReactEvent } from './Interfaces/Interfaces'
+import { callData } from './Data/CallData'
 
-const Body = ({ props }: GridProps) => {
+const Body = ({ gridData, chartData }: DataProps) => {
    const KPIs = {
       RSL_INPUT_POWER: true,
       MAX_RX_LEVEL: true,
       RSL_DEVIATION: true,
    }
-   const [data, setData] = useState<Props>(props)
+   const [data, setData] = useState<gridProps>(gridData)
    const [grouping, setGrouping] = useState<string>('Both')
    const [selectedKPIs, setSelectedKPIs] = useState<object>(KPIs)
 
@@ -25,6 +25,7 @@ const Body = ({ props }: GridProps) => {
 
    function handleKPIChange(KPI: ReactEvent) {
       const { name, checked } = KPI
+
       setSelectedKPIs((prev) => ({
          ...prev,
          [name]: checked,
@@ -34,10 +35,6 @@ const Body = ({ props }: GridProps) => {
    function handleGroupingChange(e: ReactEvent) {
       setGrouping(e.value)
    }
-
-   useEffect(() => {
-      console.log(selectedKPIs)
-   }, [selectedKPIs])
 
    return (
       <>
@@ -57,7 +54,7 @@ const Body = ({ props }: GridProps) => {
                </Suspense>
                <Suspense>
                   <Chart
-                     props={data}
+                     props={chartData}
                      grouping={grouping}
                      selectedKPIs={selectedKPIs}
                   />

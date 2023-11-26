@@ -7,7 +7,7 @@ export async function callData(interval: string) {
    })
 
    const api = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+      baseURL: process.env.NEXT_PUBLIC_GRID_BASE_URL,
       httpsAgent: agent,
    })
 

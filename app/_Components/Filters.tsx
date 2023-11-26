@@ -1,8 +1,6 @@
-// 'use client'
 import Date from './Date'
-import { useEffect, useState } from 'react'
 import KPISelector from './KPISelector'
-import { ReactChange, ReactEvent } from '../Interfaces/Interfaces'
+import { ReactChange, ReactEvent } from './Interfaces/Interfaces'
 
 const Filters = ({
    onDateChange,

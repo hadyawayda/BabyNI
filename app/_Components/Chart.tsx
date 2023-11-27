@@ -52,13 +52,13 @@ const ChartComponent = ({ grouping, selectedKPIs, props }: Props) => {
 
 export default ChartComponent
 
-{
-   /* <ul>
-         {Object.entries(selectedKPIs).map(([key, value], i) => (
-            <li key={i}>{value ? key : null}</li>
-         ))}
-      </ul> */
-}
+// {
+//    /* <ul>
+//          {Object.entries(selectedKPIs).map(([key, value], i) => (
+//             <li key={i}>{value ? key : null}</li>
+//          ))}
+//       </ul> */
+// }
 // useEffect(() => {
 //    console.log(selectedKPIs)
 // }, [selectedKPIs])

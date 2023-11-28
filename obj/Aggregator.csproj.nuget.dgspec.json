@@ -55,6 +55,10 @@
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
+            },
+            "Vertica.Data": {
+              "target": "Package",
+              "version": "[23.4.0, )"
             }
           },
           "imports": [

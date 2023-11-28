@@ -1,4 +1,3 @@
-
 namespace Aggregator
 {
     public class Program
@@ -9,8 +8,8 @@ namespace Aggregator
 
             // Add services to the container.
             builder.Services.AddHttpClient();
-
             builder.Services.AddControllers();
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
@@ -27,7 +26,6 @@ namespace Aggregator
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

@@ -36,9 +36,9 @@ namespace BabyAPI
         }
 
         [HttpGet("daily")]
-        public IActionResult GetDailyData(DateTime? startDate, DateTime? endDate)
+        public IActionResult GetDailyData(string startDate, string endDate)
         {
-            query!.CommandText = "SELECT * FROM TRANS_MW_AGG_SLOT_DAILY;";
+            query!.CommandText = $"SELECT * FROM TRANS_MW_AGG_SLOT_DAILY WHERE Time >= '{startDate}' AND Time <= '{endDate}';";
 
             reader = query.ExecuteReader();
 
@@ -62,9 +62,9 @@ namespace BabyAPI
         }
 
         [HttpGet("hourly")]
-        public IActionResult GetHourlyData(DateTime? startDate, DateTime? endDate)
+        public IActionResult GetHourlyData(string startDate, string endDate)
         {
-            query!.CommandText = "SELECT * FROM TRANS_MW_AGG_SLOT_HOURLY;";
+            query!.CommandText = $"SELECT * FROM TRANS_MW_AGG_SLOT_HOURLY WHERE Time >= '{startDate}' AND Time <= '{endDate}';";
 
             reader = query.ExecuteReader();
 

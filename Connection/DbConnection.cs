@@ -5,6 +5,7 @@ namespace Aggregator.Connection
     public class DbConnection : IDbConnection, IDisposable
     {
         private VerticaConnection _connection;
+
         public DbConnection(VerticaConnection connection)
         {
             _connection = connection;
@@ -13,6 +14,7 @@ namespace Aggregator.Connection
 
             Console.WriteLine("Database Connection Established!\n");
         }
+
         public void openConnection()
         {
             _connection.Open();

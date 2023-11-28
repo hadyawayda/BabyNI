@@ -5,7 +5,7 @@ namespace Aggregator.Aggregation
 {
     public class DbAggregator : IAggregator
     {
-        readonly private static string      aggregationScript = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone\Loader\Query Scripts\Create Tables.sql";
+        readonly private static string      aggregationScript = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone\Aggregator\Aggregate Tables.sql";
         private VerticaCommand              query;
         private List<string>?               queries;
         private readonly IDbConnection      _connection;

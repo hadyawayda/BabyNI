@@ -18,14 +18,6 @@ namespace BabyNI.Helpers
             {
                 queries = File.ReadAllText(filePath).Split(';').ToList();
             }
-            catch (FileNotFoundException)
-            {
-                Console.WriteLine("File not found: " + filePath);
-            }
-            catch (IOException)
-            {
-                Console.WriteLine($"Could not find {filePath}");
-            }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
@@ -43,8 +35,6 @@ namespace BabyNI.Helpers
         {
             for (int i = 0; i < queries!.Count - 1; i++)
             {
-                //Console.WriteLine($"\nCurrently executing the following query:\n{queries[i] + ';'}\n");
-
                 try
                 {
                     query!.CommandText = queries[i] + ';';

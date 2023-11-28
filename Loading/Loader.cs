@@ -2,8 +2,6 @@
 using BabyNI.Aggregation;
 using BabyNI.Helpers;
 using Vertica.Data.VerticaClient;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace BabyNI.Loading
 {

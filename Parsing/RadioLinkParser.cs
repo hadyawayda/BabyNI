@@ -4,13 +4,13 @@ namespace BabyNI.Parsing
 {
     internal class RadioLinkParser
     {
-        readonly private static string rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                            parserDirectory = Path.Combine(rootDirectory, "Parser"),
-                                            parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                            headerPrefix = "NETWORK_SID,DATETIME_KEY",
-                                            headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
-        readonly private HashSet<int> disabledColumns = new HashSet<int> { 3, 11, 19 }, // 3 total disabled columns
-                                            staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13 total static columns
+        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                        parserDirectory = Path.Combine(rootDirectory, "Parser"),
+                                        parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
+                                        headerPrefix = "NETWORK_SID,DATETIME_KEY",
+                                        headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
+        readonly private HashSet<int>   disabledColumns = new() { 3, 11, 19 }, 
+                                        staticColumns = new () { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 };
         private List<string> output, fetchedLine;
         private string? filePath, parsedFile;
         private StreamWriter writer;

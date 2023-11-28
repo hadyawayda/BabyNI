@@ -4,21 +4,21 @@ namespace BabyNI.Parsing
 {
     internal class RFInputParser
     {
-        readonly private static string rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                                parserDirectory = Path.Combine(rootDirectory, "Parser"),
-                                                parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                                headerPrefix = "NETWORK_SID,DATETIME_KEY",
-                                                headerSuffix = "SLOT,PORT";
-        readonly public HashSet<int> disabledColumns = new HashSet<int> { 11, 13, 14, 17 },
-                                                staticColumns = new HashSet<int> { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 };
-        private List<string> output, fetchedLine;
-        private string? filePath, parsedFile;
-        private StreamWriter writer;
-        private StreamReader reader;
-        private int totalColumns, rows, lines, e, corruptRows, emptyCells;
-        private bool toBeSkipped;
-        private string DATETIME_KEY, SLOT, PORT;
-        public BaseParser parser;
+        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+                                        parserDirectory = Path.Combine(rootDirectory, "Parser"),
+                                        parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
+                                        headerPrefix = "NETWORK_SID,DATETIME_KEY",
+                                        headerSuffix = "SLOT,PORT";
+        readonly public HashSet<int>    disabledColumns = new() { 11, 13, 14, 17 },
+                                        staticColumns = new() { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 };
+        private List<string>            output, fetchedLine;
+        private string?                 filePath, parsedFile;
+        private StreamWriter            writer;
+        private StreamReader            reader;
+        private int                     totalColumns, rows, lines, e, corruptRows, emptyCells;
+        private bool                    toBeSkipped;
+        private string                  DATETIME_KEY, SLOT, PORT;
+        public BaseParser               parser;
 
         #region Parser Entry Point
 

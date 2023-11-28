@@ -4,7 +4,7 @@ namespace BabyNI.Parsing
 {
     internal class RFInputParser
     {
-        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
+        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone",
                                         parserDirectory = Path.Combine(rootDirectory, "Parser"),
                                         parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
                                         headerPrefix = "NETWORK_SID,DATETIME_KEY",

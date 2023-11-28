@@ -9,9 +9,9 @@ namespace BabyNI.Loading
     {
         // To-Do: Add a commit feature to update tables when a process has finished so we can have a backup plan in case of a failure
 
-        readonly private static string      loaderDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Loader",
+        readonly private static string      loaderDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone\Loader",
                                             loaderBackupDirectory = Path.Combine(loaderDirectory, "Processed"),
-                                            createTablesScript = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Loader\Query Scripts\Create Tables.sql",
+                                            createTablesScript = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone\Loader\Query Scripts\Create Tables.sql",
                                             RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.csv";
         private BaseWatcher                 watcher;
         private QueryFetcher                queryFetcher;
@@ -37,7 +37,7 @@ namespace BabyNI.Loading
 
             query = connection.command;
 
-            query!.CommandText = $"COPY {table}\r\n        FROM LOCAL 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File Drop-zone\\Loader\\{fileName}'\r\n        DELIMITER ','\r\n        SKIP 1\r\n        EXCEPTIONS 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File Drop-zone\\Loader\\Exceptions\\{fileName}-Exceptions.csv'\r\n        REJECTED DATA 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File Drop-zone\\Loader\\Exceptions\\{fileName}-Rejections.csv';";
+            query!.CommandText = $"COPY {table}\r\n        FROM LOCAL 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File DropZone\\Loader\\{fileName}'\r\n        DELIMITER ','\r\n        SKIP 1\r\n        EXCEPTIONS 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File DropZone\\Loader\\Exceptions\\{fileName}-Exceptions.csv'\r\n        REJECTED DATA 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File DropZone\\Loader\\Exceptions\\{fileName}-Rejections.csv';";
 
             int rowsAdded = query.ExecuteNonQuery();
 

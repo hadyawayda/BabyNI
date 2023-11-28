@@ -38,9 +38,6 @@
             parser = new BaseParser();
 
             fetchLine();
-
-            // add loader calling logic here....
-
         }
 
         private void fetchLine()

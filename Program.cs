@@ -1,4 +1,3 @@
-using Parser.Controllers;
 using Parser.Factory;
 using Parser.Watcher;
 using Parser.Watcher_Factory;
@@ -15,7 +14,6 @@ namespace Parser
             // Add services to the container.
             builder.Services.AddHttpClient();
             builder.Services.AddControllers();
-            //builder.Services.AddSingleton<Controller>();
             builder.Services.AddSingleton<HttpService>();
             builder.Services.AddHostedService<FileWatcher>();
             builder.Services.AddSingleton<IParserFactory, ParserFactory>();

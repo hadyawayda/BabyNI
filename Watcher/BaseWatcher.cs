@@ -24,8 +24,6 @@
 
             watcher.Created += (sender, e) => addToQueue(e.Name!);
 
-            //watcher.Changed += (sender, e) => addToQueue(e.Name!);
-
             processQueue();
         }
 

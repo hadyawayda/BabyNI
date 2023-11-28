@@ -14,11 +14,11 @@ namespace Watcher.Services
 
         public void SendMessage(string url, string message)
         {
-            var httpClient = _httpClientFactory.CreateClient();
+            HttpClient httpClient = _httpClientFactory.CreateClient();
 
-            var jsonMessage = JsonConvert.SerializeObject(new { message = message });
+            string jsonMessage = JsonConvert.SerializeObject(new { message = message });
 
-            var content = new StringContent(jsonMessage, Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(jsonMessage, Encoding.UTF8, "application/json");
 
             httpClient.PostAsync(url, content);
         }

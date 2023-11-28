@@ -1,5 +1,4 @@
 using BabyAPI.Connection;
-using System.Configuration;
 using Vertica.Data.VerticaClient;
 
 namespace BabyAPI
@@ -12,7 +11,6 @@ namespace BabyAPI
             string? connectionString = builder.Configuration.GetConnectionString("Vertica");
 
             // Add services to the container.
-
             builder.Services.AddScoped(provider => new VerticaConnection(connectionString));
             builder.Services.AddScoped<IDbConnection, DbConnection>();
             builder.Services.AddControllers();

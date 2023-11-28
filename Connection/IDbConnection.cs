@@ -1,6 +1,6 @@
 ﻿using Vertica.Data.VerticaClient;
 
-namespace BabyAPI.Connection
+namespace Loader.Connection
 {
     public interface IDbConnection
     {

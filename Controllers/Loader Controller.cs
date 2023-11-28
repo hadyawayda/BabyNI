@@ -1,20 +1,23 @@
+using Loader.Factory;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Loader.Controllers
 {
-    public class MessageModel
-    {
-        public string? Message { get; set; }
-    }
-
     [ApiController]
     [Route("api")]
     public class ParserController : ControllerBase
     {
+        private readonly ILoaderFactory _loaderFactory;
+
+        public ParserController(ILoaderFactory loaderFactory)
+        {
+            _loaderFactory = loaderFactory;
+        }
+
         [HttpPost("post")]
         public IActionResult ReceiveMessage([FromBody] MessageModel message)
         {
-            Console.WriteLine(message.Message);
+            _loaderFactory.CreateLoader(message.Message!);
 
             return Ok("Message received and processed");
         }

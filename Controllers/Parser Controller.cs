@@ -13,16 +13,16 @@ namespace Parser.Controllers
             _service = service;
         }
 
-        [HttpPost()]
-        public async Task<IActionResult> SendMessage()
-        {
-            string url = "http://localhost:5000/api/post";
+        //[HttpPost()]
+        //public async Task<IActionResult> SendMessage()
+        //{
+        //    string url = "http://localhost:5000/api/post";
 
-            string message = "Hello, this is a message";
+        //    string message = "Hello, this is a message";
 
-            await _service.SendMessageAsync(url, message);
+        //    await _service.SendMessageAsync(url, message);
 
-            return Ok("Message sent successfully");
-        }
+        //    return Ok("Message sent successfully");
+        //}
     }
 }

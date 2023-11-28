@@ -2,43 +2,45 @@
 {
     public class RadioLinkParser
     {
-        readonly private static string rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                            parserDirectory = Path.Combine(rootDirectory, "Parser"),
-                                            parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                            headerPrefix = "NETWORK_SID,DATETIME_KEY",
-                                            headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
-        readonly private HashSet<int> disabledColumns = new HashSet<int> { 3, 11, 19 }, // 3 total disabled columns
-                                            staticColumns = new HashSet<int> { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 }; // 13 total static columns
-        private List<string> output, fetchedLine;
-        private string? filePath, parsedFile;
-        private StreamWriter writer;
-        private StreamReader reader;
-        private int corruptRows, rows, lines, e, emptyCells, totalColumns;
-        private bool toBeSkipped;
-        private string DATETIME_KEY;
-        private BaseParser parser;
+        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone",
+                                        parserDirectory = Path.Combine(rootDirectory, "Parser"),
+                                        parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
+                                        headerPrefix = "NETWORK_SID,DATETIME_KEY",
+                                        headerSuffix = "LINK,TID,FARENDTID,SLOT,PORT";
+        readonly private HashSet<int>   disabledColumns = new() { 3, 11, 19 },
+                                        staticColumns = new() { 4, 6, 7, 8, 9, 10, 12, 13, 14, 15, 16, 17, 18 };
+        private List<string>            output, fetchedLine;
+        private string?                 filePath, parsedFile;
+        private StreamWriter            writer;
+        private StreamReader            reader;
+        private int                     corruptRows, rows, lines, e, emptyCells, totalColumns;
+        private bool                    toBeSkipped;
+        private string                  DATETIME_KEY;
+        private BaseParser              parser;
 
         #region Parser Entry Point
 
         public RadioLinkParser(string file)
         {
-            Console.WriteLine(file);
-            //filePath = Path.Combine(parserDirectory, file);
-            //parsedFile = Path.Combine(rootDirectory, "Loader", Path.GetFileNameWithoutExtension(file) + ".csv");
-            //totalColumns = corruptRows = rows = lines = emptyCells = e = 0;
-            //toBeSkipped = false;
-            //output = new List<string>(22);
-            //fetchedLine = new List<string>(18);
-            //DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(26);
+            filePath = Path.Combine(rootDirectory, file);
+            parsedFile = Path.Combine(parserDirectory, Path.GetFileNameWithoutExtension(file) + ".csv");
+            totalColumns = corruptRows = rows = lines = emptyCells = e = 0;
+            toBeSkipped = false;
+            output = new List<string>(22);
+            fetchedLine = new List<string>(18);
+            DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(26);
 
-            //reader = new StreamReader(filePath!);
+            reader = new StreamReader(filePath);
 
-            //writer = new StreamWriter(parsedFile!);
+            writer = new StreamWriter(parsedFile);
 
-            //// switch from instance to inheritance
-            //parser = new BaseParser();
+            // switch from instance to inheritance
+            parser = new BaseParser();
 
-            //fetchLine();
+            fetchLine();
+
+            // add loader calling logic here....
+
         }
 
         private void fetchLine()
@@ -90,7 +92,24 @@
             Console.WriteLine($"{emptyCells} total empty cells in entire file");
 
             // Move and delete fileName
-            //BaseWatcher.moveFiles(Path.GetFileName(filePath)!, parserDirectory, parserBackupDirectory);
+            moveFiles(Path.GetFileName(filePath)!, rootDirectory, parserBackupDirectory);
+        }
+
+        private void moveFiles(string fileName, string initialDirectory, string destinationDirectory)
+        {
+            // This method could make use of a queue system as well, but it's not that important right now.
+            string filePath = Path.Combine(initialDirectory, fileName);
+            string fileDestinationPath = Path.Combine(destinationDirectory, fileName);
+
+            if (File.Exists(fileDestinationPath))
+            {
+                File.Delete(fileDestinationPath);
+            }
+
+            // Move file to archive directory
+            File.Copy(filePath, fileDestinationPath);
+
+            File.Delete(filePath);
         }
 
         #endregion

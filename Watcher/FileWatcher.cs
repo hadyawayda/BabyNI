@@ -1,33 +1,41 @@
 ﻿using Parser.Factory;
-using Parser.Parsers;
+using Parser.Watcher_Factory;
 using System.Text.RegularExpressions;
+using Watcher.Services;
 
 namespace Parser.Watcher
 {
     public class FileWatcher : IHostedService
     {
-        private readonly static string  parserDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone\Parser",
+        private readonly static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone",
                                         radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
                                         RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
+        private HashSet<string>         logs;
+        private bool                    isProcessable;
+        private string                  loaderRoute;
 
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IParserFactory _parserFactory;
+        private readonly HttpService        _service;
+        private readonly IServiceProvider   _serviceProvider;
+        private readonly IParserFactory     _parserFactory;
+        private readonly IWatcherFactory    _watcherFactory;
+        private readonly IConfiguration     _configuration;
 
-        public FileWatcher(IServiceProvider serviceProvider, IParserFactory parserFactory)
+        public FileWatcher(HttpService service , IParserFactory parserFactory, IWatcherFactory watcherFactory, IServiceProvider serviceProvider, IConfiguration configuration)
         {
-            _serviceProvider = serviceProvider;
+            logs = new();
+            _service = service;
             _parserFactory = parserFactory;
+            _watcherFactory = watcherFactory;
+            _serviceProvider = serviceProvider;
+            _configuration = configuration;
+            loaderRoute = _configuration["Routes:Loader"]!;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            using (var scope = _serviceProvider.CreateScope())
+            using (_serviceProvider.CreateScope())
             {
-                var myScopedService = _parserFactory.CreateRadioLinkParser("radiolink");
-            }
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var myScopedService2 = _parserFactory.CreateRFInputParser("rfinput");
+                _watcherFactory.CreateWatcher(rootDirectory, process);
             }
 
             return Task.CompletedTask;
@@ -35,14 +43,56 @@ namespace Parser.Watcher
 
         private void process(string fileName)
         {
+            isProcessable = false;
+
+            isProcessable = isFileProcessable(fileName);
+
+            if (isProcessable)
+            {
+                startParser(fileName);
+
+                _service.SendMessage(loaderRoute, fileName);
+            }
+        }
+
+        private bool isFileProcessable(string fileName)
+        {
+            if (Regex.IsMatch(fileName, radioLinkPowerPattern) || Regex.IsMatch(fileName, RFInputPowerPattern))
+            {
+                if (!logs.Contains(fileName))
+                {
+                    logs.Add(fileName);
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Sorry, file {fileName} has been processed already, skipping...");
+                    File.Delete(Path.Combine(rootDirectory, fileName));
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private void startParser(string fileName)
+        {
             if (Regex.IsMatch(fileName, radioLinkPowerPattern))
             {
-                RadioLinkParser parser1 = new RadioLinkParser(fileName);
+                using (_serviceProvider.CreateScope())
+                {
+                    _parserFactory.CreateRadioLinkParser(fileName);
+                }
             }
 
             else if (Regex.IsMatch(fileName, RFInputPowerPattern))
             {
-                RFInputParser parser2 = new RFInputParser(fileName);
+                using (_serviceProvider.CreateScope())
+                {
+                    _parserFactory.CreateRFInputParser(fileName);
+                }
             }
         }
 

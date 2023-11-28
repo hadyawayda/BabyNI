@@ -1,6 +1,7 @@
 using Parser.Controllers;
 using Parser.Factory;
 using Parser.Watcher;
+using Parser.Watcher_Factory;
 using Watcher.Services;
 
 namespace Parser
@@ -14,15 +15,16 @@ namespace Parser
             // Add services to the container.
             builder.Services.AddHttpClient();
             builder.Services.AddControllers();
-            builder.Services.AddSingleton<Controller>();
+            //builder.Services.AddSingleton<Controller>();
             builder.Services.AddSingleton<HttpService>();
             builder.Services.AddHostedService<FileWatcher>();
             builder.Services.AddSingleton<IParserFactory, ParserFactory>();
+            builder.Services.AddSingleton<IWatcherFactory, WatcherFactory>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-            //builder.Services.AddHostedService<Worker>
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -32,11 +34,9 @@ namespace Parser
                 app.UseSwaggerUI();
             }
 
-
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

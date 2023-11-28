@@ -1,6 +1,6 @@
 ﻿namespace Parser.Watcher
 {
-    public class BaseWatcher
+    public class BaseWatcher : IDisposable
     {
         private static Queue<string>? queue;
         private FileSystemWatcher watcher;
@@ -16,7 +16,7 @@
 
             process = processAction;
 
-            queue = new Queue<string>();
+            queue = new();
 
             watcher = new FileSystemWatcher(directory);
 
@@ -92,56 +92,9 @@
             }
         }
 
-        internal static void moveFiles(string fileName, string initialDirectory, string backupDirectory)
+        public void Dispose()
         {
-            // This method could make use of a queue system as well, but it's not that important right now.
-            string filePath = Path.Combine(initialDirectory, fileName);
-            string fileBackupPath = Path.Combine(backupDirectory, fileName);
-
-            if (File.Exists(fileBackupPath))
-            {
-                File.Delete(fileBackupPath);
-            }
-
-            // Move file to archive directory
-            File.Copy(filePath, fileBackupPath);
-
-            File.Delete(filePath);
-        }
-
-        internal static void moveFiles(string fileName, string initialDirectory, string backupDirectory, string targetDirectory)
-        {
-            string filePath = Path.Combine(initialDirectory, fileName);
-            string fileOutput = Path.Combine(targetDirectory, fileName);
-            string fileBackupPath = Path.Combine(backupDirectory, fileName);
-
-            if (File.Exists(fileBackupPath) || File.Exists(fileOutput))
-            {
-                File.Delete(fileBackupPath);
-
-                File.Delete(fileOutput);
-            }
-
-            File.Copy(filePath, fileOutput);
-
-            File.Move(filePath, fileBackupPath);
-        }
-
-        internal static void moveFiles2(string fileName, string initialDirectory, string backupDirectory)
-        {
-            // This method could make use of a queue system as well, but it's not that important right now.
-            string filePath = Path.Combine(initialDirectory, fileName);
-            string fileBackupPath = Path.Combine(backupDirectory, fileName);
-
-            if (File.Exists(fileBackupPath))
-            {
-                File.Delete(fileBackupPath);
-            }
-
-            // Move file to archive directory
-            File.Copy(filePath, fileBackupPath);
-
-            File.Delete(filePath);
+            watcher.Dispose();
         }
     }
 }

@@ -2,43 +2,45 @@
 {
     public class RFInputParser
     {
-        readonly private static string rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File Drop-zone",
-                                                parserDirectory = Path.Combine(rootDirectory, "Parser"),
-                                                parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
-                                                headerPrefix = "NETWORK_SID,DATETIME_KEY",
-                                                headerSuffix = "SLOT,PORT";
-        readonly public HashSet<int> disabledColumns = new HashSet<int> { 11, 13, 14, 17 },
-                                                staticColumns = new HashSet<int> { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 };
-        private List<string> output, fetchedLine;
-        private string? filePath, parsedFile;
-        private StreamWriter writer;
-        private StreamReader reader;
-        private int totalColumns, rows, lines, e, corruptRows, emptyCells;
-        private bool toBeSkipped;
-        private string DATETIME_KEY, SLOT, PORT;
-        public BaseParser parser;
+        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone",
+                                        parserDirectory = Path.Combine(rootDirectory, "Parser"),
+                                        parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
+                                        headerPrefix = "NETWORK_SID,DATETIME_KEY",
+                                        headerSuffix = "SLOT,PORT";
+        readonly public HashSet<int>    disabledColumns = new() { 11, 13, 14, 17 },
+                                        staticColumns = new() { 3, 4, 5, 6, 7, 8, 9, 10, 12, 15 };
+        private List<string>            output, fetchedLine;
+        private string?                 filePath, parsedFile;
+        private StreamWriter            writer;
+        private StreamReader            reader;
+        private int                     totalColumns, rows, lines, e, corruptRows, emptyCells;
+        private bool                    toBeSkipped;
+        private string                  DATETIME_KEY, SLOT, PORT;
+        public BaseParser               parser;
 
         #region Parser Entry Point
 
         public RFInputParser(string file)
         {
-            Console.WriteLine(file);
-            //filePath = Path.Combine(parserDirectory, file);
-            //parsedFile = Path.Combine(rootDirectory, "Loader", Path.GetFileNameWithoutExtension(file) + ".csv");
-            //totalColumns = corruptRows = rows = lines = emptyCells = e = 0;
-            //toBeSkipped = false;
-            //output = new List<string>(22);
-            //fetchedLine = new List<string>(18);
-            //SLOT = PORT = "";
-            //DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(22);
+            filePath = Path.Combine(rootDirectory, file);
+            parsedFile = Path.Combine(parserDirectory, Path.GetFileNameWithoutExtension(file) + ".csv");
+            totalColumns = corruptRows = rows = lines = emptyCells = e = 0;
+            toBeSkipped = false;
+            output = new List<string>(22);
+            fetchedLine = new List<string>(18);
+            SLOT = PORT = "";
+            DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(22);
 
-            //reader = new StreamReader(filePath!);
+            reader = new StreamReader(filePath);
 
-            //writer = new StreamWriter(parsedFile!);
+            writer = new StreamWriter(parsedFile);
 
-            //parser = new BaseParser();
+            parser = new BaseParser();
 
-            //fetchLine();
+            fetchLine();
+
+            // add loader calling logic here....
+
         }
 
         private void fetchLine()
@@ -90,7 +92,24 @@
             Console.WriteLine($"{emptyCells} total empty cells in entire file\n");
 
             // Move and delete fileName
-            //BaseWatcher.moveFiles2(Path.GetFileName(filePath)!, parserDirectory, parserBackupDirectory);
+            moveFiles(Path.GetFileName(filePath)!, rootDirectory, parserBackupDirectory);
+        }
+
+        private void moveFiles(string fileName, string initialDirectory, string destinationDirectory)
+        {
+            // This method could make use of a queue system as well, but it's not that important right now.
+            string filePath = Path.Combine(initialDirectory, fileName);
+            string fileDestinationPath = Path.Combine(destinationDirectory, fileName);
+
+            if (File.Exists(fileDestinationPath))
+            {
+                File.Delete(fileDestinationPath);
+            }
+
+            // Move file to archive directory
+            File.Copy(filePath, fileDestinationPath);
+
+            File.Delete(filePath);
         }
 
         #endregion

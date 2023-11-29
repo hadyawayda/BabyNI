@@ -12,6 +12,7 @@ import {
 } from './Interfaces/Interfaces'
 import { callData } from './Data/CallData'
 import useDateString from './Hooks/useDateString'
+import Test from './testComponent'
 
 const Body = ({ gridData, chartData }: DataProps) => {
    const [data, setData] = useState<gridProps>(gridData)
@@ -23,7 +24,7 @@ const Body = ({ gridData, chartData }: DataProps) => {
          ['RSL_DEVIATION', true],
       ])
    )
-   const [grouping, setGrouping] = useState<string>('NETYPE')
+   const [grouping, setGrouping] = useState<string>('All')
    const [dateTimeKeys, setDateTimeKeys] = useState<object>({
       '2072264378': true,
       '2072262378': true,
@@ -37,11 +38,11 @@ const Body = ({ gridData, chartData }: DataProps) => {
       })
    )
 
-   function handleDataFetch(dateInterval: ReactChange) {
+   function onIntervalChange(dateInterval: ReactChange) {
       setInterval(dateInterval.target.value)
    }
 
-   function handleDateChange(date: DateRange) {
+   function onDateChange(date: DateRange) {
       setDateRange(date)
    }
 
@@ -49,43 +50,7 @@ const Body = ({ gridData, chartData }: DataProps) => {
       setData(await callData(interval, dateRange))
    }
 
-   function fetchDateTimeKeys() {
-      let map = new Map<number, boolean>()
-
-      data.forEach((x) => {
-         map.set(x.DATETIME_KEY, true)
-      })
-
-      // console.log(map)
-   }
-
-   useEffect(() => {
-      fetchNewData()
-      fetchDateTimeKeys()
-   }, [interval, dateRange])
-
-   useEffect(() => {
-      fetchDateTimeKeys()
-   }, [])
-
-   function handleKPIChange(KPI: ReactChange) {
-      const { name, checked } = KPI.target
-      const filteredMap = new Map(selectedKPIs)
-      filteredMap.set(name, checked)
-      setSelectedKPIs(filteredMap)
-      // setSelectedKPIs((prev) => ({
-      //    ...prev,
-      //    [name]: checked,
-      // }))
-   }
-
-   useEffect(() => console.log(selectedKPIs), [selectedKPIs])
-
-   function handleGroupingChange(e: ReactChange) {
-      setGrouping(e.target.value)
-   }
-
-   function handleDateTimeKeyChange(selection: ReactChange) {
+   function onDateTimeKeyChange(selection: ReactChange) {
       const { name, checked } = selection.target
 
       setDateTimeKeys((prev) => ({
@@ -94,25 +59,70 @@ const Body = ({ gridData, chartData }: DataProps) => {
       }))
    }
 
+   function onKPISelect(KPI: ReactChange) {
+      const { name, checked } = KPI.target
+      const filteredMap = new Map(selectedKPIs)
+      setSelectedKPIs(filteredMap.set(name, checked))
+   }
+
+   // function fetchDateTimeKeys() {
+   //    let map = new Map<number, boolean>()
+
+   //    data.forEach((x) => {
+   //       map.set(x.DATETIME_KEY, true)
+   //    })
+
+   // console.log(map)
+   // }
+
+   function onGroupingChange(e: ReactChange) {
+      setGrouping(e.target.value)
+   }
+
+   useEffect(() => {
+      fetchNewData()
+      // fetchDateTimeKeys()
+   }, [interval, dateRange])
+
+   // useEffect(() => {
+   //    fetchDateTimeKeys()
+   // }, [])
+
+   // useEffect(() => console.log() ,[])
+
    return (
       <>
          <div className="bg-white text-black h-full w-full rounded-l-md my-4 ml-4 pt-6 ">
             <Suspense>
                <Filters
-                  onDateChange={handleDateChange}
-                  onIntervalChange={handleDataFetch}
-                  onKPISelect={handleKPIChange}
-                  onGroupingChange={handleGroupingChange}
-                  onDateTimeKeySelect={handleDateTimeKeyChange}
-                  {...{ selectedKPIs, interval, dateTimeKeys, grouping }}
+                  onDateChange={onDateChange}
+                  onIntervalChange={onIntervalChange}
+                  onKPISelect={onKPISelect}
+                  onGroupingChange={onGroupingChange}
+                  {...{
+                     selectedKPIs,
+                     interval,
+                     dateTimeKeys,
+                     grouping,
+                     onDateTimeKeyChange,
+                  }}
                />
             </Suspense>
             <div className="flex flex-col items-center justify-center overflow-y-scroll">
                <Suspense>
+                  {/* <Test {...{ data }} /> */}
                   <Grid {...{ data, selectedKPIs, grouping, dateTimeKeys }} />
                </Suspense>
                <Suspense>
-                  <Chart {...{ data, selectedKPIs, grouping }} />
+                  <Chart
+                     {...{
+                        data,
+                        selectedKPIs,
+                        grouping,
+                        dateTimeKeys,
+                        onDateTimeKeyChange,
+                     }}
+                  />
                </Suspense>
             </div>
          </div>
@@ -121,3 +131,10 @@ const Body = ({ gridData, chartData }: DataProps) => {
 }
 
 export default Body
+
+// new Map([
+//    [2072264378, true],
+//    [2072262378, true],
+//    [2072234378, true],
+//    [2072264578, true],
+// ])

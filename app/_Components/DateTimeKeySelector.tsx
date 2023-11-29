@@ -4,10 +4,10 @@ import { Dialog, Transition } from '@headlessui/react'
 
 const DateTimeKeySelector = ({
    dateTimeKeys,
-   onDateTimeKeySelect,
+   onDateTimeKeyChange,
 }: {
    dateTimeKeys: object
-   onDateTimeKeySelect: (selection: ReactChange) => void
+   onDateTimeKeyChange: (selection: ReactChange) => void
 }) => {
    let [isOpen, setIsOpen] = useState(false)
    return (
@@ -85,7 +85,7 @@ const DateTimeKeySelector = ({
                                                 type="checkbox"
                                                 name={key}
                                                 checked={value}
-                                                onChange={onDateTimeKeySelect}
+                                                onChange={onDateTimeKeyChange}
                                              />
                                              <label className="ml-6 flex justify-center items-center">
                                                 {key}

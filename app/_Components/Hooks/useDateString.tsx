@@ -1,7 +1,6 @@
 import { SelectionRange } from '@progress/kendo-react-dateinputs'
-import { DateRanges } from '../Interfaces/Interfaces'
 
-const useCurrentDate = (date: SelectionRange): DateRanges => {
+const useCurrentDate = (date: SelectionRange) => {
    const startDate = date.start
 
    const startYear = startDate!.getFullYear()

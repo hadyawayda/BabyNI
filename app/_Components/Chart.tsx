@@ -8,8 +8,15 @@ import {
 } from '@progress/kendo-react-charts'
 import { ChartComponentProps as Props } from './Interfaces/Interfaces'
 import { useEffect, useState } from 'react'
+import DateTimeKeySelector from './DateTimeKeySelector'
 
-const ChartComponent = ({ data, grouping, selectedKPIs }: Props) => {
+const ChartComponent = ({
+   data,
+   grouping,
+   selectedKPIs,
+   dateTimeKeys,
+   onDateTimeKeyChange,
+}: Props) => {
    // const [dateTimeKeys, setDateTimeKeys] = useState([])
    const [categories, setCategories] = useState(Object.keys(selectedKPIs))
 
@@ -26,10 +33,15 @@ const ChartComponent = ({ data, grouping, selectedKPIs }: Props) => {
    return (
       <>
          <Chart className="w-11/12 mt-4">
-            <ChartTitle
-               margin={10}
-               text="Performance Chart"
-            />
+            <div className="flex justify-around">
+               <ChartTitle
+                  margin={10}
+                  text="Performance Chart"
+               />
+               <DateTimeKeySelector
+                  {...{ dateTimeKeys, onDateTimeKeyChange }}
+               />
+            </div>
             <ChartCategoryAxis>
                <ChartCategoryAxisItem
                   title={{ text: 'KPIs' }}

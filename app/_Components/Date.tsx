@@ -67,7 +67,7 @@ const DateComponent = ({
    }
 
    return (
-      <div>
+      <>
          <button
             type="button"
             onClick={handleOpen}
@@ -159,7 +159,7 @@ const DateComponent = ({
                </div>
             </Dialog>
          </Transition>
-      </div>
+      </>
    )
 }
 

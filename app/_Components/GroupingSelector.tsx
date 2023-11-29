@@ -9,29 +9,40 @@ const GroupingSelector = ({
 }) => {
    return (
       <>
-         <div className="flex justify-center w-96 gap-2 ml-4 mb-4">
+         <div className="flex justify-center items-center gap-2">
             Grouping:
             <label>
                <input
                   type="radio"
                   name="grouping"
+                  value="All"
+                  className="whitespace-nowrap mr-2 align-middle"
+                  checked={grouping === 'All'}
+                  onChange={onGroupingChange}
+               />
+               All
+            </label>
+            <label>
+               <input
+                  type="radio"
+                  name="grouping"
                   value="NETYPE"
-                  className="whitespace-nowrap mr-4 align-middle"
+                  className="whitespace-nowrap mr-2 align-middle"
                   checked={grouping === 'NETYPE'}
                   onChange={onGroupingChange}
                />
-               NETYPE
+               NeType
             </label>
             <label>
                <input
                   type="radio"
                   name="grouping"
                   value="NEALIAS"
-                  className="whitespace-nowrap mr-4 align-middle"
+                  className="whitespace-nowrap mr-2 align-middle"
                   checked={grouping === 'NEALIAS'}
                   onChange={onGroupingChange}
                />
-               NEALIAS
+               NeAlias
             </label>
          </div>
       </>

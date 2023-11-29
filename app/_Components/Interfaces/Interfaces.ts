@@ -32,6 +32,8 @@ export interface ChartComponentProps {
    data: chartProps
    grouping: string
    selectedKPIs: object
+   dateTimeKeys: object
+   onDateTimeKeyChange: (selection: ReactChange) => void
 }
 
 export interface DateProp {
@@ -52,4 +54,9 @@ export interface DateRange {
 export type KPIProps = {
    onKPISelect: (KPIs: ReactChange) => void
    selectedKPIs: Map<string, boolean>
+}
+
+export interface PageState {
+   skip: number
+   take: number
 }

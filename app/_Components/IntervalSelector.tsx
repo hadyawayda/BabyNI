@@ -8,7 +8,7 @@ const Interval = ({
    onIntervalChange: (e: ReactChange) => void
 }) => {
    return (
-      <div className="flex justify-center w-96 gap-2">
+      <div className="flex justify-center gap-2">
          Interval Aggregation:
          <label>
             <input

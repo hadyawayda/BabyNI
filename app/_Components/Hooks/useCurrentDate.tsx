@@ -9,7 +9,7 @@ const useCurrentDate = () => {
       currentMonth < 10 ? '0' + currentMonth : currentMonth
    }-${currentDay < 10 ? '0' + currentDay : currentDay}`
 
-   const oneMonthAgo = new Date(today)
+   const oneMonthAgo = new Date()
    oneMonthAgo.setMonth(now.getMonth() - 1)
    const yearOneMonthAgo = oneMonthAgo.getFullYear()
    const monthOneMonthAgo = oneMonthAgo.getMonth() + 1

@@ -3,9 +3,15 @@
 import Grid from './Grid'
 import Chart from './Chart'
 import Filters from './Filters'
-import { Suspense, useState } from 'react'
-import { DataProps, gridProps, ReactEvent } from './Interfaces/Interfaces'
+import { Suspense, useEffect, useState } from 'react'
+import {
+   DataProps,
+   DateRange,
+   gridProps,
+   ReactEvent,
+} from './Interfaces/Interfaces'
 import { callData } from './Data/CallData'
+import useDateString from './Hooks/useDateString'
 
 const Body = ({ gridData, chartData }: DataProps) => {
    const KPIs = {
@@ -13,15 +19,57 @@ const Body = ({ gridData, chartData }: DataProps) => {
       MAX_RX_LEVEL: true,
       RSL_DEVIATION: true,
    }
-   const [data, setData] = useState<gridProps>(gridData)
-   const [grouping, setGrouping] = useState<string>('Both')
-   const [selectedKPIs, setSelectedKPIs] = useState<object>(KPIs)
 
-   async function handleDataFetch(interval: string) {
-      setData(await callData(interval))
+   const [data, setData] = useState<gridProps>(gridData)
+   const [interval, setInterval] = useState<string>('daily')
+   const [selectedKPIs, setSelectedKPIs] = useState<object>(KPIs)
+   const [grouping, setGrouping] = useState<string>('NETYPE')
+   const [dateTimeKeys, setDateTimeKeys] = useState<object>({
+      2072264378: true,
+      2072262378: true,
+      2072234378: true,
+      2072264578: true,
+   })
+   const [selectedDateTimeKeys, setSelectedDateTimeKeys] = useState<number[]>([
+      2072264378,
+   ])
+   const [dateRange, setDateRange] = useState<DateRange>(
+      useDateString({
+         start: new Date(new Date().setDate(new Date().getDate() - 30)),
+         end: new Date(),
+      })
+   )
+
+   function handleDataFetch(dateInterval: string) {
+      setInterval(dateInterval)
    }
 
-   function handleDateChange() {}
+   function handleDateChange(date: DateRange) {
+      setDateRange(date)
+   }
+
+   async function fetchNewData() {
+      setData(await callData(interval, dateRange))
+   }
+
+   function fetchDateTimeKeys() {
+      // const updatedArray = [...dateTimeKeys!]
+      // gridData.forEach((x) => {
+      //    if (!dateTimeKeys!.includes(x.DATETIME_KEY)) {
+      //       updatedArray.push(x.DATETIME_KEY)
+      //    }
+      // })
+      // setDateTimeKeys(updatedArray)
+   }
+
+   useEffect(() => {
+      fetchNewData()
+      fetchDateTimeKeys()
+   }, [interval, dateRange])
+
+   useEffect(() => {
+      fetchDateTimeKeys()
+   }, [])
 
    function handleKPIChange(KPI: ReactEvent) {
       const { name, checked } = KPI
@@ -45,19 +93,20 @@ const Body = ({ gridData, chartData }: DataProps) => {
                   onIntervalChange={handleDataFetch}
                   onKPIChange={handleKPIChange}
                   onGroupingChange={handleGroupingChange}
-                  selectedKPIs={selectedKPIs}
+                  {...{ selectedKPIs, interval, dateTimeKeys, grouping }}
                />
             </Suspense>
             <div className="flex flex-col items-center justify-center overflow-y-scroll">
                <Suspense>
-                  <Grid props={data} />
+                  {/*
+                     Add DateTime_Key selector
+                  */}
+                  <Grid
+                     {...{ data, selectedKPIs, grouping, selectedDateTimeKeys }}
+                  />
                </Suspense>
                <Suspense>
-                  <Chart
-                     props={chartData}
-                     grouping={grouping}
-                     selectedKPIs={selectedKPIs}
-                  />
+                  <Chart {...{ chartData, grouping, selectedKPIs }} />
                </Suspense>
             </div>
          </div>

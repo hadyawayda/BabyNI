@@ -1,18 +1,7 @@
 const Loading = () => {
    return (
-      <div className="flex justify-center items-center absolute">
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data Loading Data Loading Data Loading Data Loading Data
-         Loading Data
+      <div className="flex justify-center items-center fixed">
+         <div className="flex justify-center items-center">Loading Data...</div>
       </div>
    )
 }

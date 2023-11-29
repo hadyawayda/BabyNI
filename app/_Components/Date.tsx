@@ -1,13 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useState } from 'react'
-import { DateRangePicker } from '@progress/kendo-react-dateinputs'
+import { Fragment, useRef, useState } from 'react'
+import {
+   DateRangePicker,
+   DateRangePickerChangeEvent,
+   SelectionRange,
+} from '@progress/kendo-react-dateinputs'
 import '@progress/kendo-theme-default/dist/all.css'
-import Submit from './Submit'
+import useDateString from './Hooks/useDateString'
+import { DateRange } from './Interfaces/Interfaces'
 
-const DateComponent = ({ onDateChange }: { onDateChange: () => void }) => {
+const DateComponent = ({
+   onDateChange,
+}: {
+   onDateChange: (date: DateRange) => void
+}) => {
    const [isOpen, setIsOpen] = useState(false)
-
-   const [date, setDate] = useState({
+   let completeButtonRef = useRef(null)
+   const [date, setDate] = useState<SelectionRange>({
       start: new Date(new Date().setDate(new Date().getDate() - 30)),
       end: new Date(),
    })
@@ -40,8 +49,13 @@ const DateComponent = ({ onDateChange }: { onDateChange: () => void }) => {
       })
    }
 
+   function handleDateChange(e: DateRangePickerChangeEvent) {
+      setDate(e.value)
+   }
+
    function handleDateSubmit() {
-      console.log('helloooooooz')
+      onDateChange(useDateString(date))
+      setIsOpen(false)
    }
 
    function handleClose() {
@@ -70,6 +84,7 @@ const DateComponent = ({ onDateChange }: { onDateChange: () => void }) => {
                as="div"
                onClose={handleClose}
                className="relative z-50"
+               initialFocus={completeButtonRef}
             >
                <Transition.Child
                   as={Fragment}
@@ -101,12 +116,44 @@ const DateComponent = ({ onDateChange }: { onDateChange: () => void }) => {
                               Select Date Range
                            </Dialog.Title>
                            <DateRangePicker
-                              defaultShow={false}
                               className="k-form"
-                              defaultValue={date}
+                              value={date}
+                              onChange={handleDateChange}
                            />
                         </div>
-                        <Submit handleClose={handleDateSubmit} />
+                        <div className="flex gap-10 items-end h-full mb-6">
+                           <button
+                              onClick={handleYesterday}
+                              className="text-black"
+                           >
+                              Yesterday
+                           </button>
+                           <button
+                              onClick={handle7Days}
+                              className="text-black"
+                           >
+                              7 Days
+                           </button>
+                           <button
+                              onClick={handle15Days}
+                              className="text-black"
+                           >
+                              15 Days
+                           </button>
+                           <button
+                              onClick={handle30Days}
+                              className="text-black"
+                           >
+                              30 Days
+                           </button>
+                        </div>
+                        <button
+                           ref={completeButtonRef}
+                           onClick={handleDateSubmit}
+                           className="flex shrink-0 w-1/2 items-center h-12 justify-center rounded-3xl text-sm tracking-widest border bg-orange-600 hover:bg-white hover:text-orange-600 hover:border-orange-600 transition-colors duration-500"
+                        >
+                           SUBMIT
+                        </button>
                      </Dialog.Panel>
                   </Transition.Child>
                </div>

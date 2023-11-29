@@ -18,6 +18,7 @@ const KPISelector = ({ onKPISelect, selectedKPIs }: KPIprops) => {
 
    return (
       <>
+         <p className="whitespace-nowrap mr-2">KPIs:</p>
          <button
             className="whitespace-nowrap underline"
             onClick={() => setIsOpen(true)}
@@ -68,7 +69,10 @@ const KPISelector = ({ onKPISelect, selectedKPIs }: KPIprops) => {
                            <div className="flex flex-col justify-between items-start w-1/2 my-10">
                               {Object.entries(selectedKPIs).map(
                                  ([key, value]) => (
-                                    <div className="flex ml-4">
+                                    <div
+                                       className="flex ml-4"
+                                       key={key}
+                                    >
                                        <input
                                           type="checkbox"
                                           name={key}

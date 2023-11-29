@@ -1,7 +1,11 @@
 import https from 'https'
 import axios from 'axios'
+import { DateRange } from '../Interfaces/Interfaces'
 
-export async function callData(interval: string) {
+export async function callData(interval: string, { start, end }: DateRange) {
+   const startParam = `?startDate=${start}`
+   const endParam = `&endDate=${end}`
+
    const agent = new https.Agent({
       rejectUnauthorized: false,
    })
@@ -12,7 +16,7 @@ export async function callData(interval: string) {
    })
 
    try {
-      const response = await api.get(interval)
+      const response = await api.get(interval + startParam + endParam)
       return response.data
    } catch (error) {
       console.error(error)

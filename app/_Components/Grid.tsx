@@ -1,9 +1,19 @@
 'use client'
 
-import { GridComponentProps as gridProps } from './Interfaces/Interfaces'
+import { gridProps } from './Interfaces/Interfaces'
 import { Grid as G, GridColumn as Column } from '@progress/kendo-react-grid'
 
-const Grid = ({ props }: gridProps) => {
+const Grid = ({
+   data,
+   selectedKPIs,
+   grouping,
+   selectedDateTimeKeys,
+}: {
+   data: gridProps
+   selectedKPIs: object
+   grouping: string
+   selectedDateTimeKeys: number[]
+}) => {
    return (
       <div className="w-10/12 text-black">
          <div className="my-6 w-full flex justify-center">Performance Grid</div>
@@ -14,7 +24,7 @@ const Grid = ({ props }: gridProps) => {
                   height: '300px',
                   border: '1px solid #999',
                }}
-               data={props}
+               data={data}
                // filterable={true}
                pageable={{
                   buttonCount: 10,

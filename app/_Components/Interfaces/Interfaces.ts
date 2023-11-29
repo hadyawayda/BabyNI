@@ -28,14 +28,10 @@ export interface DataProps {
    chartData: chartProps
 }
 
-export interface GridComponentProps {
-   props: gridProps
-}
-
 export interface ChartComponentProps {
+   chartData: chartProps
    grouping: string
    selectedKPIs: object
-   props: chartProps
 }
 
 export interface DateProp {
@@ -47,3 +43,8 @@ export interface DateProp {
 export type ReactEvent = EventTarget & HTMLInputElement
 
 export type ReactChange = React.ChangeEvent<HTMLInputElement>
+
+export interface DateRange {
+   start: string
+   end: string
+}

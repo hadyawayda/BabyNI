@@ -1,6 +1,7 @@
 import Date from './Date'
 import KPISelector from './KPISelector'
-import { ReactChange, ReactEvent } from './Interfaces/Interfaces'
+import { DateRange, ReactChange, ReactEvent } from './Interfaces/Interfaces'
+import GroupingSelector from './GroupingSelector'
 
 const Filters = ({
    onDateChange,
@@ -8,15 +9,21 @@ const Filters = ({
    onKPIChange,
    onGroupingChange,
    selectedKPIs,
+   interval,
+   dateTimeKeys,
+   grouping,
 }: {
-   onDateChange: () => void
+   onDateChange: (date: DateRange) => void
    onIntervalChange: (interval: string) => void
    onKPIChange: (KPIs: ReactEvent) => void
    onGroupingChange: (item: ReactEvent) => void
    selectedKPIs: object
+   interval: string
+   dateTimeKeys: object
+   grouping: string
 }) => {
-   function handleDateChange() {
-      onDateChange()
+   function handleDateChange(date: DateRange) {
+      onDateChange(date)
    }
 
    function handleIntervalChange(e: ReactChange) {
@@ -25,6 +32,10 @@ const Filters = ({
 
    function handleKPIChange(KPI: ReactEvent) {
       onKPIChange(KPI)
+   }
+
+   function handleDateTimeKeySelect(selectedDateTimeKeys: any) {
+      console.log(selectedDateTimeKeys)
    }
 
    function handleGroupingChange(e: ReactChange) {
@@ -39,9 +50,10 @@ const Filters = ({
             <label>
                <input
                   type="radio"
-                  name="filter"
+                  name="interval"
                   value="hourly"
                   className="mr-1 align-middle"
+                  checked={interval === 'hourly'}
                   onChange={handleIntervalChange}
                />
                Hourly
@@ -49,54 +61,24 @@ const Filters = ({
             <label>
                <input
                   type="radio"
-                  name="filter"
+                  name="interval"
                   value="daily"
                   className="mr-1 align-middle"
+                  checked={interval === 'daily'}
                   onChange={handleIntervalChange}
                />
                Daily
             </label>
          </div>
-         <div className="flex">
-            <p className="whitespace-nowrap mr-2">KPIs:</p>
-            <KPISelector
-               onKPISelect={handleKPIChange}
-               selectedKPIs={selectedKPIs}
-            />
-         </div>
-         <div className="flex justify-center w-96 gap-2 ml-4">
-            Grouping:
-            <label>
-               <input
-                  type="radio"
-                  name="filter"
-                  value="Both"
-                  className="whitespace-nowrap mr-1 align-middle"
-                  onChange={handleGroupingChange}
-               />
-               BOTH
-            </label>
-            <label>
-               <input
-                  type="radio"
-                  name="filter"
-                  value="NETYPE"
-                  className="whitespace-nowrap mr-1 align-middle"
-                  onChange={handleGroupingChange}
-               />
-               NETYPE
-            </label>
-            <label>
-               <input
-                  type="radio"
-                  name="filter"
-                  value="NEALIAS"
-                  className="whitespace-nowrap mr-1 align-middle"
-                  onChange={handleGroupingChange}
-               />
-               NEALIAS
-            </label>
-         </div>
+         <KPISelector
+            onKPISelect={handleKPIChange}
+            selectedKPIs={selectedKPIs}
+         />
+         <GroupingSelector
+            onGroupingChange={handleGroupingChange}
+            onDateTimeKeySelect={handleDateTimeKeySelect}
+            {...{ grouping, dateTimeKeys }}
+         />
       </div>
    )
 }

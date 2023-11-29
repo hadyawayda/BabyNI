@@ -62,13 +62,15 @@ const KPISelector = ({ onKPISelect, selectedKPIs }: KPIProps) => {
                                        key={key}
                                        className="flex ml-4"
                                     >
-                                       <input
-                                          type="checkbox"
-                                          name={key}
-                                          checked={value}
-                                          onChange={onKPISelect}
-                                       />
-                                       <label className="flex ml-8 text-black m-4">
+                                       <label className="flex text-black m-4">
+                                          <input
+                                             type="checkbox"
+                                             name={key}
+                                             checked={value}
+                                             onChange={onKPISelect}
+                                             className="mr-8"
+                                          />
+
                                           {key}
                                        </label>
                                     </div>

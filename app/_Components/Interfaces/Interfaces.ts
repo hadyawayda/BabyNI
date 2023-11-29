@@ -31,7 +31,7 @@ export interface DataProps {
 export interface ChartComponentProps {
    data: chartProps
    grouping: string
-   selectedKPIs: object
+   selectedKPIs: Map<string, boolean>
    dateTimeKeys: object
    onDateTimeKeyChange: (selection: ReactChange) => void
 }

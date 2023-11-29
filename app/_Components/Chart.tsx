@@ -18,49 +18,89 @@ const ChartComponent = ({
    onDateTimeKeyChange,
 }: Props) => {
    // const [dateTimeKeys, setDateTimeKeys] = useState([])
-   const [categories, setCategories] = useState(Object.keys(selectedKPIs))
+   const [categories, setCategories] = useState<Set<string>>(new Set())
+   const [inputPower, setInputPower] = useState<number[]>([])
+   const [maxRxLevel, setMaxRxLevel] = useState<number[]>([])
+   const [rslDeviation, setRslDeviation] = useState<number[]>([])
 
-   // useEffect(() => {
-   //    const enabledCategories = Object.entries(selectedKPIs)
-   //       .filter(([key, value]) => value) // Keep only entries where the value is true
-   //       .map(([key]) => key) // Extract the keys
+   function fetchData() {
+      const newInputPower: number[] = []
+      const newMaxRxLevel: number[] = []
+      const newRslDeviation: number[] = []
 
-   //    setCategories(enabledCategories)
-   // }, [selectedKPIs])
+      data.forEach((x) => {
+         newInputPower.push(x.RSL_INPUT_POWER)
+         newMaxRxLevel.push(x.MAX_RX_LEVEL)
+         newRslDeviation.push(x.RSL_DEVIATION)
+      })
 
-   // useEffect(() => console.log(categories), [selectedKPIs])
+      setInputPower(newInputPower)
+      setMaxRxLevel(newMaxRxLevel)
+      setRslDeviation(newRslDeviation)
+   }
+
+   useEffect(() => fetchData(), [data])
+
+   function fetchCategories() {
+      let set = new Set<string>()
+      let group = ''
+
+      if (grouping === 'NETYPE') group = 'NETYPE'
+      if (grouping === 'NEALIAS') group = 'NEALIAS'
+
+      data.forEach((x) => {
+         set.add(group === 'NEALIAS' ? x.NEALIAS : x.NETYPE)
+      })
+
+      setCategories(set)
+   }
+
+   // Add fetch function that fetches individual timeframes and set them to the categories array
+
+   useEffect(() => fetchCategories(), [grouping])
 
    return (
       <>
-         <Chart className="w-11/12 mt-4">
+         3andak granularity bel data men wara l interval selection aktar mafi
+         individual categories(NETYPE or NEALIAS)
+         <Chart className="w-11/12 mt-4 mb-6">
             <div className="flex justify-around">
                <ChartTitle
                   margin={10}
                   text="Performance Chart"
                />
-               <DateTimeKeySelector
-                  {...{ dateTimeKeys, onDateTimeKeyChange }}
-               />
             </div>
             <ChartCategoryAxis>
                <ChartCategoryAxisItem
-                  title={{ text: 'KPIs' }}
-                  categories={categories}
+               // title={{ text: 'KPIs' }}
+               // categories={[...categories]}
                />
             </ChartCategoryAxis>
             <ChartSeries>
-               {/* {data.map((item, idx) => (
+               {selectedKPIs.get('RSL_INPUT_POWER') && (
                   <ChartSeriesItem
-                     key={idx}
+                     name={'RSL_INPUT_POWER'}
                      type="line"
-                     data={[1, 2, 3]}
-                     name={`${item.DATETIME_KEY}  ${
-                        grouping === 'NETYPE' ? item.NETYPE : item.NEALIAS
-                     }`}
+                     data={inputPower}
                   />
-               ))} */}
+               )}
+               {selectedKPIs.get('MAX_RX_LEVEL') && (
+                  <ChartSeriesItem
+                     name={'MAX_RX_LEVEL'}
+                     type="line"
+                     data={maxRxLevel}
+                  />
+               )}
+               {selectedKPIs.get('RSL_DEVIATION') && (
+                  <ChartSeriesItem
+                     name={'RSL_DEVIATION'}
+                     type="line"
+                     data={rslDeviation}
+                  />
+               )}
             </ChartSeries>
          </Chart>
+         <DateTimeKeySelector {...{ dateTimeKeys, onDateTimeKeyChange }} />
       </>
    )
 }
@@ -77,3 +117,44 @@ export default ChartComponent
 // useEffect(() => {
 //    console.log(selectedKPIs)
 // }, [selectedKPIs])
+
+{
+   /* {[...selectedKPIs].map(([key, value]) => {
+                  return (
+                     <div key={key}>
+                        {value && (
+                           <ChartSeriesItem
+                              // key={key}
+                              name={key}
+                              type="line"
+                              data={[-20]}
+                           />
+                        )}
+                     </div>
+                  )
+               })} */
+}
+{
+   /* {chartData.map((item, idx) => (
+                  <ChartSeriesItem
+                     key={idx}
+                     type="line"
+                     data={[
+                        item.RSL_INPUT_POWER,
+                        item.MAX_RX_LEVEL,
+                        item.RSL_DEVIATION,
+                     ]}
+                     name={legend}
+                  />
+               ))} */
+}
+
+// useEffect(() => {
+//    const enabledCategories = Object.entries(selectedKPIs)
+//       .filter(([key, value]) => value) // Keep only entries where the value is true
+//       .map(([key]) => key) // Extract the keys
+
+//    setCategories(enabledCategories)
+// }, [selectedKPIs])
+
+// useEffect(() => console.log(categories), [selectedKPIs])

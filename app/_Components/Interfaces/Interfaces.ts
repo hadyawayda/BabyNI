@@ -48,3 +48,8 @@ export interface DateRange {
    start: string
    end: string
 }
+
+export type KPIProps = {
+   onKPISelect: (KPIs: ReactChange) => void
+   selectedKPIs: object
+}

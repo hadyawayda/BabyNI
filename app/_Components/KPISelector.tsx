@@ -2,25 +2,16 @@
 
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment, useState } from 'react'
-import { ReactChange, ReactEvent } from './Interfaces/Interfaces'
+import { KPIProps } from './Interfaces/Interfaces'
 
-type KPIprops = {
-   onKPISelect: (KPIs: ReactEvent) => void
-   selectedKPIs: object
-}
-
-const KPISelector = ({ onKPISelect, selectedKPIs }: KPIprops) => {
+const KPISelector = ({ onKPISelect, selectedKPIs }: KPIProps) => {
    let [isOpen, setIsOpen] = useState(false)
-
-   function handleKPISelect(e: ReactChange) {
-      onKPISelect(e.target)
-   }
 
    return (
       <>
-         <p className="whitespace-nowrap mr-2">KPIs:</p>
+         {/* <p className="whitespace-nowrap">KPIs:</p> */}
          <button
-            className="whitespace-nowrap underline"
+            className="whitespace-nowrap rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition-colors duration-200"
             onClick={() => setIsOpen(true)}
          >
             View Selected KPIs
@@ -77,7 +68,7 @@ const KPISelector = ({ onKPISelect, selectedKPIs }: KPIprops) => {
                                           type="checkbox"
                                           name={key}
                                           checked={value}
-                                          onChange={handleKPISelect}
+                                          onChange={onKPISelect}
                                        />
                                        <label className="flex ml-8 text-black m-4">
                                           {key}

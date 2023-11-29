@@ -8,7 +8,7 @@ import {
    DataProps,
    DateRange,
    gridProps,
-   ReactEvent,
+   ReactChange,
 } from './Interfaces/Interfaces'
 import { callData } from './Data/CallData'
 import useDateString from './Hooks/useDateString'
@@ -25,14 +25,17 @@ const Body = ({ gridData, chartData }: DataProps) => {
    const [selectedKPIs, setSelectedKPIs] = useState<object>(KPIs)
    const [grouping, setGrouping] = useState<string>('NETYPE')
    const [dateTimeKeys, setDateTimeKeys] = useState<object>({
-      2072264378: true,
-      2072262378: true,
-      2072234378: true,
-      2072264578: true,
+      '2072264378': true,
+      '2072262378': true,
+      '2072234378': true,
+      '2072264578': true,
    })
-   const [selectedDateTimeKeys, setSelectedDateTimeKeys] = useState<number[]>([
-      2072264378,
-   ])
+   const [selectedDateTimeKeys, setSelectedDateTimeKeys] = useState<object>({
+      '2072264378': true,
+      '2072262378': true,
+      '2072234378': true,
+      '2072264578': true,
+   })
    const [dateRange, setDateRange] = useState<DateRange>(
       useDateString({
          start: new Date(new Date().setDate(new Date().getDate() - 30)),
@@ -40,8 +43,8 @@ const Body = ({ gridData, chartData }: DataProps) => {
       })
    )
 
-   function handleDataFetch(dateInterval: string) {
-      setInterval(dateInterval)
+   function handleDataFetch(dateInterval: ReactChange) {
+      setInterval(dateInterval.target.value)
    }
 
    function handleDateChange(date: DateRange) {
@@ -71,8 +74,8 @@ const Body = ({ gridData, chartData }: DataProps) => {
       fetchDateTimeKeys()
    }, [])
 
-   function handleKPIChange(KPI: ReactEvent) {
-      const { name, checked } = KPI
+   function handleKPIChange(KPI: ReactChange) {
+      const { name, checked } = KPI.target
 
       setSelectedKPIs((prev) => ({
          ...prev,
@@ -80,8 +83,17 @@ const Body = ({ gridData, chartData }: DataProps) => {
       }))
    }
 
-   function handleGroupingChange(e: ReactEvent) {
-      setGrouping(e.value)
+   function handleGroupingChange(e: ReactChange) {
+      setGrouping(e.target.value)
+   }
+
+   function handleDateTimeKeyChange(selection: ReactChange) {
+      const { name, checked } = selection.target
+
+      setDateTimeKeys((prev) => ({
+         ...prev,
+         [name]: checked,
+      }))
    }
 
    return (
@@ -91,8 +103,9 @@ const Body = ({ gridData, chartData }: DataProps) => {
                <Filters
                   onDateChange={handleDateChange}
                   onIntervalChange={handleDataFetch}
-                  onKPIChange={handleKPIChange}
+                  onKPISelect={handleKPIChange}
                   onGroupingChange={handleGroupingChange}
+                  onDateTimeKeySelect={handleDateTimeKeyChange}
                   {...{ selectedKPIs, interval, dateTimeKeys, grouping }}
                />
             </Suspense>

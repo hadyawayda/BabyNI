@@ -12,7 +12,7 @@ const Grid = ({
    data: gridProps
    selectedKPIs: object
    grouping: string
-   selectedDateTimeKeys: number[]
+   selectedDateTimeKeys: object
 }) => {
    return (
       <div className="w-10/12 text-black">

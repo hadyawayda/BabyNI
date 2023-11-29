@@ -9,24 +9,16 @@ const GroupingSelector = ({
    dateTimeKeys,
 }: {
    onGroupingChange: (grouping: ReactChange) => void
-   onDateTimeKeySelect: (selection: ReactEvent) => void
+   onDateTimeKeySelect: (selection: ReactChange) => void
    grouping: string
    dateTimeKeys: object
 }) => {
    let [isOpen, setIsOpen] = useState(false)
 
-   function handleGroupingChange(e: ReactChange) {
-      onGroupingChange(e)
-   }
-
-   function handleDateTimeKeySelect(e: ReactChange) {
-      onDateTimeKeySelect(e.target)
-   }
-
    return (
       <>
          <button
-            className="whitespace-nowrap underline"
+            className="whitespace-nowrap rounded-md bg-gray-600 px-4 py-2 text-sm font-medium text-white hover:bg-orange-600 transition-colors duration-200"
             onClick={() => setIsOpen(true)}
          >
             Select Grouping
@@ -80,7 +72,7 @@ const GroupingSelector = ({
                                        value="NETYPE"
                                        className="whitespace-nowrap mr-4 align-middle"
                                        checked={grouping === 'NETYPE'}
-                                       onChange={handleGroupingChange}
+                                       onChange={onGroupingChange}
                                     />
                                     NETYPE
                                  </label>
@@ -91,7 +83,7 @@ const GroupingSelector = ({
                                        value="NEALIAS"
                                        className="whitespace-nowrap mr-4 align-middle"
                                        checked={grouping === 'NEALIAS'}
-                                       onChange={handleGroupingChange}
+                                       onChange={onGroupingChange}
                                     />
                                     NEALIAS
                                  </label>
@@ -123,9 +115,7 @@ const GroupingSelector = ({
                                                 type="checkbox"
                                                 name={key}
                                                 checked={value}
-                                                onChange={
-                                                   handleDateTimeKeySelect
-                                                }
+                                                onChange={onDateTimeKeySelect}
                                              />
                                              <label className="ml-6 flex justify-center items-center">
                                                 {key}

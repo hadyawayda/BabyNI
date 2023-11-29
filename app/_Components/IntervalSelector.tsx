@@ -1,0 +1,39 @@
+import { ReactChange } from './Interfaces/Interfaces'
+
+const Interval = ({
+   interval,
+   onIntervalChange,
+}: {
+   interval: string
+   onIntervalChange: (e: ReactChange) => void
+}) => {
+   return (
+      <div className="flex justify-center w-96 gap-2">
+         Interval Aggregation:
+         <label>
+            <input
+               type="radio"
+               name="interval"
+               value="hourly"
+               className="mr-1 align-middle"
+               checked={interval === 'hourly'}
+               onChange={onIntervalChange}
+            />
+            Hourly
+         </label>
+         <label>
+            <input
+               type="radio"
+               name="interval"
+               value="daily"
+               className="mr-1 align-middle"
+               checked={interval === 'daily'}
+               onChange={onIntervalChange}
+            />
+            Daily
+         </label>
+      </div>
+   )
+}
+
+export default Interval

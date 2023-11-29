@@ -14,23 +14,17 @@ import { callData } from './Data/CallData'
 import useDateString from './Hooks/useDateString'
 
 const Body = ({ gridData, chartData }: DataProps) => {
-   const KPIs = {
-      RSL_INPUT_POWER: true,
-      MAX_RX_LEVEL: true,
-      RSL_DEVIATION: true,
-   }
-
    const [data, setData] = useState<gridProps>(gridData)
    const [interval, setInterval] = useState<string>('daily')
-   const [selectedKPIs, setSelectedKPIs] = useState<object>(KPIs)
+   const [selectedKPIs, setSelectedKPIs] = useState<Map<string, boolean>>(
+      new Map([
+         ['RSL_INPUT_POWER', true],
+         ['MAX_RX_LEVEL', true],
+         ['RSL_DEVIATION', true],
+      ])
+   )
    const [grouping, setGrouping] = useState<string>('NETYPE')
    const [dateTimeKeys, setDateTimeKeys] = useState<object>({
-      '2072264378': true,
-      '2072262378': true,
-      '2072234378': true,
-      '2072264578': true,
-   })
-   const [selectedDateTimeKeys, setSelectedDateTimeKeys] = useState<object>({
       '2072264378': true,
       '2072262378': true,
       '2072234378': true,
@@ -56,13 +50,13 @@ const Body = ({ gridData, chartData }: DataProps) => {
    }
 
    function fetchDateTimeKeys() {
-      // const updatedArray = [...dateTimeKeys!]
-      // gridData.forEach((x) => {
-      //    if (!dateTimeKeys!.includes(x.DATETIME_KEY)) {
-      //       updatedArray.push(x.DATETIME_KEY)
-      //    }
-      // })
-      // setDateTimeKeys(updatedArray)
+      let map = new Map<number, boolean>()
+
+      data.forEach((x) => {
+         map.set(x.DATETIME_KEY, true)
+      })
+
+      // console.log(map)
    }
 
    useEffect(() => {
@@ -76,12 +70,16 @@ const Body = ({ gridData, chartData }: DataProps) => {
 
    function handleKPIChange(KPI: ReactChange) {
       const { name, checked } = KPI.target
-
-      setSelectedKPIs((prev) => ({
-         ...prev,
-         [name]: checked,
-      }))
+      const filteredMap = new Map(selectedKPIs)
+      filteredMap.set(name, checked)
+      setSelectedKPIs(filteredMap)
+      // setSelectedKPIs((prev) => ({
+      //    ...prev,
+      //    [name]: checked,
+      // }))
    }
+
+   useEffect(() => console.log(selectedKPIs), [selectedKPIs])
 
    function handleGroupingChange(e: ReactChange) {
       setGrouping(e.target.value)
@@ -111,15 +109,10 @@ const Body = ({ gridData, chartData }: DataProps) => {
             </Suspense>
             <div className="flex flex-col items-center justify-center overflow-y-scroll">
                <Suspense>
-                  {/*
-                     Add DateTime_Key selector
-                  */}
-                  <Grid
-                     {...{ data, selectedKPIs, grouping, selectedDateTimeKeys }}
-                  />
+                  <Grid {...{ data, selectedKPIs, grouping, dateTimeKeys }} />
                </Suspense>
                <Suspense>
-                  <Chart {...{ chartData, grouping, selectedKPIs }} />
+                  <Chart {...{ data, selectedKPIs, grouping }} />
                </Suspense>
             </div>
          </div>

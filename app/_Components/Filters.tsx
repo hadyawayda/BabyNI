@@ -1,6 +1,6 @@
 import Date from './Date'
 import KPISelector from './KPISelector'
-import { DateRange, ReactChange, ReactEvent } from './Interfaces/Interfaces'
+import { DateRange, ReactChange } from './Interfaces/Interfaces'
 import GroupingSelector from './GroupingSelector'
 import Interval from './IntervalSelector'
 
@@ -20,20 +20,16 @@ const Filters = ({
    onKPISelect: (KPIs: ReactChange) => void
    onGroupingChange: (item: ReactChange) => void
    onDateTimeKeySelect: (selection: ReactChange) => void
-   selectedKPIs: object
+   selectedKPIs: Map<string, boolean>
    interval: string
    dateTimeKeys: object
    grouping: string
 }) => {
-   function handleDateTimeKeyChange(selectedDateTimeKeys: object) {
-      console.log(selectedDateTimeKeys)
-   }
-
    return (
       <div className="flex gap-4 justify-around items-center px-28">
          <Date onDateChange={onDateChange} />
-         <Interval {...{ interval, onIntervalChange }} />
          <KPISelector {...{ selectedKPIs, onKPISelect }} />
+         <Interval {...{ interval, onIntervalChange }} />
          <GroupingSelector
             {...{
                grouping,

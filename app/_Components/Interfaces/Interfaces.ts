@@ -29,7 +29,7 @@ export interface DataProps {
 }
 
 export interface ChartComponentProps {
-   chartData: chartProps
+   data: chartProps
    grouping: string
    selectedKPIs: object
 }
@@ -51,5 +51,5 @@ export interface DateRange {
 
 export type KPIProps = {
    onKPISelect: (KPIs: ReactChange) => void
-   selectedKPIs: object
+   selectedKPIs: Map<string, boolean>
 }

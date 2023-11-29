@@ -7,12 +7,12 @@ const Grid = ({
    data,
    selectedKPIs,
    grouping,
-   selectedDateTimeKeys,
+   dateTimeKeys,
 }: {
    data: gridProps
-   selectedKPIs: object
+   selectedKPIs: Map<string, boolean>
    grouping: string
-   selectedDateTimeKeys: object
+   dateTimeKeys: object
 }) => {
    return (
       <div className="w-10/12 text-black">
@@ -35,47 +35,51 @@ const Grid = ({
                resizable={true}
                sortable={true}
             >
-               <Column
+               {/* <Column
                   field="DATETIME_KEY"
                   title="DATETIME_KEY"
                   width="130px"
-               />
+               /> */}
                <Column
                   field="TIME"
                   title="TIME"
                   width="170px"
                   locked={true}
                />
-               <Column
-                  field="NETWORK_SID"
-                  title="NETWORK_SID"
-                  width="140px"
-               />
-               <Column
-                  field="NEALIAS"
-                  title="NEALIAS"
-                  width="140px"
-               />
-               <Column
-                  field="NETYPE"
-                  title="NETYPE"
-                  width="140px"
-               />
-               <Column
-                  field="RSL_INPUT_POWER"
-                  title="RSL_INPUT_POWER"
-                  width="170px"
-               />
-               <Column
-                  field="MAX_RX_LEVEL"
-                  title="MAX_RX_LEVEL"
-                  width="140px"
-               />
-               <Column
-                  field="RSL_DEVIATION"
-                  title="RSL_DEVIATION"
-                  width="140px"
-               />
+               {grouping === 'NEALIAS' ? (
+                  <Column
+                     field="NEALIAS"
+                     title="NEALIAS"
+                     width="130px"
+                  />
+               ) : (
+                  <Column
+                     field="NETYPE"
+                     title="NETYPE"
+                     width="130px"
+                  />
+               )}
+               {selectedKPIs.get('RSL_INPUT_POWER') ? (
+                  <Column
+                     field="RSL_INPUT_POWER"
+                     title="RSL_INPUT_POWER"
+                     width="170px"
+                  />
+               ) : null}
+               {selectedKPIs.get('MAX_RX_LEVEL') ? (
+                  <Column
+                     field="MAX_RX_LEVEL"
+                     title="MAX_RX_LEVEL"
+                     width="140px"
+                  />
+               ) : null}
+               {selectedKPIs.get('RSL_DEVIATION') ? (
+                  <Column
+                     field="RSL_DEVIATION"
+                     title="RSL_DEVIATION"
+                     width="140px"
+                  />
+               ) : null}
             </G>
          </div>
       </div>

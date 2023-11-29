@@ -51,18 +51,16 @@ const KPISelector = ({ onKPISelect, selectedKPIs }: KPIProps) => {
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                      >
-                        <Dialog.Panel className="relative mx-auto p-9 rounded-2xl flex flex-col justify-start items-center bg-slate-100 dialog-panel">
+                        <Dialog.Panel className="relative mx-auto p-9 rounded-2xl flex flex-col justify-start items-center bg-slate-100 dialog-panel text-black">
                            <div className="flex flex-col justify-start items-center">
-                              <Dialog.Title className="text-black">
-                                 Select KPIs:
-                              </Dialog.Title>
+                              <Dialog.Title>Select KPIs:</Dialog.Title>
                            </div>
                            <div className="flex flex-col justify-between items-start w-1/2 my-10">
-                              {Object.entries(selectedKPIs).map(
+                              {[...selectedKPIs.entries()].map(
                                  ([key, value]) => (
                                     <div
-                                       className="flex ml-4"
                                        key={key}
+                                       className="flex ml-4"
                                     >
                                        <input
                                           type="checkbox"

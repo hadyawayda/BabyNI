@@ -121,34 +121,34 @@ const DateComponent = ({
                               onChange={handleDateChange}
                            />
                         </div>
-                        <div className="flex gap-10 items-end h-full mb-6">
+                        <div className="flex gap-4 items-end h-full mb-6">
                            <button
                               onClick={handleYesterday}
-                              className="text-black"
+                              className="text-black py-2 px-4 border rounded-md focus:border-orange-600"
                            >
                               Yesterday
                            </button>
                            <button
                               onClick={handle7Days}
-                              className="text-black"
+                              className="text-black py-2 px-4 border rounded-md focus:border-orange-600"
                            >
                               7 Days
                            </button>
                            <button
                               onClick={handle15Days}
-                              className="text-black"
+                              className="text-black py-2 px-4 border rounded-md focus:border-orange-600"
                            >
                               15 Days
                            </button>
                            <button
                               onClick={handle30Days}
-                              className="text-black"
+                              className="text-black py-2 px-4 border rounded-md focus:border-orange-600"
+                              ref={completeButtonRef}
                            >
                               30 Days
                            </button>
                         </div>
                         <button
-                           ref={completeButtonRef}
                            onClick={handleDateSubmit}
                            className="flex shrink-0 w-1/2 items-center h-12 justify-center rounded-3xl text-sm tracking-widest border bg-orange-600 hover:bg-white hover:text-orange-600 hover:border-orange-600 transition-colors duration-500"
                         >

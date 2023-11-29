@@ -9,7 +9,7 @@ import {
 import { ChartComponentProps as Props } from './Interfaces/Interfaces'
 import { useEffect, useState } from 'react'
 
-const ChartComponent = ({ chartData, grouping, selectedKPIs }: Props) => {
+const ChartComponent = ({ data, grouping, selectedKPIs }: Props) => {
    // const [dateTimeKeys, setDateTimeKeys] = useState([])
    const [categories, setCategories] = useState(Object.keys(selectedKPIs))
 
@@ -37,7 +37,7 @@ const ChartComponent = ({ chartData, grouping, selectedKPIs }: Props) => {
                />
             </ChartCategoryAxis>
             <ChartSeries>
-               {chartData.map((item, idx) => (
+               {/* {data.map((item, idx) => (
                   <ChartSeriesItem
                      key={idx}
                      type="line"
@@ -46,7 +46,7 @@ const ChartComponent = ({ chartData, grouping, selectedKPIs }: Props) => {
                         grouping === 'NETYPE' ? item.NETYPE : item.NEALIAS
                      }`}
                   />
-               ))}
+               ))} */}
             </ChartSeries>
          </Chart>
       </>

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   aggregator:
-    build: ./Aggregator
+    build: ./aggregation
     ports:
       - "5000:5000"
     environment:
@@ -12,7 +12,7 @@ services:
       - app-network
 
   babyapi:
-    build: ./BabyAPI
+    build: ./babyapi
     ports:
       - "5001:5000"
     environment:
@@ -22,7 +22,7 @@ services:
       - app-network
 
   loader:
-    build: ./Loader
+    build: ./loader
     ports:
       - "5002:5000"
     environment:
@@ -32,7 +32,7 @@ services:
       - app-network
 
   parser:
-    build: ./Parser
+    build: ./parser
     ports:
       - "5003:5000"
     environment:
@@ -42,7 +42,7 @@ services:
       - app-network
 
   nodeapp:
-    build: ./NodeApp
+    build: ./ui
     ports:
       - "3000:3000"
     command: ["npm", "run", "dev"]

@@ -1,3 +1,0 @@
-C:\Users\User\OneDrive - Novelus\Desktop\BabyUI\babyui\out\appsettings.Development.json
-C:\Users\User\OneDrive - Novelus\Desktop\BabyUI\babyui\out\appsettings.json
-C:\Users\User\OneDrive - Novelus\Desktop\BabyUI\babyui\out\BabyAPI

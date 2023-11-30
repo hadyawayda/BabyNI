@@ -1,3 +1,0 @@
-C:\Users\User\OneDrive - Novelus\Desktop\Baby_NI\aggregation\out\appsettings.Development.json
-C:\Users\User\OneDrive - Novelus\Desktop\Baby_NI\aggregation\out\appsettings.json
-C:\Users\User\OneDrive - Novelus\Desktop\Baby_NI\aggregation\out\Aggregator

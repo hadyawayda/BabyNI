@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Aggregator\\Aggregator.csproj": {}
+    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\aggregation\\Aggregator.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Aggregator\\Aggregator.csproj": {
+    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\aggregation\\Aggregator.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Aggregator\\Aggregator.csproj",
+        "projectUniqueName": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\aggregation\\Aggregator.csproj",
         "projectName": "Aggregator",
-        "projectPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Aggregator\\Aggregator.csproj",
+        "projectPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\aggregation\\Aggregator.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Aggregator\\obj\\",
+        "outputPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\aggregation\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
@@ -52,6 +52,18 @@
               "target": "Package",
               "version": "[7.0.13, )"
             },
+            "Microsoft.NET.ILLink.Analyzers": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.100-1.23211.1, )",
+              "autoReferenced": true
+            },
+            "Microsoft.NET.ILLink.Tasks": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.100-1.23211.1, )",
+              "autoReferenced": true
+            },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.5.0, )"
@@ -72,6 +84,36 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.12, 7.0.12]"
+            },
+            {
+              "name": "Microsoft.AspNetCore.App.Runtime.linux-x64",
+              "version": "[7.0.12, 7.0.12]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Crossgen2.win-x64",
+              "version": "[7.0.12, 7.0.12]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[7.0.12, 7.0.12]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.12, 7.0.12]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Runtime.linux-x64",
+              "version": "[7.0.12, 7.0.12]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.12, 7.0.12]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -80,7 +122,12 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.2.23502.2\\RuntimeIdentifierGraph.json"
+        }
+      },
+      "runtimes": {
+        "linux-x64": {
+          "#import": []
         }
       }
     }

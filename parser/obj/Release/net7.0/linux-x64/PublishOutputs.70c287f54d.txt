@@ -1,0 +1,3 @@
+C:\Users\User\OneDrive - Novelus\Desktop\Baby_NI\parser\out\appsettings.Development.json
+C:\Users\User\OneDrive - Novelus\Desktop\Baby_NI\parser\out\appsettings.json
+C:\Users\User\OneDrive - Novelus\Desktop\Baby_NI\parser\out\Parser

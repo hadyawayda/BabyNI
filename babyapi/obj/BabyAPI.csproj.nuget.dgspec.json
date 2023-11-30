@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\BabyUI\\babyui\\BabyAPI.csproj": {}
+    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\babyapi\\BabyAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\BabyUI\\babyui\\BabyAPI.csproj": {
+    "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\babyapi\\BabyAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\BabyUI\\babyui\\BabyAPI.csproj",
+        "projectUniqueName": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\babyapi\\BabyAPI.csproj",
         "projectName": "BabyAPI",
-        "projectPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\BabyUI\\babyui\\BabyAPI.csproj",
+        "projectPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\babyapi\\BabyAPI.csproj",
         "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\BabyUI\\babyui\\obj\\",
+        "outputPath": "C:\\Users\\User\\OneDrive - Novelus\\Desktop\\Baby_NI\\babyapi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

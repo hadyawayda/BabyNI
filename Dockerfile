@@ -5,7 +5,7 @@ FROM node:lts AS builder
 WORKDIR /app
 
 # Copy package.json and package-lock.json (or yarn.lock)
-COPY package*.json ./
+COPY package.json ./
 
 # Install dependencies
 RUN npm install

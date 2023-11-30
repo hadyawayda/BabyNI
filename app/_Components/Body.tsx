@@ -12,7 +12,6 @@ import {
 } from './Interfaces/Interfaces'
 import { callData } from './Data/CallData'
 import useDateString from './Hooks/useDateString'
-import Test from './testComponent'
 
 const Body = ({ gridData, chartData }: DataProps) => {
    const [data, setData] = useState<gridProps>(gridData)
@@ -110,7 +109,6 @@ const Body = ({ gridData, chartData }: DataProps) => {
             </Suspense>
             <div className="flex flex-col items-center justify-center overflow-y-scroll">
                <Suspense>
-                  {/* <Test {...{ data }} /> */}
                   <Grid {...{ data, selectedKPIs, grouping, dateTimeKeys }} />
                </Suspense>
                <Suspense>

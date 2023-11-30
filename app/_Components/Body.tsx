@@ -109,10 +109,10 @@ const Body = ({ gridData, chartData }: DataProps) => {
             </Suspense>
             <div className="flex flex-col items-center justify-center overflow-y-scroll">
                <Suspense>
-                  <Grid {...{ data, selectedKPIs, grouping, dateTimeKeys }} />
+                  {/* <Grid {...{ data, selectedKPIs, grouping, dateTimeKeys }} /> */}
                </Suspense>
                <Suspense>
-                  <Chart
+                  {/* <Chart
                      {...{
                         data,
                         selectedKPIs,
@@ -120,7 +120,7 @@ const Body = ({ gridData, chartData }: DataProps) => {
                         dateTimeKeys,
                         onDateTimeKeyChange,
                      }}
-                  />
+                  /> */}
                </Suspense>
             </div>
          </div>

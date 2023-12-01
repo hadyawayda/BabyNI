@@ -1,4 +1,4 @@
-﻿namespace Loader.Loaders
+﻿namespace Loader.Services
 {
     public interface IDbInitalizer
     {

@@ -6,8 +6,8 @@ namespace Loader.Loaders
     public class DbLoader
     {
         // To-Do: Add a commit feature to update tables when a process has finished so we can have a backup plan in case of a failure
-        private VerticaCommand              query;
-        private readonly IDbConnection      _connection;
+        private VerticaCommand query;
+        private readonly IDbConnection _connection;
 
         public DbLoader(string fileName, IDbConnection connection)
         {

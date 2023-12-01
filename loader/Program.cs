@@ -1,6 +1,6 @@
 using Loader.Connection;
 using Loader.Factory;
-using Loader.Loaders;
+using Loader.Services;
 using Vertica.Data.VerticaClient;
 
 namespace Loader

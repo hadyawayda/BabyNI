@@ -1,7 +1,7 @@
 ﻿using Aggregator.Connection;
 using Vertica.Data.VerticaClient;
 
-namespace Aggregator.Aggregation
+namespace Aggregator.Aggregators
 {
     public class DbAggregator : IAggregator
     {

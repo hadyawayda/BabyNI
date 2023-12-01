@@ -5,8 +5,6 @@ using Watcher.Services;
 
 namespace Parser.Watcher
 {
-    // @"C:/Watcher",
-    // @"/app/FileDropZone",
     public class FileWatcher : IHostedService
     {
         private readonly static string  rootDirectory = @"C:/Watcher",

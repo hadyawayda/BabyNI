@@ -1,4 +1,4 @@
-﻿namespace Aggregator.Aggregation
+﻿namespace Aggregator.Aggregators
 {
     public interface IAggregator
     {

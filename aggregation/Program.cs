@@ -1,4 +1,4 @@
-using Aggregator.Aggregation;
+using Aggregator.Aggregators;
 using Aggregator.Connection;
 using Aggregator.Factory;
 using Aggregator.Services;

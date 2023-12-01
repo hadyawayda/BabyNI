@@ -1,12 +1,12 @@
 ﻿using Loader.Connection;
 using Vertica.Data.VerticaClient;
 
-namespace Loader.Loaders
+namespace Loader.Services
 {
     public class DbInitializer : IDbInitalizer
     {
-        private VerticaCommand              query;
-        private List<string>?               queries = new List<string> { "DROP TABLE IF EXISTS TRANS_MW_ERC_PM_TN_RADIO_LINK_POWER;",
+        private VerticaCommand query;
+        private List<string>? queries = new List<string> { "DROP TABLE IF EXISTS TRANS_MW_ERC_PM_TN_RADIO_LINK_POWER;",
                 "DROP TABLE IF EXISTS TRANS_MW_ERC_PM_WAN_RFINPUTPOWER;",
                 "DROP TABLE IF EXISTS TRANS_MW_ERC_PM_JOIN;",
                 "DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_HOURLY;",
@@ -30,7 +30,7 @@ namespace Loader.Loaders
                 "CREATE TABLE TRANS_MW_AGG_SLOT_NETYPE\r\n        (\r\n                DATETIME_KEY INTEGER,\r\n                NETYPE VARCHAR,\r\n                RSL_INPUT_POWER FLOAT,\r\n                MAX_RX_LEVEL FLOAT,\r\n                RSL_DEVIATION FLOAT\r\n        )\r\n        SEGMENTED BY HASH(NETYPE) ALL NODES KSAFE 1;",
                 "CREATE TABLE TRANS_MW_AGG_SLOT_NEALIAS\r\n        (\r\n                DATETIME_KEY INTEGER,\r\n                NEALIAS VARCHAR,\r\n                RSL_INPUT_POWER FLOAT,\r\n                MAX_RX_LEVEL FLOAT,\r\n                RSL_DEVIATION FLOAT\r\n        )\r\n        SEGMENTED BY HASH(NEALIAS) ALL NODES KSAFE 1;"
             };
-        private readonly IDbConnection      _connection;
+        private readonly IDbConnection _connection;
 
         public DbInitializer(IDbConnection connection)
         {

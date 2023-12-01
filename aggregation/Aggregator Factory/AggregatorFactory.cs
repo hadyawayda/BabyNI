@@ -1,4 +1,4 @@
-﻿using Aggregator.Aggregation;
+﻿using Aggregator.Aggregators;
 using Aggregator.Connection;
 
 namespace Aggregator.Factory

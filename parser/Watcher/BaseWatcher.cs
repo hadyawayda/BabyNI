@@ -29,6 +29,7 @@
 
         private void addToQueue(string fileName)
         {
+            Console.WriteLine($"New File Detected: {fileName}");
             isReady = false;
 
             // Wait for it to download

@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   aggregator:
-    build: ./aggregation
+    build: ./aggregator
     ports:
       - "5001:5000"
     environment:

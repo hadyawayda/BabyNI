@@ -26,7 +26,7 @@ const Grid = ({
    >()
    const pageChange = (event: GridPageChangeEvent) => {
       const targetEvent = event.targetEvent as PagerTargetEvent
-      const take = targetEvent.value === 'All' ? data.length : event.page.take
+      const take = targetEvent.value === 'All' ? data?.length : event.page.take
 
       if (targetEvent.value) {
          setPageSizeValue(targetEvent.value)
@@ -47,7 +47,7 @@ const Grid = ({
                   height: '300px',
                   border: '1px solid #999',
                }}
-               data={data.slice(page.skip, page.take + page.skip)}
+               data={data?.slice(page.skip, page.take + page.skip)}
                skip={page.skip}
                take={page.take}
                // filterable={true}
@@ -60,7 +60,7 @@ const Grid = ({
                }}
                reorderable={true}
                resizable={true}
-               total={data.length}
+               total={data?.length}
                onPageChange={pageChange}
             >
                {/* <Column

@@ -28,7 +28,7 @@ const ChartComponent = ({
       const newMaxRxLevel: number[] = []
       const newRslDeviation: number[] = []
 
-      data.forEach((x) => {
+      data?.forEach((x) => {
          newInputPower.push(x.RSL_INPUT_POWER)
          newMaxRxLevel.push(x.MAX_RX_LEVEL)
          newRslDeviation.push(x.RSL_DEVIATION)
@@ -48,7 +48,7 @@ const ChartComponent = ({
       if (grouping === 'NETYPE') group = 'NETYPE'
       if (grouping === 'NEALIAS') group = 'NEALIAS'
 
-      data.forEach((x) => {
+      data?.forEach((x) => {
          set.add(group === 'NEALIAS' ? x.NEALIAS : x.NETYPE)
       })
 

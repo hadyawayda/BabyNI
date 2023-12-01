@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+   box-sizing: border-box;
+}
+
+body {
+   color: rgb(var(--foreground-rgb));
+   background-image: url('/background.svg');
+   background-color: lightgray;
+   background-size: cover;
+   color: white;
+   font-family: Roboto, sans-serif;
+}
+
+.nav,
+.side-top {
+   background-color: #0a243d;
+   height: 60px;
+}
+/* .content {
+   width: 1253px;
+} */
+.side-top {
+   width: 250px;
+   box-shadow: 0px 10px 16px -4px rgba(0, 0, 0, 0.4);
+   z-index: 0;
+}
+
+.side-bottom {
+   width: 250px;
+   background-color: #12375c;
+}
+
+.search-box {
+   padding: 8px 15px;
+}
+
+.search-input {
+   background-color: #254769;
+   height: 36px;
+   width: 100%;
+   padding-left: 30px;
+}
+
+.search-input::placeholder {
+   color: #bbb;
+}
+
+.search-logo {
+   top: -25px;
+   left: 8px;
+   position: relative;
+}
+
+.right-border {
+   border-right: 2px solid #477c96;
+   padding: 4px 8px 2px 8px;
+}
+
+.NI-logo {
+   padding: 4px 8px 2px 8px;
+}
+
+.k-label {
+   width: 100%;
+   text-align: center;
+}
+
+.k-dateinput {
+   width: 120px !important;
+   margin-top: 10px !important;
+   margin-bottom: 4px !important;
+   transform: translateX(-7px);
+}
+
+.k-floating-label-container {
+   justify-content: center !important;
+   width: 100% !important;
+   align-items: center !important;
+   left: 10px;
+}
+
+.k-daterangepicker {
+   width: 470px !important;
+}
+
+.k-input-inner {
+   text-align: center;
+}
+
+.dialog-panel {
+   min-width: 540px;
+   width: 40%;
+   height: 80%;
+}

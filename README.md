@@ -7,4 +7,4 @@ The API Controller is found under the "staging" branch, and is usable by both it
 
 ## Requirements
 To replicate the first iteration (console app), install node 18 and .Net 7.0, and start by cloning the code.
-To replicate the second iteration, docker is required if you need to run all the containers.
+To replicate the second iteration, install all the above, and if you need to run all the containers,  docker is required.

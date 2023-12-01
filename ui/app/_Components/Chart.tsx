@@ -28,7 +28,7 @@ const ChartComponent = ({
       const newMaxRxLevel: number[] = []
       const newRslDeviation: number[] = []
 
-      data.forEach((x) => {
+      data?.forEach((x) => {
          newInputPower.push(x.RSL_INPUT_POWER)
          newMaxRxLevel.push(x.MAX_RX_LEVEL)
          newRslDeviation.push(x.RSL_DEVIATION)
@@ -48,7 +48,7 @@ const ChartComponent = ({
       if (grouping === 'NETYPE') group = 'NETYPE'
       if (grouping === 'NEALIAS') group = 'NEALIAS'
 
-      data.forEach((x) => {
+      data?.forEach((x) => {
          set.add(group === 'NEALIAS' ? x.NEALIAS : x.NETYPE)
       })
 
@@ -62,7 +62,7 @@ const ChartComponent = ({
    return (
       <>
          3andak granularity bel data men wara l interval selection aktar mafi
-         individual categories(NETYPE or NEALIAS)
+         individual types (NETYPE or NEALIAS)
          <Chart className="w-11/12 mt-4 mb-6">
             <div className="flex justify-around">
                <ChartTitle

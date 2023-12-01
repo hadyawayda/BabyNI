@@ -7,7 +7,7 @@ namespace Parser.Watcher
 {
     public class FileWatcher : IHostedService
     {
-        private readonly static string  rootDirectory = @"/app/FileDropZone",
+        private readonly static string  rootDirectory = @"C:\Watcher",
                                         radioLinkPowerPattern = @"^SOEM1_TN_RADIO_LINK_POWER_\d{8}_\d{6}\.txt$",
                                         RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.txt$";
         private HashSet<string>         logs;

@@ -12,5 +12,8 @@ To replicate the second iteration, install all the above, and if you need to run
 
 ## Instructions
 1-  To run the first iteration, open BabyNI.sln in Visual Studio, which is a console app containing the watcher, parser, loader and aggregator.
-    Right click on the solution in file explorer and click build solution, and then run the BabyNI.exe build file found in BabyNI/bin/debug/win64.
-    The API Controller is found under the "staging" branch, and can be started by running the BabyAPI.exe build file found in BabyAPI/bin/debug/win64.
+    Right click on the solution in file explorer and click build solution, and then run the BabyNI.exe build file found in BabyNI/bin/debug/win64
+    The API Controller is found under the "staging" branch, and can be started by running the BabyAPI.exe build file found in BabyAPI/bin/debug/win64
+    The React and NextJs app is found under the "staging" branch as well, and can be started by opening the UI folder in Visual Studio Code, then running npm install in the console (ctrl + `), and then by running npm run dev and opening the http://localhost:3000 url in the browser.
+
+2- 

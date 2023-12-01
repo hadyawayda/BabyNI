@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parser", "parser\Parser.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Loader", "loader\Loader.csproj", "{DA53A9D4-274E-484E-B037-2637732F971F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aggregator", "aggregation\Aggregator.csproj", "{CDB5DF0D-A1DA-4BD4-B12B-E469C7B92B02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aggregator", "aggregator\Aggregator.csproj", "{CDB5DF0D-A1DA-4BD4-B12B-E469C7B92B02}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BabyAPI", "babyapi\BabyAPI.csproj", "{D27FE905-BBD9-4C84-B63F-C5B31327F514}"
 EndProject

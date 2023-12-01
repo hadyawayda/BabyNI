@@ -43,7 +43,7 @@ services:
     networks:
       - app-network
 
-  nodeapp:
+  react:
     build: ./ui
     ports:
       - "3000:3000"

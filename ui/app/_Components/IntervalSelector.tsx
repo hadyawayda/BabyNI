@@ -1,12 +1,6 @@
-import { ReactChange } from './Interfaces/Interfaces'
+import { IntervalProps } from './Interfaces/Interfaces'
 
-const Interval = ({
-   interval,
-   onIntervalChange,
-}: {
-   interval: string
-   onIntervalChange: (e: ReactChange) => void
-}) => {
+const Interval = ({ interval, onIntervalChange }: IntervalProps) => {
    return (
       <div className="flex justify-center gap-2">
          Interval Aggregation:

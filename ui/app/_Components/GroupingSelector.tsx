@@ -1,12 +1,6 @@
-import { ReactChange } from './Interfaces/Interfaces'
+import { GroupProps } from './Interfaces/Interfaces'
 
-const GroupingSelector = ({
-   onGroupingChange,
-   grouping,
-}: {
-   onGroupingChange: (grouping: ReactChange) => void
-   grouping: string
-}) => {
+const GroupingSelector = ({ onGroupingChange, grouping }: GroupProps) => {
    return (
       <>
          <div className="flex justify-center items-center gap-2">

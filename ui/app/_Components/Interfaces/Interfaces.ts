@@ -60,3 +60,32 @@ export interface PageState {
    skip: number
    take: number
 }
+
+export interface FilterProps {
+   onDateChange: (date: DateRange) => void
+   onIntervalChange: (interval: ReactChange) => void
+   onKPISelect: (KPIs: ReactChange) => void
+   onGroupingChange: (item: ReactChange) => void
+   onDateTimeKeyChange: (selection: ReactChange) => void
+   selectedKPIs: Map<string, boolean>
+   interval: string
+   dateTimeKeys: object
+   grouping: string
+}
+
+export interface GridComponentProps {
+   data: gridProps
+   selectedKPIs: Map<string, boolean>
+   grouping: string
+   dateTimeKeys: object
+}
+
+export interface GroupProps {
+   onGroupingChange: (grouping: ReactChange) => void
+   grouping: string
+}
+
+export interface IntervalProps {
+   interval: string
+   onIntervalChange: (e: ReactChange) => void
+}

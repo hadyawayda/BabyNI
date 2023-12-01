@@ -14,7 +14,7 @@ import { callData } from './Data/CallData'
 import useDateString from './Hooks/useDateString'
 
 const Body = ({ gridData, chartData }: DataProps) => {
-   const [data, setData] = useState<gridProps>(gridData)
+   const [data, setData] = useState<gridProps>(gridData || [])
    const [interval, setInterval] = useState<string>('daily')
    const [selectedKPIs, setSelectedKPIs] = useState<Map<string, boolean>>(
       new Map([
@@ -87,7 +87,8 @@ const Body = ({ gridData, chartData }: DataProps) => {
    //    fetchDateTimeKeys()
    // }, [])
 
-   // useEffect(() => console.log() ,[])
+   useEffect(() => console.log(data), [])
+   useEffect(() => console.log(data), [data])
 
    return (
       <>

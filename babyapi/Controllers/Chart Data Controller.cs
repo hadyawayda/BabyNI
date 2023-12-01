@@ -1,7 +1,6 @@
 ﻿using BabyAPI.Connection;
 using Microsoft.AspNetCore.Mvc;
 using Vertica.Data.VerticaClient;
-//using Dapper.EntityFramework;
 
 namespace BabyAPI
 {

@@ -11,4 +11,4 @@ To replicate the first iteration (console app), install node 18 and .Net 7.0, an
 To replicate the second iteration, install all the above, and if you need to run all the containers, docker is required.
 
 ## Instructions
-1- To run the first iteration, open the BabyNI.sln in Visual Studio
+1- To run the first iteration, open BabyNI.sln in Visual Studio, and run the project, which is a console app containing the watcher, parser, loader and aggregator. The API Controller is found under the "staging" branch, and can be started by running the BabyAPI.exe build file found in /bin/debug/win64

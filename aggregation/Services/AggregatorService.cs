@@ -16,7 +16,7 @@ namespace Aggregator.Services
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(Aggregate!, null, TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(5));
+            _timer = new Timer(Aggregate!, null, TimeSpan.FromSeconds(60), TimeSpan.FromSeconds(5));
             return Task.CompletedTask;
         }
 

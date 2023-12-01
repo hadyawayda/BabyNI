@@ -2,7 +2,7 @@
 {
     public class RFInputParser
     {
-        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone",
+        readonly private static string  rootDirectory = @"C:/Watcher",
                                         parserDirectory = Path.Combine(rootDirectory, "Parser"),
                                         parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
                                         headerPrefix = "NETWORK_SID,DATETIME_KEY",
@@ -30,6 +30,8 @@
             fetchedLine = new List<string>(18);
             SLOT = PORT = "";
             DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(22);
+            Directory.CreateDirectory(parserDirectory);
+            Directory.CreateDirectory(parserBackupDirectory);
 
             reader = new StreamReader(filePath);
 

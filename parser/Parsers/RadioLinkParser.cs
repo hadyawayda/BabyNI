@@ -2,7 +2,7 @@
 {
     public class RadioLinkParser
     {
-        readonly private static string  rootDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone",
+        readonly private static string  rootDirectory = @"C:/Watcher",
                                         parserDirectory = Path.Combine(rootDirectory, "Parser"),
                                         parserBackupDirectory = Path.Combine(parserDirectory, "Processed"),
                                         headerPrefix = "NETWORK_SID,DATETIME_KEY",
@@ -29,6 +29,8 @@
             output = new List<string>(22);
             fetchedLine = new List<string>(18);
             DATETIME_KEY = Path.GetFileNameWithoutExtension(file).Substring(26);
+            Directory.CreateDirectory(parserDirectory);
+            Directory.CreateDirectory(parserBackupDirectory);
 
             reader = new StreamReader(filePath);
 

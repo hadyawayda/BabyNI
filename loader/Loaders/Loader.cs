@@ -26,7 +26,7 @@ namespace Loader.Loaders
 
             else table = "TRANS_MW_ERC_PM_WAN_RFINPUTPOWER";
 
-            query.CommandText = $"COPY {table} FROM LOCAL 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File DropZone\\Parser\\{fileName}'\r\n        DELIMITER ','\r\n        SKIP 1\r\n        EXCEPTIONS 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File DropZone\\Loader\\Exceptions\\{fileName}-Exceptions.csv'\r\n        REJECTED DATA 'C:\\Users\\User\\OneDrive - Novelus\\Desktop\\File DropZone\\Loader\\Exceptions\\{fileName}-Rejections.csv';";
+            query.CommandText = $"COPY {table} FROM LOCAL 'C:\\Watcher\\Parser\\{fileName}'\r\n        DELIMITER ','\r\n        SKIP 1\r\n;";
 
             int rowsAdded = query.ExecuteNonQuery();
 

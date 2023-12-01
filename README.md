@@ -20,4 +20,4 @@ The React and NextJs app can be started by opening the UI folder in Visual Studi
 Note that the <RuntimeIdentifier>linux-x64</RuntimeIdentifier> line in .csproj should be uncommented (if previously commented out in step 2) before running the containers, because docker supports linux images only.
 Also, change the rootDirectory in the parser/watcher/FileWatcher.cs file from rootDirectory = @"C:\Watcher" to rootDirectory = @"/app/FileDropZone".
 
-#### **Note that when launching the API Controller using the Debug mode in Visual Studio, please select the http profile, because the https profile uses a different port that doesn't work with the incoming fetch requests from the React App.
+#### **Note that when launching the API Controller using the Debug mode in Visual Studio, please select the http profile, because the https profile uses a different port that doesn't work with the incoming fetch requests from the React App. Another option is to change the port in each url in the .env.local and .env.production files to match with the ports found in the https profile, and also change http:// to https:// in each url.

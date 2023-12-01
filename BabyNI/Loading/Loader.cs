@@ -11,7 +11,7 @@ namespace BabyNI.Loading
 
         readonly private static string      loaderDirectory = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone\Loader",
                                             loaderBackupDirectory = Path.Combine(loaderDirectory, "Processed"),
-                                            createTablesScript = @"C:\Users\User\OneDrive - Novelus\Desktop\File DropZone\Loader\Query Scripts\Create Tables.sql",
+                                            createTablesScript = @"C:\Users\User\OneDrive - Novelus\Desktop\BabyNI\BabyNI\Scripts\Create Tables.sql",
                                             RFInputPowerPattern = @"^SOEM1_TN_RFInputPower_\d{8}_\d{6}\.csv";
         private BaseWatcher                 watcher;
         private QueryFetcher                queryFetcher;

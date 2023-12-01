@@ -1,0 +1,181 @@
+DROP TABLE IF EXISTS TRANS_MW_ERC_PM_TN_RADIO_LINK_POWER;
+DROP TABLE IF EXISTS TRANS_MW_ERC_PM_WAN_RFINPUTPOWER;
+DROP TABLE IF EXISTS TRANS_MW_ERC_PM_JOIN;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_HOURLY;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_DAILY;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_ALL_TIME;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_HOURLY_NETYPE;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_HOURLY_NEALIAS;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_DAILY_NETYPE;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_DAILY_NEALIAS;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_NETYPE;
+DROP TABLE IF EXISTS TRANS_MW_AGG_SLOT_NEALIAS;
+
+CREATE TABLE TRANS_MW_ERC_PM_TN_RADIO_LINK_POWER (
+        NETWORK_SID INTEGER,
+        DATETIME_KEY INTEGER,
+        NEID FLOAT,
+        "OBJECT" VARCHAR,
+        "TIME" DATETIME,
+        "INTERVAL" INTEGER,
+        DIRECTION VARCHAR,
+        NEALIAS VARCHAR,
+        NETYPE VARCHAR,
+        RXLEVELBELOWTS1 FLOAT,
+        RXLEVELBELOWTS2 FLOAT,
+        MINRXLEVEL FLOAT,
+        MAXRXLEVEL FLOAT,
+        TXLEVELABOVETS1 FLOAT,
+        MINTXLEVEL FLOAT,
+        MAXTXLEVEL FLOAT,
+        FAILUREDESCRIPTION VARCHAR,
+        LINK VARCHAR,
+        TID VARCHAR,
+        FARENDTID VARCHAR,
+        SLOT VARCHAR,
+        PORT VARCHAR
+        )
+        SEGMENTED BY HASH(NETWORK_SID, DATETIME_KEY) ALL NODES KSAFE 1
+        PARTITION BY time_slice(TIME, 1, 'HOUR', 'END')
+        GROUP BY CASE
+                WHEN DATEDIFF(HOUR, time_slice(TIME, 1, 'HOUR', 'END'), NOW()) >=24
+                THEN DATE_TRUNC('DAY', time_slice(TIME, 1, 'HOUR', 'END'))
+                ELSE time_slice(TIME, 1, 'HOUR', 'END')
+                END;
+
+
+CREATE TABLE TRANS_MW_ERC_PM_WAN_RFINPUTPOWER (
+        NETWORK_SID INTEGER,
+        DATETIME_KEY INTEGER,
+        NODENAME VARCHAR,
+        NEID FLOAT,
+        "OBJECT" VARCHAR,
+        "TIME" DATETIME,
+        "INTERVAL" INTEGER,
+        DIRECTION VARCHAR,
+        NEALIAS VARCHAR,
+        NETYPE VARCHAR,
+        RFINPUTPOWER FLOAT,
+        TID VARCHAR,
+        FARENDTID VARCHAR,
+        SLOT VARCHAR,
+        PORT VARCHAR
+        )
+        SEGMENTED BY HASH(NETWORK_SID, DATETIME_KEY) ALL NODES KSAFE 1
+        PARTITION BY time_slice(TIME, 24, 'HOUR', 'END')
+        GROUP BY CASE
+                WHEN DATEDIFF(DAY, time_slice(TIME, 24, 'HOUR', 'END'), NOW()) >=7
+                THEN DATE_TRUNC('WEEK', time_slice(TIME, 24, 'HOUR', 'END'))
+                ELSE time_slice(TIME, 24, 'HOUR', 'END')
+                END;
+
+-- This table contains hourly aggregated data grouped by DATETIME_KEY & NETWORK_SID
+CREATE TABLE TRANS_MW_AGG_SLOT_HOURLY 
+        (
+                DATETIME_KEY INTEGER,
+                "TIME" DATETIME,
+                NETWORK_SID INTEGER,
+                NEALIAS VARCHAR,
+                NETYPE VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NETWORK_SID, "TIME") ALL NODES KSAFE 1;
+
+-- This table contains daily aggregated data grouped by DATETIME_KEY & NETWORK_SID
+CREATE TABLE TRANS_MW_AGG_SLOT_DAILY 
+        (
+                DATETIME_KEY INTEGER,
+                "TIME" DATETIME,
+                NETWORK_SID INTEGER,
+                NEALIAS VARCHAR,
+                NETYPE VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NETWORK_SID, "TIME") ALL NODES KSAFE 1;
+
+-- This table contains hourly aggregated data grouped by DATETIME_KEY & NETYPE
+CREATE TABLE TRANS_MW_AGG_SLOT_HOURLY_NETYPE 
+        (
+                DATETIME_KEY INTEGER,
+                "TIME" DATETIME,
+                NETYPE VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NETYPE, "TIME") ALL NODES KSAFE 1;
+
+-- This table contains hourly aggregated data grouped by DATETIME_KEY & NEALIAS
+CREATE TABLE TRANS_MW_AGG_SLOT_HOURLY_NEALIAS 
+        (
+                DATETIME_KEY INTEGER,
+                "TIME" DATETIME,
+                NEALIAS VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NEALIAS, "TIME") ALL NODES KSAFE 1;
+
+-- This table contains daily aggregated data grouped by DATETIME_KEY & NETYPE
+CREATE TABLE TRANS_MW_AGG_SLOT_DAILY_NETYPE 
+        (
+                DATETIME_KEY INTEGER,
+                "TIME" DATETIME,
+                NETYPE VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NETYPE, "TIME") ALL NODES KSAFE 1;
+
+-- This table contains daily aggregated data grouped by DATETIME_KEY & NEALIAS
+CREATE TABLE TRANS_MW_AGG_SLOT_DAILY_NEALIAS
+        (
+                DATETIME_KEY INTEGER,
+                "TIME" DATETIME,
+                NEALIAS VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NEALIAS, "TIME") ALL NODES KSAFE 1;
+
+-- This table contains aggregated data grouped by DATETIME_KEY & NETWORK_SID
+CREATE TABLE TRANS_MW_AGG_SLOT_ALL_TIME
+        (
+                DATETIME_KEY INTEGER,
+                NETWORK_SID INTEGER,
+                NEALIAS VARCHAR,
+                NETYPE VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NETWORK_SID) ALL NODES KSAFE 1;
+
+
+CREATE TABLE TRANS_MW_AGG_SLOT_NETYPE
+        (
+                DATETIME_KEY INTEGER,
+                NETYPE VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NETYPE) ALL NODES KSAFE 1;
+
+
+CREATE TABLE TRANS_MW_AGG_SLOT_NEALIAS
+        (
+                DATETIME_KEY INTEGER,
+                NEALIAS VARCHAR,
+                RSL_INPUT_POWER FLOAT,
+                MAX_RX_LEVEL FLOAT,
+                RSL_DEVIATION FLOAT
+        )
+        SEGMENTED BY HASH(NEALIAS) ALL NODES KSAFE 1;

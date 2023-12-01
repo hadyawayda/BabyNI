@@ -1,35 +1,35 @@
 version: "3.8"
 
 services:
-  aggregator:
-    build: ./aggregator
-    ports:
-      - "5001:5000"
-    environment:
-      ASPNETCORE_URLS: http://+:5000
-      ASPNETCORE_ENVIRONMENT: Production
-    networks:
-      - app-network
+  # aggregator:
+  #   build: ./aggregator
+  #   ports:
+  #     - "5001:5000"
+  #   environment:
+  #     ASPNETCORE_URLS: http://+:5000
+  #     ASPNETCORE_ENVIRONMENT: Production
+  #   networks:
+  #     - app-network
 
-  babyapi:
-    build: ./babyapi
-    ports:
-      - "5000:5000"
-    environment:
-      ASPNETCORE_URLS: http://+:5000
-      ASPNETCORE_ENVIRONMENT: Production
-    networks:
-      - app-network
+  # babyapi:
+  #   build: ./babyapi
+  #   ports:
+  #     - "5000:5000"
+  #   environment:
+  #     ASPNETCORE_URLS: http://+:5000
+  #     ASPNETCORE_ENVIRONMENT: Production
+  #   networks:
+  #     - app-network
 
-  loader:
-    build: ./loader
-    ports:
-      - "5002:5000"
-    environment:
-      ASPNETCORE_URLS: http://+:5000
-      ASPNETCORE_ENVIRONMENT: Production
-    networks:
-      - app-network
+  # loader:
+  #   build: ./loader
+  #   ports:
+  #     - "5002:5000"
+  #   environment:
+  #     ASPNETCORE_URLS: http://+:5000
+  #     ASPNETCORE_ENVIRONMENT: Production
+  #   networks:
+  #     - app-network
 
   parser:
     build: ./parser
@@ -43,15 +43,15 @@ services:
     networks:
       - app-network
 
-  react:
-    build: ./ui
-    ports:
-      - "3000:3000"
-    command: ["npm", "run", "dev"]
-    depends_on:
-      - babyapi
-    networks:
-      - app-network
+  # react:
+  #   build: ./ui
+  #   ports:
+  #     - "3000:3000"
+  #   command: ["npm", "run", "dev"]
+  #   depends_on:
+  #     - babyapi
+  #   networks:
+  #     - app-network
 
 networks:
   app-network:

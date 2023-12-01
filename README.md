@@ -5,5 +5,6 @@ The project contains 2 iterations, the first one is a console app (class library
 The UI is found under the "staging" branch, and is the same for both iterations.
 The API Controller is found under the "staging" branch, and is usable by both iterations as well.
 
-## 
-To replicate this project, install docker, .net 7 and all other required dependencies by cloning the code and running npm install.
+## Requirements
+To replicate the first iteration (console app), install node 18 and .Net 7.0, and start by cloning the code.
+To replicate the second iteration, docker is required if you need to run all the containers.

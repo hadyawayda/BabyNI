@@ -1,3 +1,9 @@
+using Aggregator.Aggregation;
+using Aggregator.Connection;
+using Aggregator.Factory;
+using Aggregator.Services;
+using Vertica.Data.VerticaClient;
+
 namespace Aggregator
 {
     public class Program
@@ -5,8 +11,14 @@ namespace Aggregator
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            string? connectionString = builder.Configuration.GetConnectionString("Vertica");
 
             // Add services to the container.
+            builder.Services.AddSingleton(provider => new VerticaConnection(connectionString));
+            builder.Services.AddSingleton<IDbConnection, DbConnection>();
+            builder.Services.AddSingleton<IAggregator, DbAggregator>();
+            builder.Services.AddSingleton<IAggregatorFactory, AggregatorFactory>();
+            builder.Services.AddHostedService<AggregatorService>();
             builder.Services.AddHttpClient();
             builder.Services.AddControllers();
 

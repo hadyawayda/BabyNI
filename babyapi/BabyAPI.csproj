@@ -9,19 +9,14 @@
     <DockerfileContext>..\BabyNI</DockerfileContext>
     <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
-    <!--<RuntimeIdentifier>linux-x64</RuntimeIdentifier>-->
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <PublishTrimmed>true</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
     <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>
-    <!--<PackageReference Include="Dapper" Version="2.1.21" />-->
-    <!--<PackageReference Include="Dapper.EntityFramework" Version="2.0.151" />-->
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.13" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.13" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
-    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.11" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Vertica.Data" Version="23.4.0" />
   </ItemGroup>

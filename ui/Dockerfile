@@ -13,7 +13,7 @@ RUN npm install
 # Copy the rest of your app's source code
 COPY . .
 
-# Build your Next.js application
+# Build your Next.js application (NextJS Builds are failing due to an error with the Chart Component in KendoReact, can be executed if the Chart Componenet is commented out)
 #RUN npm run build
 
 # Stage 2: Run the app

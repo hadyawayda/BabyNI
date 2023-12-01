@@ -61,8 +61,7 @@ const ChartComponent = ({
 
    return (
       <>
-         3andak granularity bel data men wara l interval selection aktar mafi
-         individual types (NETYPE or NEALIAS)
+         {/* 3andak granularity bel data (total individual dates) men wara l interval selection aktar mafi individual types (NETYPE or NEALIAS) */}
          <Chart className="w-11/12 mt-4 mb-6">
             <div className="flex justify-around">
                <ChartTitle
@@ -100,7 +99,7 @@ const ChartComponent = ({
                )}
             </ChartSeries>
          </Chart>
-         <DateTimeKeySelector {...{ dateTimeKeys, onDateTimeKeyChange }} />
+         {/* <DateTimeKeySelector {...{ dateTimeKeys, onDateTimeKeyChange }} /> */}
       </>
    )
 }

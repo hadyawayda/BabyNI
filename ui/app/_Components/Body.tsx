@@ -87,8 +87,8 @@ const Body = ({ gridData, chartData }: DataProps) => {
    //    fetchDateTimeKeys()
    // }, [])
 
-   useEffect(() => console.log(data), [])
-   useEffect(() => console.log(data), [data])
+   // useEffect(() => console.log(data), [])
+   // useEffect(() => console.log(data), [data])
 
    return (
       <>

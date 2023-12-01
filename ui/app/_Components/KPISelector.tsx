@@ -70,7 +70,6 @@ const KPISelector = ({ onKPISelect, selectedKPIs }: KPIProps) => {
                                              onChange={onKPISelect}
                                              className="mr-8"
                                           />
-
                                           {key}
                                        </label>
                                     </div>
